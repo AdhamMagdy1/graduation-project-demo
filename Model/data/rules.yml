@@ -1,0 +1,21 @@
+version: "3.1"
+
+rules:
+
+- rule: Activate_food_order_form
+  steps:
+  - intent: order
+  - action : food_form
+  - active_loop: food_form
+
+- rule: Submit_order_form
+  condition:
+  - active_loop: food_form
+  steps:
+  - action: food_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_submit
+  - action: utter_food_slots
+  - action: utter_goodbye

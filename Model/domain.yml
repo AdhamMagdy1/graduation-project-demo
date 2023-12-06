@@ -1,0 +1,93 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - order
+entities:
+  - food
+  - phone_number
+  - food_size
+  
+
+slots:
+   food:
+     type: text
+     influence_conversation: true
+     mappings:
+     - type: from_entity
+       entity: food
+   phone_number:
+     type: text
+     influence_conversation: true
+     mappings:
+     - type: from_entity
+       entity: phone_number
+   food_size:
+     type: text
+     influence_conversation: true
+     mappings:
+     - type: from_entity
+       entity: food_size
+
+   
+ 
+responses:
+  utter_greet:
+  - text: "ازيك يا صاحبي?"
+
+  utter_goodbye:
+  - text: "مع السلامة"
+  - text : "باي"
+  - text : "مع السلامة يا صاحبي"
+  - text : "باي يا صاحبي"
+  - text : "مع السلامة يا حبيبي"
+  - text : "باي يا حبيبي"
+  - text : "اشوفك بعدين يا صاحبي"
+  - text : "يلا توكل علي الله انت" 
+
+  utter_foodshortage:
+  - text : "مفيش اكل والله"
+  - text : "مفيش اكل والله يا صاحبي"
+  - text : "مفيش اكل والله يا حبيبي"
+  - text : "تعالا بكرة ان شاء الله"
+
+  utter_submit:
+  - text: "تمام يا صاحبي حعملك الاوردر"
+  - text: "تمام يا حبيبي حعملك الاوردر"
+  - text: "طلبك وصل يا قلبي"
+  - text: "طلبك وصل يا حبيبي"
+
+  utter_food_slots:
+  - text: " الاكل اللي طلبته هو {food} و حجمه {food_size} رقم تليفونك الي حنتواصل معاك بيه هو  {phone_number}"
+
+  utter_ask_phone_number:
+  - text: "ممكن رقم تليفونك عشان الدليفري يتواصل  معاك"
+  - text: "اديني رقم تليفونك عشان الدليفري يتواصل  معاك"
+  - text: "ممكن رقم تليفونك يا صاحبي عشان الدليفري يتواصل  يكلمك"
+  - text: "بقولك اكتب رقم تليفونك عشان الدليفري يلاقي طريقة يكلمك بيها"
+
+  utter_ask_food_size:
+  - text: "ممكن حضرتك تقولي  تحب حجم طلبك ايه"
+  - text: " عاوز انهي size"
+actions:
+  - utter_greet
+  - utter_goodbye
+  - utter_foodshortage
+  - utter_submit
+  - utter_food_slots
+  - validate_food_form
+  - utter_ask_phone_number
+  - utter_ask_food_size
+
+forms:
+  food_form:
+    required_slots:
+      - food
+      - phone_number
+      - food_size
+    
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
