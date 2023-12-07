@@ -1,0 +1,135 @@
+:root {
+  --main-color: #1a122a;
+}
+* {
+  margin: 0;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
+.login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/register-background-1.png");
+  background-size: cover;
+  opacity: 1;
+  z-index: -2;
+}
+.login::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1a122a;
+  opacity: 0.7;
+  z-index: -1;
+}
+.login .offscreen {
+  display: none;
+}
+.login .container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 15px;
+  gap: 15px;
+  border-radius: 5px;
+  width: fit-content;
+  align-items: center;
+}
+.login .container h1 {
+  color: var(--main-color);
+  padding: 5px;
+  font-size: 30px;
+  margin-top: 10px;
+}
+.login .container .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  min-width: 300px;
+}
+.login .container .content input[type="text"],
+.login .container .content input[type="password"] {
+  padding: 1rem;
+  margin: 10px;
+  flex-basis: 50%;
+  border-color: transparent transparent #e9e8e8 transparent;
+  caret-color: var(--main-color);
+}
+
+.login .container .content input[type="submit"] {
+  flex-basis: 50%;
+  padding: 10px;
+  margin: 15px;
+  color: white;
+  background-color: var(--main-color);
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.login .container .go-to-register {
+  color: rgba(90, 90, 90, 0.6);
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.login .go-to-register a {
+  color: var(--main-color);
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .login::before {
+    content: "";
+    height: 150px;
+    width: 100%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 1;
+  }
+  .login::after {
+    content: "Welcome Back!";
+    position: absolute;
+    background-color: transparent;
+    width: 100%;
+    color: white;
+    text-align: left;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1.92px;
+    top: 40px;
+    left: 8%;
+    z-index: 2;
+    opacity: 1;
+    width: 85%;
+    height: 10%;
+  }
+  .login h1 {
+    display: none;
+  }
+}
