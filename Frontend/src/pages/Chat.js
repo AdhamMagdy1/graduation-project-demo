@@ -1,5 +1,8 @@
 import "./chat.css";
 import { useState, useEffect, useRef } from "react";
+const io = require("socket.io-client");
+
+const socket = io("http://localhost:5000");
 
 function Chat() {
   const chatRef = useRef();
@@ -8,12 +11,31 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
 
+
+
   useEffect(() => {
     chatRef.current.focus();
+
+    socket.on("message", (message) => {
+      // for RASA messages
+      setMessages((messages) => [
+        {
+          body: message,
+          from: "bot",
+        },
+        ...messages,
+      ]);
+    });
+    return () => {
+      socket.off("message");
+    };
   }, [text]);
 
   const handleSubmit = () => {
     if (text) {
+
+      socket.emit("message", text);
+      // for my own messages
       setMessages([
         {
           body: text,
@@ -21,12 +43,13 @@ function Chat() {
         },
         ...messages,
       ]);
+
       setText("");
     }
   };
 
   const handleKeypress = (e) => {
-    //it triggers by pressing the enter key
+    // It triggers by pressing the enter key
     if (e.key === "Enter" && text) {
       handleSubmit();
     }
@@ -108,5 +131,6 @@ const Message = ({ body, from }) => {
     </div>
   );
 };
+
 
 export default Chat;
