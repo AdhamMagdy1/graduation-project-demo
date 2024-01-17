@@ -1,20 +1,27 @@
-const dbConfig = {
-    host : 'localhost',
-    username: 'postgres',
-    password: '1234',
-    database: 'qwer1234',
-    dialect: 'postgres'
-};
-module.exports = dbConfig;
-// const testDb = async() => {
-//     try{
-//         // await sequelize.authenticate();
-//         console.log("suceess connection ");
-//         sequelize.sync({force:true}).then(()=> console.log('Model succesed'))
-//         .catch((err)=> console.err("errot",err));
+const { Sequelize } = require('sequelize');
+require('dotenv').config();
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USERNAME,
+  process.env.DATABASE_PASSWORD,
+  {
+    host: process.env.DATABASE_HOST,
+    dialect: 'mssql',
+  }
+);
 
-//     }catch(error){
-//         console.error('Unable to connect',error);
-//     }
-// };
-// module.exports = {sequelize,testDb};
+const testDbConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+    // add to the sync() {force : true} if you have pre data in you database. Note: this will delete all you data!! but it also will allwo sequlize to work properly.
+    sequelize
+      .sync()
+      .then(() => console.log('Models synced successfully!'))
+      .catch((error) => console.error('Error syncing models:', error));
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+
+module.exports = { sequelize, testDbConnection, };
