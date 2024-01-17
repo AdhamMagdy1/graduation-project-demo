@@ -1,72 +1,50 @@
-import "./login.css";
-import { useRef, useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import './login.css';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Login() {
-  const userRef = useRef();
-  const errRef = useRef();
-
-  const [user, setUser] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [errMsg, setErrMsg] = useState("");
-  const [sucess, setSucess] = useState(false);
-
   const navigate = useNavigate();
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
-    userRef.current.focus();
-  }, []);
+    setErrMsg('');
+  }, [success]);
 
-  useEffect(() => {
-    setErrMsg("");
-  }, [user, pwd]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(user, pwd);
-    setUser("");
-    setPwd("");
-    setSucess(true);
+  const responseMessage = (response) => {
+    // Send the ID token to your backend for verification
+    fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(response),
+    })
+      .then((res) => res.json())
+      .then((data) =>{
+        console.log(data);
+        window.localStorage.setItem('user',JSON.stringify(data.user))
+        window.localStorage.setItem('token',data.token)
+      }).then(()=>window.location.href ='/chat');
+  };
+  const errorMessage = (error) => {
+    console.log(error);
   };
 
   return (
     <>
-      {sucess ? (
-        navigate("/chat")
+      {success ? (
+        navigate('/chat')
       ) : (
         <section className="login">
-          <p
-            ref={errRef}
-            className={errMsg ? "errMsg" : "offscreen"}
-            aria-live="assertive"
-          >
+          <p className={errMsg ? 'errMsg' : 'offscreen'} aria-live="assertive">
             {errMsg}
           </p>
           <div className="container">
             <h1>LOGIN</h1>
-            <form onSubmit={handleSubmit} className="content">
-              <input
-                type="text"
-                placeholder="Username"
-                ref={userRef}
-                autoComplete="off"
-                onChange={(e) => setUser(e.target.value)}
-                value={user}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPwd(e.target.value)}
-                value={pwd}
-                required
-              />
-              <input type="submit" value="Login" />
-            </form>
-            <p className="go-to-register">
-              Don't Have An Account?
-              <Link to="/">Sign Up!</Link>
-            </p>
+            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
           </div>
         </section>
       )}
