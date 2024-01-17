@@ -7,24 +7,29 @@ const { Server } = require('socket.io');
 const authRoutes = require('./routes/authRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const ping = require('./routes/pingRoute');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 // Import socket.io functionality
 const { runSocket } = require('./sockets/socket');
 
 const app = express();
+// Enable CORS for all origins (for development)
+app.use(cors());
+app.use(bodyParser.json());
 
-// express session
-app.use(
-  session({
-    secret: process.env.secret,
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+// // express session
+// app.use(
+//   session({
+//     secret: process.env.secret,
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
 
-// Initialize Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+// // Initialize Passport middleware
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Create the server and attach socket.io
 const server = createServer(app);
@@ -41,8 +46,8 @@ const io = new Server(server, {
 // Import socket.js functionality and run it
 runSocket(io);
 
-// Use the auth routes
-app.use(authRoutes);
+// // Use the auth routes
+// app.use(authRoutes);
 
 // Use the customer routes
 app.use(customerRoutes);
