@@ -1,354 +1,316 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+const {DataTypes} =  require('sequelize');
+const dbConfig = require('../config/database') 
+// const {sequelize} =  require('../config/database')
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    host: dbConfig.host,
+    dialect: dbConfig.dialect,
+    timestamps: false,
+    freezeTableName: true,
+    logging: true,
+  });
+// const {DataTypes} = Sequlize
 
-// Model definitions
+const Customer = sequelize.define("Customer",{
+  
+     customerId:{
+        type: DataTypes.INTEGER,
+        autoIncrement : true,
+        primaryKey : true,
+        allowNull:false,
+        
+     },
+     firstName:{
+        type:DataTypes.STRING(50),
+        allowNull:false,
+     },
+     lastName:{
+        type:DataTypes.STRING(50),
+        allowNull : false,
+     },
+     email:{
+        type:DataTypes.STRING(100),
+        allowNull:false
+     },
+     },{ timestamps: false, freezeTableName: true });
 
-const Customer = sequelize.define(
-  'Customer',
-  {
-    customerId: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-    },
-    firstName: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
 
-const Address = sequelize.define(
-  'Address',
-  {
+const Resturant =  sequelize.define('Resturant',{
+    resturantId : {
+        type: DataTypes.INTEGER,
+        primaryKey : true,
+        autoIncrement : true
+    },
+    name: {
+        type: DataTypes.STRING(100),
+        allowNull : false
+
+    },
+    description :{
+    type: DataTypes.STRING(300),
+    allowNull : false
+    },Subscription :{
+      type:DataTypes.DATE,
+      allowNull:false
+      }
+
+},{ timestamps: false, freezeTableName: true });
+const Product =  sequelize.define('Product',{
+    productId : {
+        type:DataTypes.INTEGER,
+        primaryKey : true ,
+        autoIncrement : true,
+    },
+    quantity : {
+        type : DataTypes.INTEGER,
+        allowNull : true
+    },
+    price : {
+        type : DataTypes.DECIMAL(6,2),
+        allowNull : false,
+    },
+    description : {
+        type:DataTypes.STRING(300),
+        allowNull : false,
+    },
+    name: {
+        type : DataTypes.STRING(100),
+        allowNull : false,
+    }
+
+
+},{ timestamps: false, freezeTableName: true });
+const Extra = sequelize.define('Extra',{
+    extraId:{
+        type : DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    name : {
+        type:DataTypes.STRING(100),
+        allowNull:false,
+    },
+    price : {
+        type : DataTypes.DECIMAL(4,2),
+        allowNull : false
+    }
+
+},{ timestamps: false, freezeTableName: true });
+const Address =  sequelize.define('Address',{
     addressID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    Area: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    streetNumber: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    buildingNo: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    flatNumber: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    extraDescription: {
-      type: DataTypes.STRING(400),
-      allowNull: true,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+    Area : {
+        type:DataTypes.STRING(100),
+        allowNull: false,
 
-const waitingOrder = sequelize.define(
-  'waitingOrder',
-  {
+    },
+    streetNumber : {
+        type:DataTypes.STRING(100),
+        allowNull: false,
+    },
+    buildingNo:{
+        type:DataTypes.INTEGER,
+        allowNull: false,
+    },
+    flatNumber : {
+        type:DataTypes.STRING(100),
+        allowNull: false,
+    },
+    extraDescription : {
+        type:DataTypes.STRING(400),
+        allowNull: true,
+    }
+
+
+},{ timestamps: false, freezeTableName: true });
+const waitingOrder = sequelize.define('waitingOrder', {
     waitId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     OrderTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
+        type : DataTypes.DATE,
+        allowNull:false
     },
-    price: {
-      type: DataTypes.DECIMAL(6, 2),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+    price:{ 
+       type:  DataTypes.DECIMAL(6, 2),
+       allowNull:false
+    }
 
-const Restaurant = sequelize.define(
-  'Restaurant',
-  {
-    restaurantId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING(300),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+   
+  },{ timestamps: false, freezeTableName: true });
+  const productExtra = sequelize.define('productExtra', {
+    
 
-const Product = sequelize.define(
-  'Product',
-  {
-    productId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    price: {
-      type: DataTypes.DECIMAL(6, 2),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING(300),
-      allowNull: false,
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
-
-const Extra = sequelize.define(
-  'Extra',
-  {
-    extraId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.DECIMAL(4, 2),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
-
-const Product_ingredient = sequelize.define('Product_ingredient', {});
-
-const Customer_phoneNumber = sequelize.define(
-  'Customer_phoneNumber',
-  {
+  },{ timestamps: false, freezeTableName: true });
+  const Customer_phoneNumber = sequelize.define('Customer_phoneNumber', {
     phoneNumber: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(20),
       primaryKey: true,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+    }
 
-const Resturant_deliveryAreas = sequelize.define(
-  'Resturant_deliveryAreas',
-  {
+  },{ timestamps: false, freezeTableName: true });
+  const Resturant_deliveryAreas = sequelize.define('Resturant_deliveryAreas', {
     deliveryAreasid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
+    city : {
+      type:DataTypes.STRING(20),
+    }
+    ,
     area: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+        type: DataTypes.STRING(100),
+        allowNull:false,
+    }
 
-const Resturant_worker = sequelize.define(
-  'Resturant_worker',
-  {
+  },{ timestamps: false, freezeTableName: true });
+  const Resturant_worker = sequelize.define('Resturant_worker', {
     workerid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
+       type :  DataTypes.STRING(100),
+       allowNull : false,
     },
     email: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
+        type:DataTypes.STRING(100),
+        allowNull:false,
     },
     password: {
-      type: DataTypes.STRING(256),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+        type : DataTypes.STRING(256),
+        allowNull:false,
 
-const Order = sequelize.define(
-  'Order',
-  {
+    }
+
+  },{ timestamps: false, freezeTableName: true });
+  const Product_ingredient = sequelize.define('Product_ingredient', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+      name: {
+        type :  DataTypes.STRING(100),
+        allowNull : false,
+     }
+    
+
+  },{ timestamps: false, freezeTableName: true });
+  const Order = sequelize.define('Order', {
     orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     deliveyCost: {
-      type: DataTypes.DECIMAL(6, 2),
-      allowNull: false,
+        type : DataTypes.DECIMAL(6, 2),
+        allowNull : false
     },
-    Status: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
+    Status:{
+        type : DataTypes.STRING(20),
+        allowNull : false
+    } ,
     OrderTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+        type : DataTypes.DATE,
+        allowNull : false
 
-const OrderItem = sequelize.define(
-  'OrderItem',
-  {
+
+    }
+  },{ timestamps: false, freezeTableName: true });
+  const OrderItem = sequelize.define('OrderItem', {
     orderItemId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    price: {
-      type: DataTypes.DECIMAL(6, 2),
-      allowNull: false,
+    price:{ 
+        type:  DataTypes.DECIMAL(6, 2),
+        allowNull:false
+     }
+
+  },{ timestamps: false, freezeTableName: true });
+  const itemExtra = sequelize.define('itemExtra', {     
+  },{ timestamps: false, freezeTableName: true });
+  const Restaurant_menu = sequelize.define('ResutrantMenu', 
+  {
+    menuId :  {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+    description : {
+      type : DataTypes.STRING(100),
+      allowNull : true
+    },
+    menuImage : {
+      type : DataTypes.BLOB,
+      allowNull : false
+    }
 
-const itemExtra = sequelize.define(
-  'itemExtra',
-  {},
-  { timestamps: false, freezeTableName: true }
-);
+  }
+  ,{ timestamps: false, freezeTableName: true }) 
+  
+  Customer.hasMany(Address, { foreignKey: 'customerId', as: 'Addresses' });
+  Customer.hasMany(waitingOrder, { foreignKey: 'customerId', as: 'WaitingOrders' });
+  Customer.hasMany(Customer_phoneNumber, { foreignKey: 'customerId', as: 'PhoneNumbers' });
+  
+  Resturant.hasMany(Product, { foreignKey: 'resturantId', as: 'Products' });
+  Resturant.hasMany(Resturant_deliveryAreas, { foreignKey: 'resturantId', as: 'DeliveryAreas' });
+  Resturant.hasMany(Resturant_worker, { foreignKey: 'resturantId', as: 'Workers' });
+  
+  Product.belongsTo(Resturant, { foreignKey: 'resturantId', as: 'Restaurant' });
+  Product.hasMany(Product_ingredient, { foreignKey: 'productId', as: 'Ingredients' });
+  Product.hasMany(productExtra, { foreignKey: 'productId', as: 'Extras' });
+  
+  Extra.belongsToMany(Product, { through: productExtra, foreignKey: 'extraId', as: 'Products' });
+  Extra.belongsToMany(OrderItem, { through: itemExtra, foreignKey: 'extraId', as: 'OrderItems' });
+  
+  Address.belongsTo(Customer, { foreignKey: 'customerId', as: 'Customer' });
+  
+  waitingOrder.belongsTo(Customer, { foreignKey: 'customerId', as: 'Customer' });
+  
+  Resturant_deliveryAreas.belongsTo(Resturant, { foreignKey: 'resturantId', as: 'Restaurant' });
+  
+  Resturant_worker.belongsTo(Resturant, { foreignKey: 'resturantId', as: 'Restaurant' });
+  
+  Product_ingredient.belongsTo(Product, { foreignKey: 'productId', as: 'Product' });
+  
+  Order.belongsTo(Resturant, { foreignKey: 'resturantId', as: 'Restaurant' });
+  Order.belongsTo(Address, { foreignKey: 'addressID', as: 'Address' });
+  Order.belongsTo(Customer, { foreignKey: 'customerId', as: 'Customer' });
+  
+  OrderItem.belongsTo(Product, { foreignKey: 'productId', as: 'Product' });
+  OrderItem.belongsTo(waitingOrder, { foreignKey: 'waitId', as: 'WaitingOrder' });
+  OrderItem.belongsTo(Order, { foreignKey: 'orderId', as: 'Order' });
+  
+  itemExtra.belongsTo(Extra, { foreignKey: 'extraId', as: 'Extra' });
+  itemExtra.belongsTo(OrderItem, { foreignKey: 'orderItemId', as: 'OrderItem' });
+  Resturant.hasMany(Restaurant_menu, { foreignKey: 'resturantId', as: 'Restaurant_menu' });
+  Restaurant_menu.belongsTo(Resturant, { foreignKey: 'resturantId', as: 'Restaurant' });
 
-const productExtra = sequelize.define('productExtra', {});
 
-// Associations
-
-Customer.hasMany(Address, { foreignKey: 'customerId', as: 'Addresses' });
-Address.belongsTo(Customer, { foreignKey: 'customerId', as: 'Customer' });
-
-Customer.hasMany(waitingOrder, {
-  foreignKey: 'customerId',
-  as: 'WaitingOrders',
-});
-waitingOrder.belongsTo(Customer, { foreignKey: 'customerId', as: 'Customer' });
-
-Customer.hasMany(Customer_phoneNumber, {
-  foreignKey: 'customerId',
-  as: 'PhoneNumbers',
-});
-Customer_phoneNumber.belongsTo(Customer, {
-  foreignKey: 'customerId',
-  as: 'customer',
-});
-
-Restaurant.hasMany(Product, { foreignKey: 'restaurantId', as: 'Products' });
-Product.belongsTo(Restaurant, { foreignKey: 'restaurantId', as: 'Restaurant' });
-
-Restaurant.hasMany(Resturant_deliveryAreas, {
-  foreignKey: 'restaurantId',
-  as: 'DeliveryAreas',
-});
-Resturant_deliveryAreas.belongsTo(Restaurant, {
-  foreignKey: 'restaurantId',
-  as: 'Restaurant',
-});
-
-Restaurant.hasMany(Resturant_worker, {
-  foreignKey: 'restaurantId',
-  as: 'Workers',
-});
-Resturant_worker.belongsTo(Restaurant, {
-  foreignKey: 'restaurantId',
-  as: 'Restaurant',
-});
-
-Product.hasMany(Product_ingredient, {
-  foreignKey: 'productId',
-  as: 'Ingredients',
-});
-Product_ingredient.belongsTo(Product, {
-  foreignKey: 'productId',
-  as: 'Product',
-});
-
-Product.hasMany(productExtra, { foreignKey: 'productId', as: 'Extras' });
-productExtra.belongsTo(Product, {
-  foreignKey: 'productId',
-  as: 'ProductExtra',
+sequelize.sync({force:true}).then(()=> console.log("Success")).then(()=> newCustomer.save()
+.then(savedCustomer => {
+  console.log("New customer created:", savedCustomer);
+})
+.catch(error => {
+  console.error("Error creating customer:", error);
+}));
+const newCustomer = Customer.build({
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'johndoe@example.com'
 });
 
-Restaurant.hasMany(Order, { foreignKey: 'restaurantId', as: 'Order' });
-Order.belongsTo(Restaurant, { foreignKey: 'restaurantId', as: 'Restaurant' });
 
-Address.hasMany(Order, { foreignKey: 'addressID', as: 'Order' });
-Order.belongsTo(Address, { foreignKey: 'addressID', as: 'Address' });
 
-Customer.hasMany(Order, { foreignKey: 'customerId', as: 'Order' });
-Order.belongsTo(Customer, { foreignKey: 'customerId', as: 'Customer' });
 
-Product.hasMany(OrderItem, { foreignKey: 'productId', as: 'OrderItem' });
-OrderItem.belongsTo(Product, { foreignKey: 'productId', as: 'Product' });
 
-waitingOrder.hasMany(OrderItem, { foreignKey: 'waitId', as: 'OrderItem' });
-OrderItem.belongsTo(waitingOrder, { foreignKey: 'waitId', as: 'waitingOrder' });
 
-waitingOrder.hasMany(OrderItem, { foreignKey: 'waitId', as: 'OrderItem' });
-itemExtra.belongsTo(Extra, { foreignKey: 'extraId', as: 'Extra' });
-waitingOrder.hasMany(OrderItem, { foreignKey: 'waitId', as: 'OrderItem' });
-itemExtra.belongsTo(OrderItem, { foreignKey: 'orderItemId', as: 'OrderItem' });
-
-Extra.belongsToMany(Product, {
-  through: productExtra,
-  foreignKey: 'extraId',
-  as: 'Products',
-});
-Extra.belongsToMany(OrderItem, {
-  through: itemExtra,
-  foreignKey: 'extraId',
-  as: 'OrderItems',
-});
-// Export models
-
-module.exports = {
-  Customer,
-  Address,
-  waitingOrder,
-  Restaurant,
-  Product,
-  Extra,
-  Product_ingredient,
-  Customer_phoneNumber,
-  Resturant_deliveryAreas,
-  Resturant_worker,
-  Order,
-  OrderItem,
-  itemExtra,
-  productExtra,
-};
