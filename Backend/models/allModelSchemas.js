@@ -187,6 +187,11 @@ const waitingOrder = sequelize.define('waitingOrder', {
         type : DataTypes.STRING(256),
         allowNull:false,
 
+    },
+    accountType: {
+        type : DataTypes.STRING(20),
+        allowNull:false,
+
     }
 
   },{ timestamps: false, freezeTableName: true });
