@@ -25,6 +25,29 @@ const Customer = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
+const Owner = sequelize.define(
+  'owner',
+  {
+    ownerid: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING(256),
+      allowNull: false,
+    },
+  },
+  { timestamps: false, freezeTableName: true }
+);
 
 const Resturant = sequelize.define(
   'Resturant',
@@ -353,7 +376,15 @@ Restaurant_menu.belongsTo(Resturant, {
   foreignKey: 'resturantId',
   as: 'Restaurant',
 });
-
+Owner.hasMany(Resturant,{
+    foreignKey:'ownerId',
+    as:'Resturant'
+});
+Resturant.belongsTo(Owner,
+  {
+    foreignKey:'ownerId',
+    as:'Owner'
+  });
 module.exports = {
   Resturant,
   Product,
