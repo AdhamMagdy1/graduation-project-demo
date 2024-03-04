@@ -400,4 +400,5 @@ module.exports = {
   OrderItem,
   itemExtra,
   Restaurant_menu,
+  Owner,
 };
