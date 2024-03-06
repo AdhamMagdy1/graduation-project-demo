@@ -326,13 +326,8 @@ Product.hasMany(Product_ingredient, {
   foreignKey: 'productId',
   as: 'Ingredients',
 });
-Product.hasMany(productExtra, { foreignKey: 'productId', as: 'Extras' });
-
-Extra.belongsToMany(Product, {
-  through: productExtra,
-  foreignKey: 'extraId',
-  as: 'Products',
-});
+Product.belongsToMany(Extra, {through:'productExtra'});
+Extra.belongsToMany(Product, {through: 'productExtra',});
 Extra.belongsToMany(OrderItem, {
   through: itemExtra,
   foreignKey: 'extraId',
