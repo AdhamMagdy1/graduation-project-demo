@@ -3,7 +3,7 @@ const express = require('express');
 const { createServer } = require('node:http');
 const { Server } = require('socket.io');
 const customerRoutes = require('./routes/customerRoutes');
-const resturantRoutes = require('./routes/resturantRoutes');
+const restaurantRoutes = require('./routes/restaurantRoutes');
 const ping = require('./routes/pingRoute');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -39,7 +39,7 @@ runSocket(io);
 // Use the customer routes
 app.use(customerRoutes);
 // Use the customer routes
-app.use('/resturant', resturantRoutes);
+app.use('/resturant', restaurantRoutes);
 
 // Use the ping routes
 app.use(ping);
