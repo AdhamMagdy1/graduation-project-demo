@@ -6,7 +6,7 @@ const {
   Resturant,
   Product,
   Extra,
-  ProductExtra,
+  productExtra,
 } = require('../models/allModels'); // Import the Restaurant Owner model
 const { AppError } = require('../utils/error'); // Import the custom error class
 
@@ -190,7 +190,7 @@ const associateExtrasWithProduct = async (req, res, next) => {
           return next(new AppError(`Extra with ID ${extraId} not found`, 404));
         }
         // Create an entry in the ProductExtra table to associate the product with the extra
-        await ProductExtra.create({ productId, extraId });
+        await productExtra.create({ productId, extraId });
       })
     );
 

@@ -170,7 +170,22 @@ const waitingOrder = sequelize.define(
 );
 const productExtra = sequelize.define(
   'productExtra',
-  {},
+  {
+    productId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Product,
+        key: 'productId',
+      },
+    },
+    extraId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Extra,
+        key: 'extraId',
+      },
+    },
+  },
   { timestamps: false, freezeTableName: true }
 );
 const Customer_phoneNumber = sequelize.define(
@@ -327,8 +342,8 @@ Product.hasMany(Product_ingredient, {
   foreignKey: 'productId',
   as: 'Ingredients',
 });
-Product.belongsToMany(Extra, {through:'productExtra'});
-Extra.belongsToMany(Product, {through: 'productExtra',});
+Product.belongsToMany(Extra, { through: 'productExtra' });
+Extra.belongsToMany(Product, { through: 'productExtra' });
 Extra.belongsToMany(OrderItem, {
   through: itemExtra,
   foreignKey: 'extraId',
