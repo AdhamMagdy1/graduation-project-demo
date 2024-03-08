@@ -35,6 +35,6 @@ router.get(
   authenticateUser,
   getAssociatedExtrasForProduct
 );
-router.get('/productExtras', getAllProductExtras);
+router.get('/products/productExtras', getAllProductExtras);
 
 module.exports = router;
