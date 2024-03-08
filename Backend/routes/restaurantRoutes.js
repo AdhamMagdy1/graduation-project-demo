@@ -9,6 +9,8 @@ const {
   createProducts,
   createExtra,
   associateExtrasWithProduct,
+  getAssociatedExtrasForProduct,
+  getAllProductExtras,
 } = require('../controllers/restaurantController');
 const authenticateUser = require('../middleware/authenticateUser');
 // Route to create a new restaurant Owner
@@ -23,6 +25,16 @@ router.put('/:restaurantId', authenticateUser, editRestaurantById);
 //create products and extras
 router.post('/products', authenticateUser, createProducts);
 router.post('/extras', authenticateUser, createExtra);
-router.post('/products/:productId/extras', authenticateUser, associateExtrasWithProduct);
+router.post(
+  '/products/:ProductProductId/extras',
+  authenticateUser,
+  associateExtrasWithProduct
+);
+router.get(
+  '/products/:ProductProductId/extras',
+  authenticateUser,
+  getAssociatedExtrasForProduct
+);
+router.get('/productExtras', getAllProductExtras);
 
 module.exports = router;

@@ -171,20 +171,6 @@ const waitingOrder = sequelize.define(
 const productExtra = sequelize.define(
   'productExtra',
   {
-    productId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Product,
-        key: 'productId',
-      },
-    },
-    extraId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Extra,
-        key: 'extraId',
-      },
-    },
   },
   { timestamps: false, freezeTableName: true }
 );

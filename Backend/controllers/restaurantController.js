@@ -142,14 +142,27 @@ const createProducts = async (req, res, next) => {
       return next(new AppError('Restaurant not found for the owner', 404));
     }
 
-    const createdProducts = await Promise.all(productsData.map(async (productData) => {
-      const { name, description, price, quantity } = productData;
-      // Create product with associated restaurantId
-      const newProduct = await Product.create({ name, description, price, quantity, resturantId: restaurant.resturantId });
-      return newProduct;
-    }));
+    const createdProducts = await Promise.all(
+      productsData.map(async (productData) => {
+        const { name, description, price, quantity } = productData;
+        // Create product with associated restaurantId
+        const newProduct = await Product.create({
+          name,
+          description,
+          price,
+          quantity,
+          resturantId: restaurant.resturantId,
+        });
+        return newProduct;
+      })
+    );
 
-    res.status(201).json({ message: 'Products created successfully', products: createdProducts });
+    res
+      .status(201)
+      .json({
+        message: 'Products created successfully',
+        products: createdProducts,
+      });
   } catch (error) {
     console.error('Error creating products:', error);
     next(new AppError('Internal server error', 500));
@@ -172,35 +185,74 @@ const createExtra = async (req, res, next) => {
 
 // Associate extras with a product
 const associateExtrasWithProduct = async (req, res, next) => {
-  const { productId } = req.params;
+  const { ProductProductId } = req.params;
   const extras = req.body.extras;
 
   try {
     // Find the product
-    const product = await Product.findByPk(productId);
+    const product = await Product.findByPk(ProductProductId);
     if (!product) {
       return next(new AppError('Product not found', 404));
     }
-
+    let associated;
     // Associate extras with the product using the ProductExtra table
     await Promise.all(
-      extras.map(async (extraId) => {
-        const extra = await Extra.findByPk(extraId);
+      extras.map(async (ExtraExtraId) => {
+        const extra = await Extra.findByPk(ExtraExtraId);
         if (!extra) {
-          return next(new AppError(`Extra with ID ${extraId} not found`, 404));
+          return next(
+            new AppError(`Extra with ID ${ExtraExtraId} not found`, 404)
+          );
         }
         // Create an entry in the ProductExtra table to associate the product with the extra
-        await productExtra.create({ productId, extraId });
+        associated = await productExtra.create({
+          ProductProductId,
+          ExtraExtraId,
+        });
       })
     );
 
-    res.status(200).json({ message: 'Extras associated with product successfully' });
+    res
+      .status(200)
+      .json({
+        message: 'Extras associated with product successfully',
+        data: associated,
+      });
   } catch (error) {
     console.error('Error associating extras with product:', error);
     next(new AppError('Internal server error', 500));
   }
 };
 
+const getAssociatedExtrasForProduct = async (req, res, next) => {
+  const { ProductProductId } = req.params;
+
+  try {
+    // Find all entries in the ProductExtra table associated with the given product ID
+    const productExtras = await productExtra.findAll({
+      where: { ProductProductId }
+    });
+
+    // Extract the associated extras from the productExtras
+    const associatedExtras = productExtras.map((entry) => entry.Extra);
+
+    res.status(200).json({ associatedExtras });
+  } catch (error) {
+    console.error('Error fetching associated extras:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
+const getAllProductExtras = async (req, res, next) => {
+  try {
+    // Find all entries in the ProductExtra table
+    const productExtras = await productExtra.findAll();
+
+    res.status(200).json({ productExtras });
+  } catch (error) {
+    console.error('Error fetching all product extras:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
 
 module.exports = {
   createOwner,
@@ -211,4 +263,6 @@ module.exports = {
   createProducts,
   createExtra,
   associateExtrasWithProduct,
+  getAssociatedExtrasForProduct,
+  getAllProductExtras,
 };
