@@ -234,9 +234,9 @@ const getAssociatedExtrasForProduct = async (req, res, next) => {
     });
 
     // Extract the associated extras from the productExtras
-    const associatedExtras = productExtras.map((entry) => entry.Extra);
+    // const associatedExtras = productExtras.map((entry) => entry.Extra);
 
-    res.status(200).json({ associatedExtras });
+    res.status(200).json({ productExtras });
   } catch (error) {
     console.error('Error fetching associated extras:', error);
     next(new AppError('Internal server error', 500));
