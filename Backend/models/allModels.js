@@ -105,6 +105,7 @@ const Extra = sequelize.define(
     extraId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING(100),
@@ -376,15 +377,14 @@ Restaurant_menu.belongsTo(Resturant, {
   foreignKey: 'resturantId',
   as: 'Restaurant',
 });
-Owner.hasMany(Resturant,{
-    foreignKey:'ownerId',
-    as:'Resturant'
+Owner.hasMany(Resturant, {
+  foreignKey: 'ownerId',
+  as: 'Resturant',
 });
-Resturant.belongsTo(Owner,
-  {
-    foreignKey:'ownerId',
-    as:'Owner'
-  });
+Resturant.belongsTo(Owner, {
+  foreignKey: 'ownerId',
+  as: 'Owner',
+});
 module.exports = {
   Resturant,
   Product,
