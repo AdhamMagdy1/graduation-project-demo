@@ -16,7 +16,7 @@ const testDbConnection = async () => {
     console.log('Connection has been established successfully.');
     // add to the sync() {force : true} if you have pre data in you database. Note: this will delete all you data!! but it also will allwo sequlize to work properly.
     sequelize
-      .sync()
+      .sync({force : true})
       .then(() => console.log('Models synced successfully!'))
       .catch((error) => console.error('Error syncing models:', error));
   } catch (error) {
