@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const {
   createOwner,
   loginOwner,
@@ -11,6 +12,7 @@ const {
   associateExtrasWithProduct,
   getAssociatedExtrasForProduct,
   getAllProductExtras,
+  uploadMenu,
 } = require('../controllers/restaurantController');
 const authenticateUser = require('../middleware/authenticateUser');
 // Route to create a new restaurant Owner
@@ -36,5 +38,15 @@ router.get(
   getAssociatedExtrasForProduct
 );
 router.get('/products/productExtras', getAllProductExtras);
+//Multer configuration
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+//route to upload menu
+router.post(
+  '/menu/upload',
+  upload.single('menuImage'),
+  authenticateUser,
+  uploadMenu
+);
 
 module.exports = router;
