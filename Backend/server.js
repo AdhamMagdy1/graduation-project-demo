@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const morgan = require('morgan');
 const { createServer } = require('node:http');
 const { Server } = require('socket.io');
 const customerRoutes = require('./routes/customerRoutes');
@@ -20,6 +21,9 @@ const app = express();
 // Enable CORS for all origins (for development)
 app.use(cors());
 app.use(bodyParser.json());
+
+// Add Morgan logging middleware
+app.use(morgan('dev'));
 
 // Create the server and attach socket.io
 const server = createServer(app);

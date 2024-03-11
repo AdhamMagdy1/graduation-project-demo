@@ -1,12 +1,14 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 const {
   Owner,
   Resturant,
   Product,
   Extra,
   productExtra,
+  Restaurant_menu,
 } = require('../models/allModels'); // Import the Restaurant Owner model
 const { AppError } = require('../utils/error'); // Import the custom error class
 
@@ -157,12 +159,10 @@ const createProducts = async (req, res, next) => {
       })
     );
 
-    res
-      .status(201)
-      .json({
-        message: 'Products created successfully',
-        products: createdProducts,
-      });
+    res.status(201).json({
+      message: 'Products created successfully',
+      products: createdProducts,
+    });
   } catch (error) {
     console.error('Error creating products:', error);
     next(new AppError('Internal server error', 500));
@@ -212,12 +212,10 @@ const associateExtrasWithProduct = async (req, res, next) => {
       })
     );
 
-    res
-      .status(200)
-      .json({
-        message: 'Extras associated with product successfully',
-        data: associated,
-      });
+    res.status(200).json({
+      message: 'Extras associated with product successfully',
+      data: associated,
+    });
   } catch (error) {
     console.error('Error associating extras with product:', error);
     next(new AppError('Internal server error', 500));
@@ -230,7 +228,7 @@ const getAssociatedExtrasForProduct = async (req, res, next) => {
   try {
     // Find all entries in the ProductExtra table associated with the given product ID
     const productExtras = await productExtra.findAll({
-      where: { ProductProductId }
+      where: { ProductProductId },
     });
 
     // Extract the associated extras from the productExtras
@@ -254,6 +252,32 @@ const getAllProductExtras = async (req, res, next) => {
   }
 };
 
+//controlller to handle menu upload
+const uploadMenu = async (req, res, next) => {
+  try {
+    // Extract data from form-data
+    const { description } = req.body;
+    const menuImage = req.file.buffer.toString('base64');
+    const ownerId = req.user.id; // Extract ownerId from token
+    // Find the restaurant associated with the owner
+    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    if (!restaurant) {
+      return next(new AppError('Restaurant not found for the owner', 404));
+    }
+
+    // Save menu to database
+    const menu = await Restaurant_menu.create({
+      description,
+      menuImage,
+      resturantId: restaurant.resturantId,
+    });
+
+    // Send response
+    res.status(201).json({ success: true, menu });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   createOwner,
   loginOwner,
@@ -265,4 +289,5 @@ module.exports = {
   associateExtrasWithProduct,
   getAssociatedExtrasForProduct,
   getAllProductExtras,
+  uploadMenu,
 };
