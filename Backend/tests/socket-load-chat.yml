@@ -1,0 +1,30 @@
+config:
+  target: "http://localhost:5000"
+  phases:
+    - duration: 300 
+      arrivalRate: 5
+      rampTo: 15
+      name: Warm up phase
+    - duration: 300
+      arrivalRate: 15
+      rampTo: 20
+      name: Ramp up load
+    - duration: 300
+      arrivalRate: 20
+      rampTo: 30
+      name: Spike phase
+
+scenarios:
+  - name: "chat Namespace test 1"
+    engine: socketio # Enable the Socket.IO engine
+    flow:
+      - namespace: '/chat'
+        emit:
+          on: "message"
+          data: 
+            - "أانا عاوز اكل ابعتلى المينو"
+            - "عندك فراخ شاوريما و سندوتشات كوفتا"
+            - "العنوان 12 شارع ابوقير الابراهيمية الاسكندرية"
+            - "رقم التليفون 01234567890"
+            - "عندكم خدمة توصيل"
+            - "عندكم حواوشى حجم كبير ولا لا ؟"
