@@ -31,10 +31,8 @@ const runSocket = (io, mainNamespace, restaurantNamespace) => {
   };
   restaurantNamespace.on('connection', (socket) => {
     console.log(`restaurant ${socket.id} connected in restaurant namespace`);
-    // database order
+    // function to get order after being saved in database
     // const order = getOrder();
-    // emit to restaurent room in restaurent namespace
-    // `Order: ${order.orderId} name: ${order.orderName} quantity: ${order.orderQuantity} state: ${order.state}`
     socket.emit("order", order);
     socket.on('changeState', (order) => {
       order.state = "finished";
