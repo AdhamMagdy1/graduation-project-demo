@@ -14,6 +14,13 @@ const { errorHandler } = require('./utils/error');
 // Connect to the database
 testDbConnection();
 
+// const { createAdapter } = require("@socket.io/postgres-adapter");
+// const { Pool } = require("pg");
+
+
+
+
+
 // Import socket.io functionality
 const { runSocket } = require('./sockets/socket');
 
@@ -32,13 +39,29 @@ const io = new Server(server, {
     origin: [
       `http://localhost:${process.env.FRONTEND_PORT}`,
       'https://admin.socket.io',
+      "http://localhost:3001"
     ],
     credentials: true,
   },
 });
 
+
+// const pool = new Pool({
+//   user: SOCKET_DATABASE_USERNAME,
+//   host: SOCKET_DATABASE_HOST,
+//   database: SOCKET_DATABASE_NAME,
+//   password: SOCKET_DATABASE_PASSWORD,
+//   port: SOCKET_DATABASE_PORT,
+// });
+
+// const adapter = createAdapter(pool);
+// io.adapter(adapter);
+
+const chat = io.of('/chat');
+const restaurant = io.of('/restaurant');
+
 // Import socket.js functionality and run it
-runSocket(io);
+runSocket(io, chat, restaurant);
 
 // Use the customer routes
 app.use(customerRoutes);
