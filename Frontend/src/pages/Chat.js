@@ -2,7 +2,7 @@ import "./chat.css";
 import { useState, useEffect, useRef } from "react";
 const io = require("socket.io-client");
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:5000/chat");
 
 function Chat() {
   const chatRef = useRef();
