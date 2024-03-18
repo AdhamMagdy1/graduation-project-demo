@@ -29,10 +29,11 @@ from typing import Text, List, Any, Dict
 from rasa_sdk import Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
+from rasa_sdk.interfaces import Action
 import re
 import numpy as np
 from difflib import SequenceMatcher
-from bpemb import BPEmb                                          
+from bpemb import BPEmb
 import tensorflow as tf
 
 class ValidateRestaurantForm(FormValidationAction):
@@ -40,7 +41,8 @@ class ValidateRestaurantForm(FormValidationAction):
         super().__init__()
         self.bpemb_model = BPEmb(dim = 300,emb_file = r"Loaded Models\arz.wiki.bpe.vs100000.d300.w2v.bin",\
                            model_file = r"Loaded Models\arz.wiki.bpe.vs100000.model")
-    
+        self.container = dict()
+
     def name(self) -> Text:
         return "validate_food_form"
 
@@ -49,20 +51,20 @@ class ValidateRestaurantForm(FormValidationAction):
         """Database of supported foods"""
 
         return ["مكرونة بشاميل","فتة شاورما","شاورما فراخ","فراخ مشوية","سمك مشوي","فول","فلافل","فراخ محمرة","لحمة مشوية","سلطة فواكه"]
-    
+
 
     def word2vec(self, word):
         embeds = self.bpemb_model.embed(word)
         if len(embeds) > 1:
             embeds = np.sum(embeds, axis = 0).reshape([1,embeds.shape[1]])
-        
+
         return embeds.tolist()[0]
-    
+
 
     def get_embeddings(self, X):
         """
         Converts a sentence into a matrix of input embeddings of dim n x d
-        d is embeddings length 
+        d is embeddings length
         n is the list of words length
         input :
         X (list) -------------> list of words
@@ -73,13 +75,13 @@ class ValidateRestaurantForm(FormValidationAction):
         """
         tokens = []
         for word in X:
-             tokens.append(self.word2vec(word))      
+             tokens.append(self.word2vec(word))
         tokens =  np.array(tokens, dtype = np.float32)
-        return tokens  
+        return tokens
 
     def get_best_match(self, tokens, words):
         """
-        get the best matched food from the database file 
+        get the best matched food from the database file
         inputs:
         tokens(list)------>list of tokens
         words(list)------->list of database words 'foods avaliable at restaurant'
@@ -87,7 +89,7 @@ class ValidateRestaurantForm(FormValidationAction):
         None
         """
         foods = {}
-        
+
         for token in tokens:
             u1 = self.get_embeddings([token])
             for word in words:
@@ -95,16 +97,31 @@ class ValidateRestaurantForm(FormValidationAction):
                 r1  = -1*tf.keras.losses.cosine_similarity(u2,u1).numpy()[0]
                 r2 = SequenceMatcher(None, word, token).ratio()
                 r = 0.8*r1+0.2*r2
-                #print(f"{word},{token}"+"with certainaty = "+str(r))
                 if (r >= 0.40 or re.search(f"{token}",word) is not None):
                     if word not in foods:
                         foods[word] = r
                     if foods[word] < r:
-                         foods[word] = r 
+                         foods[word] = r
         food      =  list(foods.keys())
-        confedence =  list(foods.values())  
-          
+        confedence =  list(foods.values())
+
         return np.array(food), np.array(confedence)
+
+
+
+    def get_food_slots(self, dispatcher: CollectingDispatcher,
+        tracker: Tracker,foods:list)-> str:
+        best_match,confedence = self.get_best_match(foods, self.get_menu_db())
+        if len(best_match) == 0:
+            dispatcher.utter_message(text="اسف و الله يا صاحبي معندناش نوع الاكل ده")
+            return None
+        elif len(best_match[confedence >= 0.98]) != 0:
+            slot_value = best_match[confedence >= 0.98]
+            dispatcher.utter_message(response="utter_finalise_order")
+            return ",".join(slot_value)
+        else:
+            dispatcher.utter_message(text="  نوع الاكل الي انت طالبه بالضبط مش موجود عندما بس عندنا انواع منه او حاجات زيه ودي الحاجات الي ممكن حضرتك تختار منها زي \n"+" , \n".join(best_match))
+            return None
 
     def validate_food(
         self,
@@ -116,17 +133,19 @@ class ValidateRestaurantForm(FormValidationAction):
         """Validate food value."""
         entities = tracker.latest_message['entities']
         foods = [ent['value'] for ent in entities if ent['entity'] == 'food']
-        best_match,confedence = self.get_best_match(foods, self.get_menu_db())
-        if len(best_match) == 0:
-            dispatcher.utter_message(text="اسف و الله يا صاحبي معندناش نوع الاكل ده")
-            return {"food": None}
-        elif len(best_match[confedence >= 0.98]) != 0:
-            slot_value = best_match[confedence >= 0.98][0]
-            return {"food": slot_value}
-        else: 
-            dispatcher.utter_message(text="  نوع الاكل الي انت طالبه بالضبط مش موجود عندما بس عندنا انواع منه او حاجات زيه ودي الحاجات الي ممكن حضرتك تختار منها زي \n"+" , \n".join(best_match))
-            return {"food": None}
-        
+        result = self.get_food_slots(dispatcher, tracker, foods)
+        result = result.split(",") if result is not None else []
+        if tracker.sender_id in self.container:
+            self.container[tracker.sender_id].extend(result)
+        else:
+            self.container[tracker.sender_id] = result
+
+        if len(self.container[tracker.sender_id]) == 0:
+            return {"food":None}
+        else:
+            return {"food": ",".join(self.container[tracker.sender_id])}
+
+
     def validate_phone_number(self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,
@@ -136,9 +155,7 @@ class ValidateRestaurantForm(FormValidationAction):
         """Validate phone number."""
         entities = tracker.latest_message['entities']
         phone_numbers = [ent['value'] for ent in entities if ent['entity'] == 'phone_number']
-        #print(len(phone_numbers))
         if len(phone_numbers) == 0:
-            dispatcher.utter_message(response="utter_ask_phone_number")
             return {"phone_number": None}
         elif len(phone_numbers) == 1:
             slot_value = phone_numbers[0]
@@ -146,7 +163,7 @@ class ValidateRestaurantForm(FormValidationAction):
         else:
             dispatcher.utter_message(text = f"بص انت باعت {len(phone_numbers)} ارقام تليفون اكدلي علي واحد استخدمه بس")
             return {"phone_number": None}
-        
+
 
     def validate_food_size(self,
         slot_value: Any,
@@ -158,7 +175,7 @@ class ValidateRestaurantForm(FormValidationAction):
 
         entities = tracker.latest_message['entities']
         food_sizes = [ent['value'] for ent in entities if ent['entity'] == 'food_size']
-    
+
         if len(food_sizes) == 0:
             dispatcher.utter_message(response="utter_ask_food_size")
             return {"food_size": None}
@@ -168,3 +185,26 @@ class ValidateRestaurantForm(FormValidationAction):
         else:
             dispatcher.utter_message(text = f"بص انت باعت {len(food_sizes)} احجام مختلفة اكدلي علي واحد استخدمه بس")
             return {"food_size": None}
+
+
+
+class FoodSlots(Action):
+    def name(self):
+        return 'foodslots'
+
+    def run(self, dispatcher, tracker, domain):
+        foods = tracker.get_slot("food").split(",")
+        food_q = dict()
+        for food in foods:
+            if food in food_q:
+                food_q[food] += 1
+            else:
+                food_q[food] = 1
+
+        message = ""
+        for food in food_q.keys():
+            message += f"عدد {food_q[food]} قطعة {food} ,"
+        message += " happy eating!"
+        dispatcher.utter_message(text=message)
+
+        return []
