@@ -71,7 +71,7 @@ const loginOwner = async (req, res, next) => {
 
 // controller function to get owner by id
 const getOwnerById = async (req, res, next) => {
-  const { ownerId } = req.params;
+  const ownerId = req.user.id; // Extract owner ID from token
   try {
     const owner = await Owner.findByPk(ownerId);
     if (!owner) {
@@ -82,11 +82,11 @@ const getOwnerById = async (req, res, next) => {
     console.error('Error getting owner:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Controller function to edit owner information
 const editOwner = async (req, res, next) => {
-  const { ownerId } = req.params;
+  const ownerId = req.user.id; // Extract owner ID from token
   const { name, email, password } = req.body;
   try {
     const owner = await Owner.findByPk(ownerId);
@@ -95,7 +95,7 @@ const editOwner = async (req, res, next) => {
     }
     owner.name = name || owner.name;
     owner.email = email || owner.email;
-    if(password){
+    if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       owner.password = hashedPassword;
     }
@@ -105,14 +105,14 @@ const editOwner = async (req, res, next) => {
     console.error('Error editing owner:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Controller function to delete owner
 const deleteOwner = async (req, res, next) => {
-  const { ownerId } = req.params;
+  const ownerId = req.user.id; // Extract owner ID from token
   try {
     const owner = await Owner.findByPk(ownerId);
-    if(!owner){
+    if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
     await owner.destroy();
@@ -121,7 +121,7 @@ const deleteOwner = async (req, res, next) => {
     console.error('Error deleting owner:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Controller function to create restaurant information
 const createRestaurant = async (req, res, next) => {
@@ -152,15 +152,15 @@ const getAllRestaurants = async (req, res, next) => {
     console.error('Error getting restaurants:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Controller function to get restaurant information by ID
 const getRestaurantById = async (req, res, next) => {
-  const { restaurantId } = req.params;
+  const ownerId = req.user.id; // Extract owner ID from token
 
   try {
     // Find restaurant by ID
-    const restaurant = await Resturant.findByPk(restaurantId);
+    const restaurant = await Resturant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
@@ -174,12 +174,12 @@ const getRestaurantById = async (req, res, next) => {
 
 // Controller function to edit restaurant information by ID
 const editRestaurantById = async (req, res, next) => {
-  const { restaurantId } = req.params;
+  const ownerId = req.user.id; // Extract owner ID from token
   const { name, description, Subscription } = req.body;
 
   try {
     // Find restaurant by ID
-    const restaurant = await Resturant.findByPk(restaurantId);
+    const restaurant = await Resturant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
@@ -187,6 +187,7 @@ const editRestaurantById = async (req, res, next) => {
     restaurant.name = name || restaurant.name;
     restaurant.description = description || restaurant.description;
     restaurant.Subscription = new Date(Subscription) || restaurant.Subscription; // Convert Subscription string to Date object
+    restaurant.ownerId = restaurant.ownerId
     await restaurant.save();
 
     return res.status(200).json(restaurant);
@@ -198,10 +199,10 @@ const editRestaurantById = async (req, res, next) => {
 
 // Controller function to delete restaurant by ID
 const deleteRestaurantById = async (req, res, next) => {
-  const { restaurantId } = req.params;
+  const ownerId = req.user.id; // Extract owner ID from token
   try {
-    const restaurant = await Resturant.findByPk(restaurantId);
-    if(!restaurant){
+    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
     await restaurant.destroy();
@@ -210,7 +211,7 @@ const deleteRestaurantById = async (req, res, next) => {
     console.error('Error deleting restaurant:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Create a new product
 // Create multiple products
@@ -252,14 +253,18 @@ const createProducts = async (req, res, next) => {
 
 // Get all products
 const getAllProducts = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract ownerId from token
   try {
-    const products = await Product.findAll();
+    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+
+    const products = await Product.findAll({ where: { restaurantId } });
     return res.status(200).json(products);
   } catch (error) {
     console.error('Error getting products:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Get product by ID
 const getProductById = async (req, res, next) => {
@@ -274,7 +279,7 @@ const getProductById = async (req, res, next) => {
     console.error('Error getting product:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Edit product by ID
 const editProductById = async (req, res, next) => {
@@ -283,26 +288,27 @@ const editProductById = async (req, res, next) => {
 
   try {
     const product = await Product.findByPk(productId);
-    if(!product){
+    if (!product) {
       return next(new AppError('Product not found', 404));
     }
     product.name = name || product.name;
     product.description = description || product.description;
     product.price = price || product.price;
     product.quantity = quantity || product.quantity;
+    product.restaurantId = product.restaurantId
     await product.save();
     return res.status(200).json(product);
   } catch (error) {
     console.error('Error editing product:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 const deleteProductById = async (req, res, next) => {
   const { productId } = req.params;
   try {
     const product = await Product.findByPk(productId);
-    if(!product){
+    if (!product) {
       return next(new AppError('Product not found', 404));
     }
     await product.destroy();
@@ -311,7 +317,7 @@ const deleteProductById = async (req, res, next) => {
     console.error('Error deleting product:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Create a new extra
 const createExtra = async (req, res, next) => {
@@ -336,14 +342,14 @@ const getAllExtras = async (req, res, next) => {
     console.error('Error getting extras:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Get extra by ID
 const getExtraById = async (req, res, next) => {
   const { extraId } = req.params;
   try {
     const extra = await Extra.findByPk(extraId);
-    if(!extra){
+    if (!extra) {
       return next(new AppError('Extra not found', 404));
     }
     return res.status(200).json(extra);
@@ -351,7 +357,7 @@ const getExtraById = async (req, res, next) => {
     console.error('Error getting extra:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Edit extra by ID
 const editExtraById = async (req, res, next) => {
@@ -359,7 +365,7 @@ const editExtraById = async (req, res, next) => {
   const { name, price } = req.body;
   try {
     const extra = await Extra.findByPk(extraId);
-    if(!extra){
+    if (!extra) {
       return next(new AppError('Extra not found', 404));
     }
     extra.name = name || extra.name;
@@ -370,15 +376,15 @@ const editExtraById = async (req, res, next) => {
     console.error('Error editing extra;', error);
     return next(new AppError('Inrenal server error', 500));
   }
-}
+};
 
 // Delete extra by ID
 const deleteExtraById = async (req, res, next) => {
   const { extraId } = req.params;
-  
+
   try {
     const extra = await Extra.findByPk(extraId);
-    if(!extra){
+    if (!extra) {
       return next(new AppError('Extra not found', 404));
     }
     await extra.destroy();
@@ -387,7 +393,7 @@ const deleteExtraById = async (req, res, next) => {
     console.error('Error deleting extra:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Associate extras with a product
 const associateExtrasWithProduct = async (req, res, next) => {
@@ -465,33 +471,44 @@ const getAllProductExtras = async (req, res, next) => {
 const editProductExtra = async (req, res, next) => {
   const { ProductProductId, ExtraExtraId } = req.params;
   try {
-      const updatedExtraId = req.body.ExtraExtraId;
-      await productExtra.update({ExtraExtraId: updatedExtraId || ProductExtra.ExtraExtraId}, { where: { ProductProductId, ExtraExtraId } });
-      const ProductExtra = await productExtra.findOne({ where: { ProductProductId, ExtraExtraId: updatedExtraId } });
+    const updatedExtraId = req.body.ExtraExtraId;
+    await productExtra.update(
+      { ExtraExtraId: updatedExtraId || ProductExtra.ExtraExtraId },
+      { where: { ProductProductId, ExtraExtraId } }
+    );
+    const ProductExtra = await productExtra.findOne({
+      where: { ProductProductId, ExtraExtraId: updatedExtraId },
+    });
     return res.status(200).json(ProductExtra);
   } catch (error) {
     console.error('Error editing product extras:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Delete all extras for a product
 const deleteProductExtras = async (req, res, next) => {
   const { ProductProductId } = req.params;
   try {
-    const productExtras = await productExtra.findAll({ where: { ProductProductId } });
+    const productExtras = await productExtra.findAll({
+      where: { ProductProductId },
+    });
     if (!productExtras) {
       return next(new AppError('Product extras not found', 404));
     }
-    await Promise.all(productExtras.map(async (productExtra) => {
-      await productExtra.destroy();
-    }));
-    return res.status(200).json({ message: 'Product extras deleted successfully' });
+    await Promise.all(
+      productExtras.map(async (productExtra) => {
+        await productExtra.destroy();
+      })
+    );
+    return res
+      .status(200)
+      .json({ message: 'Product extras deleted successfully' });
   } catch (error) {
     console.error('Error deleting product extras:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 //controlller to handle menu upload
 const uploadMenu = async (req, res, next) => {
@@ -530,13 +547,13 @@ const getMenu = async (req, res, next) => {
     }
     const description = menu.description;
     const image = Buffer.from(menu.menuImage, 'base64');
-    const menuObj = {description: description, menuImage: image};
+    const menuObj = { description: description, menuImage: image };
     return res.status(200).send(menuObj);
   } catch (error) {
     console.error('Error getting menu:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // Controller to edit menu
 const editMenu = async (req, res, next) => {
@@ -556,7 +573,7 @@ const editMenu = async (req, res, next) => {
     console.error('Error editing menu:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // controller to delete menu
 const deleteMenu = async (req, res, next) => {
@@ -571,7 +588,7 @@ const deleteMenu = async (req, res, next) => {
     console.error('Error deleting menu:', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 module.exports = {
   createOwner,
