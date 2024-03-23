@@ -9,6 +9,7 @@ const {
   Extra,
   productExtra,
   Restaurant_menu,
+  Resturant_worker,
 } = require('../models/allModels'); // Import the Restaurant Owner model
 const { AppError } = require('../utils/error'); // Import the custom error class
 
@@ -136,13 +137,33 @@ const createRestaurant = async (req, res, next) => {
       Subscription: new Date(Subscription),
       ownerId,
     });
-    return res.status(201).json(newRestaurant);
+
+    // Generate worker data based on restaurant information
+    const workerName = `${name}_${newRestaurant.resturantId}`;
+    const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}__${
+      newRestaurant.resturantId
+    }@email.com`;
+    const workerPassword = `${name}_${newRestaurant.resturantId}`;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(workerPassword, 10);
+
+    // Create restaurant worker
+    const newWorker = await Resturant_worker.create({
+      name: workerName,
+      email: workerEmail,
+      password: hashedPassword,
+      resturantId: newRestaurant.resturantId,
+    });
+
+    return res
+      .status(201)
+      .json({ restaurant: newRestaurant, worker: newWorker });
   } catch (error) {
     console.error('Error creating restaurant:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
-
 // Controller function to get all restaurants
 const getAllRestaurants = async (req, res, next) => {
   try {
@@ -165,9 +186,55 @@ const getRestaurantById = async (req, res, next) => {
       return next(new AppError('Restaurant not found', 404));
     }
 
-    return res.status(200).json(restaurant);
+    const resturantId = restaurant.resturantId;
+    // Find workers related to the restaurant
+    const workers = await Resturant_worker.findOne({ where: { resturantId } });
+
+    return res.status(200).json({ restaurant, workers });
   } catch (error) {
     console.error('Error getting restaurant:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
+const getAllWorkers = async (req, res, next) => {
+  try {
+    // Find all workers
+    const workers = await Resturant_worker.findAll();
+
+    return res.status(200).json(workers);
+  } catch (error) {
+    console.error('Error getting workers:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
+const updateWorker = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract owner ID from token
+  const { name, email, password } = req.body;
+
+  try {
+    // Find the worker by ID
+    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const resturantId = restaurant.resturantId;
+    const worker = await Resturant_worker.findOne({ where: { resturantId } });
+    // Hash the password
+    if (!worker) {
+      return next(new AppError('Worker not found', 404));
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update worker information
+    worker.name = name;
+    worker.email = email;
+    worker.password = hashedPassword;
+
+    // Save the updated worker
+    await worker.save();
+
+    return res.status(200).json(worker);
+  } catch (error) {
+    console.error('Error updating worker:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
@@ -187,7 +254,7 @@ const editRestaurantById = async (req, res, next) => {
     restaurant.name = name || restaurant.name;
     restaurant.description = description || restaurant.description;
     restaurant.Subscription = new Date(Subscription) || restaurant.Subscription; // Convert Subscription string to Date object
-    restaurant.ownerId = restaurant.ownerId
+    restaurant.ownerId = restaurant.ownerId;
     await restaurant.save();
 
     return res.status(200).json(restaurant);
@@ -295,7 +362,7 @@ const editProductById = async (req, res, next) => {
     product.description = description || product.description;
     product.price = price || product.price;
     product.quantity = quantity || product.quantity;
-    product.restaurantId = product.restaurantId
+    product.restaurantId = product.restaurantId;
     await product.save();
     return res.status(200).json(product);
   } catch (error) {
@@ -620,4 +687,6 @@ module.exports = {
   getMenu,
   editMenu,
   deleteMenu,
+  getAllWorkers,
+  updateWorker,
 };
