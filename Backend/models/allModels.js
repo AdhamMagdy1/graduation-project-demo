@@ -314,6 +314,8 @@ Customer.hasMany(Customer_phoneNumber, {
 });
 
 Resturant.hasMany(Product, { foreignKey: 'resturantId', as: 'Products' });
+Resturant.hasMany(Extra, { foreignKey: 'resturantId', as: 'Extras' });
+
 Resturant.hasMany(Resturant_deliveryAreas, {
   foreignKey: 'resturantId',
   as: 'DeliveryAreas',
@@ -329,6 +331,7 @@ Product.hasMany(Product_ingredient, {
   as: 'Ingredients',
 });
 Product.belongsToMany(Extra, { through: 'productExtra' });
+Extra.belongsTo(Resturant, { foreignKey: 'resturantId', as: 'Restaurant' });
 Extra.belongsToMany(Product, { through: 'productExtra' });
 Extra.belongsToMany(OrderItem, {
   through: itemExtra,
