@@ -37,9 +37,9 @@ const authenticateUser = require('../middleware/authenticateUser');
 router.post('/create', createOwner);
 // Route to create a new restaurant Owner
 router.post('/login', loginOwner);
-router.get('/owner/:ownerId', getOwnerById); // working
-router.put('/owner/:ownerId', editOwner); // working
-router.delete('/owner/:ownerId', deleteOwner); // final one will not check it until create another owner
+router.get('/owner/:ownerId', getOwnerById);
+router.put('/owner/:ownerId', editOwner);
+router.delete('/owner/:ownerId', deleteOwner);
 
 // Apply authentication middleware to resturant info routes
 router.post('/setup', authenticateUser, createRestaurant);
