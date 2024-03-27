@@ -8,7 +8,7 @@ entities:
   - food
   - phone_number
   - food_size
-  
+
 
 slots:
    food:
@@ -30,8 +30,8 @@ slots:
      - type: from_entity
        entity: food_size
 
-   
- 
+
+
 responses:
   utter_greet:
   - text: "ازيك يا صاحبي?"
@@ -44,13 +44,7 @@ responses:
   - text : "مع السلامة يا حبيبي"
   - text : "باي يا حبيبي"
   - text : "اشوفك بعدين يا صاحبي"
-  - text : "يلا توكل علي الله انت" 
-
-  utter_foodshortage:
-  - text : "مفيش اكل والله"
-  - text : "مفيش اكل والله يا صاحبي"
-  - text : "مفيش اكل والله يا حبيبي"
-  - text : "تعالا بكرة ان شاء الله"
+  - text : "يلا توكل علي الله انت"
 
   utter_submit:
   - text: "تمام يا صاحبي حعملك الاوردر"
@@ -58,27 +52,24 @@ responses:
   - text: "طلبك وصل يا قلبي"
   - text: "طلبك وصل يا حبيبي"
 
-  utter_food_slots:
-  - text: " الاكل اللي طلبته هو {food} و حجمه {food_size} رقم تليفونك الي حنتواصل معاك بيه هو  {phone_number}"
-
-  utter_ask_phone_number:
-  - text: "ممكن رقم تليفونك عشان الدليفري يتواصل  معاك"
-  - text: "اديني رقم تليفونك عشان الدليفري يتواصل  معاك"
-  - text: "ممكن رقم تليفونك يا صاحبي عشان الدليفري يتواصل  يكلمك"
-  - text: "بقولك اكتب رقم تليفونك عشان الدليفري يلاقي طريقة يكلمك بيها"
-
   utter_ask_food_size:
   - text: "ممكن حضرتك تقولي  تحب حجم طلبك ايه"
   - text: " عاوز انهي size"
+
+  utter_finalise_order:
+  - text: "لو تحب تطلب حاجة تانية ممكن تتفضل لو خلصت الاوردر ممكن تقولي رقم تليفون اتواصل بيه معاك"
+  - text: "تحب تطلب حاجة تانية يا صاحبي؟ ممكن تتفضل لو الاوردر تمام تقولي رقم تليفون اتواصل بيه معاك"
+  - text: "تحب تطلب اكل تاني لو خلاص اكتبلي رقم تليفونك"
+  - text: "لو خلصت الاوردر ممكن تديني رقم تليفونك"
+
 actions:
   - utter_greet
   - utter_goodbye
-  - utter_foodshortage
   - utter_submit
-  - utter_food_slots
   - validate_food_form
-  - utter_ask_phone_number
   - utter_ask_food_size
+  - utter_finalise_order
+  - foodslots
 
 forms:
   food_form:
@@ -86,7 +77,7 @@ forms:
       - food
       - phone_number
       - food_size
-    
+
 
 session_config:
   session_expiration_time: 60
