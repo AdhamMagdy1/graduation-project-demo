@@ -8,13 +8,20 @@ const sequelize = new Sequelize(
     host: process.env.DATABASE_HOST,
     dialect: 'postgres',
   }
+  // process.env.LOCAL_DATABASE_NAME,
+  // process.env.LOCAL_DATABASE_USERNAME,
+  // process.env.LOCAL_DATABASE_PASSWORD,
+  // {
+  //   host: process.env.LOCAL_DATABASE_HOST,
+  //   dialect: 'postgres',
+  // }
 );
 
 const testDbConnection = async () => {
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
-    // add to the sync() {force : true} if you have pre data in you database. Note: this will delete all you data!! but it also will allwo sequlize to work properly.
+    // add to the sync() {force : true} if you have pre data in you database. Note: this will delete all you data!! but it also will allow sequlize to work properly.
     sequelize
       .sync()
       .then(() => console.log('Models synced successfully!'))
