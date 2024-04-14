@@ -46,6 +46,10 @@ const Owner = sequelize.define(
       type: DataTypes.STRING(256),
       allowNull: false,
     },
+    hasRestaurant:{
+      type:DataTypes.BOOLEAN,
+      defaultValue:false
+    }
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -70,6 +74,14 @@ const Restaurant = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    themeColor:{
+      type:DataTypes.STRING(20),
+      allowNull:true
+    },
+    logo : {
+      type:DataTypes.BLOB,
+      allowNull:true
+    }
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -98,6 +110,10 @@ const Product = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    category:{
+      type: DataTypes.STRING(50),
+      allowNull:false
+    }
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -321,14 +337,14 @@ Customer.hasMany(Address, {
   foreignKey: { name: "customerId", allowNull: false },
 });
 Customer.hasMany(WaitingOrder, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: "customerId", allowNull: false,unique:true },
 });
 Customer.hasMany(CustomerPhoneNumber, {
   foreignKey: { name: "customerId", allowNull: false },
 });
 
 // Owner associations
-Owner.hasOne(Restaurant, { foreignKey: { name: "ownerId", allowNull: false } });
+Owner.hasOne(Restaurant, { foreignKey: { name: "ownerId", allowNull: false,unique:true } });
 
 // Restaurant associations
 Restaurant.belongsTo(Owner, {
