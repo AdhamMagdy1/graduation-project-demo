@@ -7,6 +7,11 @@ const sequelize = new Sequelize(
   {
     host: process.env.DATABASE_HOST,
     dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: 'true',
+      },
+    },
   }
   // process.env.LOCAL_DATABASE_NAME,
   // process.env.LOCAL_DATABASE_USERNAME,
@@ -31,4 +36,4 @@ const testDbConnection = async () => {
   }
 };
 
-module.exports = { sequelize, testDbConnection, };
+module.exports = { sequelize, testDbConnection };
