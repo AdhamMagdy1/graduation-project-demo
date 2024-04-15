@@ -132,7 +132,8 @@ const deleteOwner = async (req, res, next) => {
 
 // Controller function to create restaurant information
 const createRestaurant = async (req, res, next) => {
-  const { name, description, subscription } = req.body;
+  const { name, description, subscription, themeColor } = req.body;
+  const logo = req.file.buffer.toString('base64');
   const ownerId = req.user.id; // Extract owner ID from token
 
   try {
@@ -141,6 +142,8 @@ const createRestaurant = async (req, res, next) => {
       name,
       description,
       subscription: new Date(subscription),
+      themeColor,
+      logo,
       ownerId,
     });
 
@@ -172,7 +175,7 @@ const createRestaurant = async (req, res, next) => {
   }
 };
 
-// Controller function to get all restaurants associated with the owner
+// Controller function to get all restaurants
 const getAllRestaurants = async (req, res, next) => {
   try {
     const restaurants = await Restaurant.findAll();
@@ -208,7 +211,7 @@ const getRestaurantById = async (req, res, next) => {
   }
 };
 
-// Controller function to get all workers specific to the restaurant
+// Controller function to get all workers
 const getAllWorkers = async (req, res, next) => {
   try {
     // Find all workers
@@ -257,8 +260,7 @@ const updateWorker = async (req, res, next) => {
 // Controller function to edit restaurant information by ID
 const editRestaurantById = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
-  const { name, description, subscription } = req.body;
-
+  const { name, description, subscription, themeColor } = req.body;
   try {
     // Find restaurant by ID
     const restaurant = await Restaurant.findOne({ where: { ownerId } });
@@ -268,7 +270,11 @@ const editRestaurantById = async (req, res, next) => {
     // Update restaurant details
     restaurant.name = name || restaurant.name;
     restaurant.description = description || restaurant.description;
-    restaurant.subscription = new Date(subscription) || restaurant.subscription; // Convert subscription string to Date object
+    restaurant.subscription = subscription || restaurant.subscription; // Convert subscription string to Date object
+    restaurant.themeColor = themeColor || restaurant.themeColor;
+    if (req.file) {
+      restaurant.logo = req.file.buffer.toString('base64');
+    }
     restaurant.ownerId = restaurant.ownerId;
     await restaurant.save();
 
@@ -288,6 +294,7 @@ const deleteOwnerRestaurant = async (req, res, next) => {
     }
     const restaurantId = restaurant.restaurantId;
     await Restaurant.destroy({ where: { restaurantId } });
+    await Owner.update({ hasRestaurant: false }, { where: { ownerId } });
     return res
       .status(200)
       .json({ message: 'Restaurant deleted successfully with its data' });
@@ -312,13 +319,14 @@ const createProducts = async (req, res, next) => {
 
     const createdProducts = await Promise.all(
       productsData.map(async (productData) => {
-        const { name, description, price, quantity } = productData;
+        const { name, description, price, quantity, category } = productData;
         // Create product with associated restaurantId
         const newProduct = await Product.create({
           name,
           description,
           price,
           quantity,
+          category,
           restaurantId: restaurant.restaurantId,
         });
         return newProduct;
@@ -371,7 +379,7 @@ const getProductById = async (req, res, next) => {
 // Edit product by ID
 const editProductById = async (req, res, next) => {
   const { productId } = req.params;
-  const { name, description, price, quantity } = req.body;
+  const { name, description, price, quantity, category } = req.body;
 
   try {
     const product = await Product.findByPk(productId);
@@ -382,6 +390,7 @@ const editProductById = async (req, res, next) => {
     product.description = description || product.description;
     product.price = price || product.price;
     product.quantity = quantity || product.quantity;
+    product.category = category || product.category;
     product.restaurantId = product.restaurantId;
     await product.save();
     return res.status(200).json(product);
