@@ -8,7 +8,7 @@ const upload = multer({ storage });
 
 const {
   createOwner,
-  loginOwner,
+  login,
   editOwner,
   deleteOwner,
   getOwnerById,
@@ -42,7 +42,7 @@ const authenticateUser = require('../middleware/authenticateUser');
 
 // Route to create a new restaurant Owner
 router.post('/create', createOwner);
-router.post('/login', loginOwner);
+router.post('/login', login);
 router.get('/owner/', authenticateUser, getOwnerById);
 router.put('/owner/', authenticateUser, editOwner);
 router.delete('/owner/account', authenticateUser, deleteOwner);
