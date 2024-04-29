@@ -41,35 +41,47 @@ const createOwner = async (req, res, next) => {
   }
 };
 
-// Controller function for restaurant owner login
-const loginOwner = async (req, res, next) => {
-  const { email, password } = req.body;
+// Controller function for restaurant owner/worker login
+const login = async (req, res, next) => {
+  const { email, password, accountType } = req.body;
 
   try {
-    // Find the owner by email
-    const owner = await Owner.findOne({ where: { email } });
-    if (!owner) {
+    let user;
+
+    if (accountType === 'owner') {
+      // Find the owner by email
+      user = await Owner.findOne({ where: { email } });
+    } else if (accountType === 'worker') {
+      // Find the worker by email
+      user = await RestaurantWorker.findOne({ where: { email } });
+    } else {
+      return next(new AppError('Invalid account type', 400));
+    }
+
+    if (!user) {
       return next(new AppError('Invalid email or password', 401));
     }
 
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, owner.password);
+    const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return next(new AppError('Invalid email or password', 401));
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: owner.ownerId }, process.env.JWT_SECRET, {
+    const tokenPayload = accountType === 'owner' ? { id: user.ownerId } : { id: user.workerId };
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
       expiresIn: '180h',
     });
 
     // Send token in response
     return res.status(200).json({ token });
   } catch (error) {
-    console.error('Error logging in restaurant owner:', error);
+    console.error('Error logging in:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
+
 
 // controller function to get owner by id
 const getOwnerById = async (req, res, next) => {
@@ -149,7 +161,7 @@ const createRestaurant = async (req, res, next) => {
 
     // Generate worker data based on restaurant information
     const workerName = `${name}_${newRestaurant.restaurantId}`;
-    const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}__${
+    const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}_${
       newRestaurant.restaurantId
     }@email.com`;
     const workerPassword = `${name}_${newRestaurant.restaurantId}`;
@@ -691,7 +703,7 @@ const editMenu = async (req, res, next) => {
 
 module.exports = {
   createOwner,
-  loginOwner,
+  login,
   getOwnerById,
   editOwner,
   deleteOwner,
