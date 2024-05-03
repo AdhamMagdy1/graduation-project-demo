@@ -1,8 +1,8 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/database");
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
 
 const Customer = sequelize.define(
-  "Customer",
+  'Customer',
   {
     customerId: {
       type: DataTypes.INTEGER,
@@ -27,7 +27,7 @@ const Customer = sequelize.define(
 );
 
 const Owner = sequelize.define(
-  "Owner",
+  'Owner',
   {
     ownerId: {
       type: DataTypes.INTEGER,
@@ -46,16 +46,16 @@ const Owner = sequelize.define(
       type: DataTypes.STRING(256),
       allowNull: false,
     },
-    hasRestaurant:{
-      type:DataTypes.BOOLEAN,
-      defaultValue:false
-    }
+    hasRestaurant: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   { timestamps: false, freezeTableName: true }
 );
 
 const Restaurant = sequelize.define(
-  "Restaurant",
+  'Restaurant',
   {
     restaurantId: {
       type: DataTypes.INTEGER,
@@ -74,20 +74,20 @@ const Restaurant = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    themeColor:{
-      type:DataTypes.STRING(20),
-      allowNull:true
+    themeColor: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
     },
-    logo : {
-      type:DataTypes.BLOB,
-      allowNull:true
-    }
+    logo: {
+      type: DataTypes.BLOB,
+      allowNull: true,
+    },
   },
   { timestamps: false, freezeTableName: true }
 );
 
 const Product = sequelize.define(
-  "Product",
+  'Product',
   {
     productId: {
       type: DataTypes.INTEGER,
@@ -110,16 +110,12 @@ const Product = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    category:{
-      type: DataTypes.STRING(50),
-      allowNull:false
-    }
   },
   { timestamps: false, freezeTableName: true }
 );
 
 const Extra = sequelize.define(
-  "Extra",
+  'Extra',
   {
     extraId: {
       type: DataTypes.INTEGER,
@@ -139,7 +135,7 @@ const Extra = sequelize.define(
 );
 
 const Address = sequelize.define(
-  "Address",
+  'Address',
   {
     addressId: {
       type: DataTypes.INTEGER,
@@ -171,7 +167,7 @@ const Address = sequelize.define(
 );
 
 const WaitingOrder = sequelize.define(
-  "WaitingOrder",
+  'WaitingOrder',
   {
     waitId: {
       type: DataTypes.INTEGER,
@@ -191,13 +187,13 @@ const WaitingOrder = sequelize.define(
 );
 
 const ProductExtra = sequelize.define(
-  "ProductExtra",
+  'ProductExtra',
   {},
   { timestamps: false, freezeTableName: true }
 );
 
 const CustomerPhoneNumber = sequelize.define(
-  "CustomerPhoneNumber",
+  'CustomerPhoneNumber',
   {
     phoneNumber: {
       type: DataTypes.STRING(20),
@@ -208,7 +204,7 @@ const CustomerPhoneNumber = sequelize.define(
 );
 
 const RestaurantDeliveryAreas = sequelize.define(
-  "RestaurantDeliveryAreas",
+  'RestaurantDeliveryAreas',
   {
     deliveryAreasId: {
       type: DataTypes.INTEGER,
@@ -227,7 +223,7 @@ const RestaurantDeliveryAreas = sequelize.define(
 );
 
 const RestaurantWorker = sequelize.define(
-  "RestaurantWorker",
+  'RestaurantWorker',
   {
     workerId: {
       type: DataTypes.INTEGER,
@@ -251,7 +247,7 @@ const RestaurantWorker = sequelize.define(
 );
 
 const ProductIngredient = sequelize.define(
-  "ProductIngredient",
+  'ProductIngredient',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -267,7 +263,7 @@ const ProductIngredient = sequelize.define(
 );
 
 const Order = sequelize.define(
-  "Order",
+  'Order',
   {
     orderId: {
       type: DataTypes.INTEGER,
@@ -291,7 +287,7 @@ const Order = sequelize.define(
 );
 
 const OrderItem = sequelize.define(
-  "OrderItem",
+  'OrderItem',
   {
     orderItemId: {
       type: DataTypes.INTEGER,
@@ -307,13 +303,28 @@ const OrderItem = sequelize.define(
 );
 
 const ItemExtra = sequelize.define(
-  "ItemExtra",
+  'ItemExtra',
   {},
   { timestamps: false, freezeTableName: true }
 );
 
+const Category = sequelize.define(
+  'Category',
+  {
+    categoryId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+  },
+  { timestamps: false, freezeTableName: true }
+);
 const RestaurantMenu = sequelize.define(
-  "RestaurantMenu",
+  'RestaurantMenu',
   {
     menuId: {
       type: DataTypes.INTEGER,
@@ -331,118 +342,132 @@ const RestaurantMenu = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
-
+// Categoryassociations
+Category.belongsTo(Restaurant, {
+  foreignKey: { name: 'restaurantId', allowNull: false },
+});
+Category.hasMany(Product, {
+  foreignKey: { name: 'categoryId', allowNull: false },
+});
 // Customer associations
 Customer.hasMany(Address, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: 'customerId', allowNull: false },
 });
 Customer.hasMany(WaitingOrder, {
-  foreignKey: { name: "customerId", allowNull: false,unique:true },
+  foreignKey: { name: 'customerId', allowNull: false, unique: true },
 });
 Customer.hasMany(CustomerPhoneNumber, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: 'customerId', allowNull: false },
 });
 
 // Owner associations
-Owner.hasOne(Restaurant, { foreignKey: { name: "ownerId", allowNull: false,unique:true } });
+Owner.hasOne(Restaurant, {
+  foreignKey: { name: 'ownerId', allowNull: false, unique: true },
+});
 
 // Restaurant associations
 Restaurant.belongsTo(Owner, {
-  foreignKey: { name: "ownerId", allowNull: false },
+  foreignKey: { name: 'ownerId', allowNull: false },
 });
 Restaurant.hasMany(Product, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Restaurant.hasMany(Extra, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Restaurant.hasMany(RestaurantDeliveryAreas, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Restaurant.hasOne(RestaurantWorker, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Restaurant.hasMany(RestaurantMenu, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
+});
+Restaurant.hasMany(Category, {
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 
 // Product associations
 Product.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
+});
+Product.belongsTo(Category, {
+  foreignKey: { name: 'categoryId', allowNull: false },
 });
 Product.belongsToMany(Extra, {
   through: ProductExtra,
-  foreignKey: { name: "productId", allowNull: false },
-  otherKey: { name: "extraId", allowNull: false },
+  foreignKey: { name: 'productId', allowNull: false },
+  otherKey: { name: 'extraId', allowNull: false },
 });
 Product.hasMany(ProductIngredient, {
-  foreignKey: { name: "productId", allowNull: false },
+  foreignKey: { name: 'productId', allowNull: false },
 });
 
 // Extra associations
 Extra.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Extra.belongsToMany(Product, {
   through: ProductExtra,
-  foreignKey: { name: "extraId", allowNull: false },
-  otherKey: { name: "productId", allowNull: false },
+  foreignKey: { name: 'extraId', allowNull: false },
+  otherKey: { name: 'productId', allowNull: false },
 });
 Extra.belongsToMany(OrderItem, {
   through: ItemExtra,
-  foreignKey: { name: "extraId", allowNull: false },
-  otherKey: { name: "orderItemId", allowNull: false },
+  foreignKey: { name: 'extraId', allowNull: false },
+  otherKey: { name: 'orderItemId', allowNull: false },
 });
 
 // Address associations
 Address.belongsTo(Customer, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: 'customerId', allowNull: false },
 });
 
 // WaitingOrder associations
 WaitingOrder.belongsTo(Customer, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: 'customerId', allowNull: false },
 });
 
 // RestaurantDeliveryAreas associations
 RestaurantDeliveryAreas.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 
 // RestaurantWorker associations
 RestaurantWorker.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 
 // ProductIngredient associations
 ProductIngredient.belongsTo(Product, {
-  foreignKey: { name: "productId", allowNull: false },
+  foreignKey: { name: 'productId', allowNull: false },
 });
 
 // Order associations
-Order.belongsTo(Restaurant, { foreignKey: { name: "restaurantId" } });
+Order.belongsTo(Restaurant, { foreignKey: { name: 'restaurantId' } });
 Order.belongsTo(Address, {
-  foreignKey: { name: "addressId", allowNull: false },
+  foreignKey: { name: 'addressId', allowNull: false },
 });
 Order.belongsTo(Customer, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: 'customerId', allowNull: false },
 });
 
 // OrderItem associations
 OrderItem.belongsTo(Product, {
-  foreignKey: { name: "productId", allowNull: false },
+  foreignKey: { name: 'productId', allowNull: false },
 });
 OrderItem.belongsTo(WaitingOrder, {
-  foreignKey: { name: "waitId", allowNull: false },
+  foreignKey: { name: 'waitId', allowNull: false },
 });
 OrderItem.belongsTo(Order, {
-  foreignKey: { name: "orderId", allowNull: false },
+  foreignKey: { name: 'orderId', allowNull: false },
 });
 // check this logic
 OrderItem.belongsToMany(Extra, {
   through: ItemExtra,
-  foreignKey: { name: "orderItemId", allowNull: false },
-  otherKey: { name: "extraId", allowNull: false },
+  foreignKey: { name: 'orderItemId', allowNull: false },
+  otherKey: { name: 'extraId', allowNull: false },
 });
 
 // ItemExtra associations commented them and used the above one (orderItem.belongsToMany) to remove OrderItemOrderItemId column from ItemExtra
@@ -451,12 +476,12 @@ OrderItem.belongsToMany(Extra, {
 
 // RestaurantMenu associations
 RestaurantMenu.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId", allowNull: false },
+  foreignKey: { name: 'restaurantId', allowNull: false },
 });
 
 // CustomerPhoneNumber associations
 CustomerPhoneNumber.belongsTo(Customer, {
-  foreignKey: { name: "customerId", allowNull: false },
+  foreignKey: { name: 'customerId', allowNull: false },
 });
 
 module.exports = {
@@ -475,4 +500,5 @@ module.exports = {
   ItemExtra,
   RestaurantMenu,
   Owner,
+  Category,
 };
