@@ -1,17 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+
+//Multer configuration
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 const {
   createOwner,
-  loginOwner,
+  login,
   editOwner,
   deleteOwner,
   getOwnerById,
+  deleteOwnerRestaurant,
   createRestaurant,
   getAllRestaurants,
   getRestaurantById,
   editRestaurantById,
-  deleteRestaurantById,
   createProducts,
   getAllProducts,
   getProductById,
@@ -30,7 +35,6 @@ const {
   uploadMenu,
   getMenu,
   editMenu,
-  deleteMenu,
   getAllWorkers,
   updateWorker,
 } = require('../controllers/restaurantController');
@@ -38,20 +42,21 @@ const authenticateUser = require('../middleware/authenticateUser');
 
 // Route to create a new restaurant Owner
 router.post('/create', createOwner);
-router.post('/login', loginOwner);
-router.get('/owner/', authenticateUser, getOwnerById); // working
-router.put('/owner/', authenticateUser, editOwner); // working
-router.delete('/owner/', authenticateUser, deleteOwner); // final one will not check it until create another owner
+router.post('/login', login);
+router.get('/owner/', authenticateUser, getOwnerById);
+router.put('/owner/', authenticateUser, editOwner);
+router.delete('/owner/account', authenticateUser, deleteOwner);
 
 // Apply authentication middleware to resturant info routes
-router.post('/setup', authenticateUser, createRestaurant);
+router.post('/setup', upload.single('logo'), authenticateUser, createRestaurant);
 router.get('/all', authenticateUser, getAllRestaurants);
 router.get('/info', authenticateUser, getRestaurantById);
 router.get('/workers', authenticateUser, getAllWorkers);
 router.put('/worker', authenticateUser, updateWorker);
-router.put('/:restaurantId', authenticateUser, editRestaurantById);
-router.delete('/:restaurantId', authenticateUser, deleteRestaurantById);
+router.put('/edit', upload.single('logo'), authenticateUser, editRestaurantById); 
+router.delete('/delete', authenticateUser, deleteOwnerRestaurant);
 
+router.get('/products/productExtras', authenticateUser, getAllProductExtras);
 // products
 router.post('/products', authenticateUser, createProducts);
 router.get('/products/all', authenticateUser, getAllProducts);
@@ -68,30 +73,26 @@ router.delete('/extras/:extraId', authenticateUser, deleteExtraById);
 
 //productsExstras
 router.post(
-  '/products/:ProductProductId/extras',
+  '/products/:productId/extras',
   authenticateUser,
   associateExtrasWithProduct
 );
 router.get(
-  '/products/:ProductProductId/extras',
+  '/products/:productId/extras',
   authenticateUser,
   getAssociatedExtrasForProduct
 );
-router.get('/products/productExtras', authenticateUser, getAllProductExtras);
 router.put(
-  '/products/:ProductProductId/extras/:ExtraExtraId',
+  '/products/:productId/extras/:extraId',
   authenticateUser,
   editProductExtra
 );
 router.delete(
-  '/products/:ProductProductId/extras/',
+  '/products/:productId/extras/',
   authenticateUser,
   deleteProductExtras
 );
 
-//Multer configuration
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 //route to upload menu
 router.post(
   '/menu/upload',
@@ -99,13 +100,14 @@ router.post(
   authenticateUser,
   uploadMenu
 );
-router.get('/menu/:menuId', authenticateUser, getMenu);
+//route to get menus
+router.get('/menu/get', authenticateUser, getMenu);
+//route to edit menu
 router.put(
   '/menu/:menuId',
   upload.single('menuImage'),
   authenticateUser,
   editMenu
 );
-router.delete('/menu/:menuId', authenticateUser, deleteMenu);
 
 module.exports = router;
