@@ -11,6 +11,7 @@ const {
   ProductExtra,
   RestaurantMenu,
   RestaurantWorker,
+  Category,
 } = require('../models/allModels'); // Import the Restaurant Owner model
 const { AppError } = require('../utils/error'); // Import the custom error class
 
@@ -69,7 +70,8 @@ const login = async (req, res, next) => {
     }
 
     // Generate JWT token
-    const tokenPayload = accountType === 'owner' ? { id: user.ownerId } : { id: user.workerId };
+    const tokenPayload =
+      accountType === 'owner' ? { id: user.ownerId } : { id: user.workerId };
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
       expiresIn: '180h',
     });
@@ -81,7 +83,6 @@ const login = async (req, res, next) => {
     return next(new AppError('Internal server error', 500));
   }
 };
-
 
 // controller function to get owner by id
 const getOwnerById = async (req, res, next) => {
@@ -130,12 +131,9 @@ const deleteOwner = async (req, res, next) => {
       return next(new AppError('Owner not found', 404));
     }
     await owner.destroy();
-    return res
-      .status(200)
-      .json({
-        message:
-          'Owner deleted successfully along with all his restaurant data',
-      });
+    return res.status(200).json({
+      message: 'Owner deleted successfully along with all his restaurant data',
+    });
   } catch (error) {
     console.error('Error deleting owner:', error);
     return next(new AppError('Internal server error', 500));
@@ -331,14 +329,14 @@ const createProducts = async (req, res, next) => {
 
     const createdProducts = await Promise.all(
       productsData.map(async (productData) => {
-        const { name, description, price, quantity, category } = productData;
+        const { name, description, price, quantity, categoryId } = productData;
         // Create product with associated restaurantId
         const newProduct = await Product.create({
           name,
           description,
           price,
           quantity,
-          category,
+          categoryId,
           restaurantId: restaurant.restaurantId,
         });
         return newProduct;
@@ -701,6 +699,78 @@ const editMenu = async (req, res, next) => {
   }
 };
 
+// Controller to create a new category
+const createCategory = async (req, res, next) => {
+  const { name } = req.body;
+  const ownerId = req.user.id; // Extract ownerId from token
+  // Find the restaurant associated with the owner
+  const restaurant = await Restaurant.findOne({ where: { ownerId } });
+  if (!restaurant) {
+    return next(new AppError('Restaurant not found for the owner', 404));
+  }
+  try {
+    const newCategory = await Category.create({
+      name,
+      restaurantId: restaurant.restaurantId,
+    });
+    res.status(201).json({
+      message: 'Category created successfully',
+      category: newCategory,
+    });
+  } catch (error) {
+    console.error('Error creating category:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
+
+// Controllet to edit exiting category
+const editCategory = async (req, res, next) => {
+  const categoryId = req.params.id;
+  const { name } = req.body;
+  try {
+    const updatedCategory = await Category.findByPk(categoryId);
+    if (!updatedCategory) {
+      return next(new AppError('Category not found for the owner', 404));
+    }
+    updatedCategory.name = name;
+    updatedCategory.save();
+    res.status(200).json({
+      message: 'Category updated successfully',
+      updatedCategory: updatedCategory,
+    });
+  } catch (error) {
+    console.error('Error updating category:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
+
+// Controller to get all the categories of a resturant
+const getCategoriesByRestaurantId = async (req, res, next) => {
+  const restaurantId = req.params.restaurantId;
+  try {
+    const categories = await Category.findAll({ where: { restaurantId } });
+    res.status(200).json({ categories });
+  } catch (error) {
+    console.error('Error fetching categories by restaurant ID:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
+// Controller to delete a category
+const deleteCategory = async (req, res, next) => {
+  const categoryId = req.params.id;
+  try {
+    const category = await Category.findByPk(categoryId);
+    if (!category) {
+      return next(new AppError('Category not found for the owner', 404));
+    }
+    await Category.destroy({ where: { categoryId } });
+    res.status(200).json({ message: 'Category deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
+
 module.exports = {
   createOwner,
   login,
@@ -732,4 +802,8 @@ module.exports = {
   getAllWorkers,
   updateWorker,
   deleteOwnerRestaurant,
+  createCategory,
+  editCategory,
+  deleteCategory,
+  getCategoriesByRestaurantId,
 };

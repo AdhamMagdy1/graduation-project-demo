@@ -37,6 +37,10 @@ const {
   editMenu,
   getAllWorkers,
   updateWorker,
+  createCategory,
+  editCategory,
+  deleteCategory,
+  getCategoriesByRestaurantId,
 } = require('../controllers/restaurantController');
 const authenticateUser = require('../middleware/authenticateUser');
 
@@ -48,12 +52,22 @@ router.put('/owner/', authenticateUser, editOwner);
 router.delete('/owner/account', authenticateUser, deleteOwner);
 
 // Apply authentication middleware to resturant info routes
-router.post('/setup', upload.single('logo'), authenticateUser, createRestaurant);
+router.post(
+  '/setup',
+  upload.single('logo'),
+  authenticateUser,
+  createRestaurant
+);
 router.get('/all', authenticateUser, getAllRestaurants);
 router.get('/info', authenticateUser, getRestaurantById);
 router.get('/workers', authenticateUser, getAllWorkers);
 router.put('/worker', authenticateUser, updateWorker);
-router.put('/edit', upload.single('logo'), authenticateUser, editRestaurantById); 
+router.put(
+  '/edit',
+  upload.single('logo'),
+  authenticateUser,
+  editRestaurantById
+);
 router.delete('/delete', authenticateUser, deleteOwnerRestaurant);
 
 router.get('/products/productExtras', authenticateUser, getAllProductExtras);
@@ -110,4 +124,13 @@ router.put(
   editMenu
 );
 
+// Category routes
+router.post('/category', authenticateUser, createCategory);
+router.put('/category/:id', authenticateUser, editCategory);
+router.get(
+  '/category/:restaurantId',
+  authenticateUser,
+  getCategoriesByRestaurantId
+);
+router.delete('/category/:id', authenticateUser, deleteCategory);
 module.exports = router;
