@@ -14,8 +14,8 @@ const { errorHandler } = require('./utils/error');
 // Connect to the database
 testDbConnection();
 
-// const { createAdapter } = require("@socket.io/postgres-adapter");
-// const { Pool } = require("pg");
+const { createAdapter } = require("@socket.io/postgres-adapter");
+const { Pool } = require("pg");
 
 
 
@@ -43,19 +43,20 @@ const io = new Server(server, {
     ],
     credentials: true,
   },
+}, { transports: [ "websocket" ] });
+
+const pool = new Pool({
+  user: process.env.SOCKET_DATABASE_USERNAME,
+  host: process.env.SOCKET_DATABASE_HOST,
+  database: process.env.SOCKET_DATABASE_NAME,
+  password: process.env.SOCKET_DATABASE_PASSWORD,
+  port: process.env.SOCKET_DATABASE_PORT,
 });
 
+const adapter = createAdapter(pool);
+io.adapter(adapter);
 
-// const pool = new Pool({
-//   user: SOCKET_DATABASE_USERNAME,
-//   host: SOCKET_DATABASE_HOST,
-//   database: SOCKET_DATABASE_NAME,
-//   password: SOCKET_DATABASE_PASSWORD,
-//   port: SOCKET_DATABASE_PORT,
-// });
-
-// const adapter = createAdapter(pool);
-// io.adapter(adapter);
+// console.log(io.sockets.adapter);
 
 const chat = io.of('/chat');
 const restaurant = io.of('/restaurant');
@@ -66,7 +67,7 @@ runSocket(io, chat, restaurant);
 // Use the customer routes
 app.use(customerRoutes);
 // Use the customer routes
-app.use('/resturant', restaurantRoutes);
+app.use('/restaurant', restaurantRoutes);
 
 // Use the ping routes
 app.use(ping);

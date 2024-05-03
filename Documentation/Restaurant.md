@@ -6,7 +6,7 @@
 
 Creates a new restaurant owner.
 
-- **URL:** `{{host}}/resturant/create`
+- **URL:** `{{host}}/restaurant/create`
 - **Method:** `POST`
 - **Content-Type:** `application/json`
 - **Request Body:**
@@ -54,7 +54,7 @@ Creates a new restaurant owner.
 
 Logs in a restaurant owner.
 
-- **URL:** `{{host}}/resturant/login`
+- **URL:** `{{host}}/restaurant/login`
 - **Method:** `POST`
 - **Content-Type:** `application/json`
 - **Request Body:**
@@ -101,7 +101,7 @@ Logs in a restaurant owner.
 
 Retrieves information about a restaurant owner.
 
-- **URL:** `{{host}}/resturant/owner`
+- **URL:** `{{host}}/restaurant/owner`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -129,6 +129,113 @@ Retrieves information about a restaurant owner.
   }
   ```
 
+- **Status Code:** 404 NOT FOUND
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Owner not found"
+  }
+  ```
+
+- **Status Code:** 500 INTERNAL SERVER ERROR
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Internal server error"
+  }
+  ```
+
+## Edit Owner
+
+Edits information about an owner.
+
+- **URL:** `{{host}}/restaurant/owner`
+- **Method:** `PUT`
+- **Content-Type:** `application/json`
+- **Authorization:** `token`
+- **Request Body:** (Fields are optional)
+
+  ```json
+  {
+    "name": "New Owner Name",
+    "email": "New Owner Email",
+    "password": "New Owner Password"
+  }
+  ```
+
+### Success Response
+
+- **Status Code:** 200 OK
+- **Response Body:** (Example Response)
+
+  ```json
+  {
+    "ownerId": 12,
+    "name": "New Restaurant Name",
+    "email": "New Restaurant Description",
+    "password": "New Owner Password"
+  }
+  ```
+
+### Error Responses
+
+- **Status Code:** 404 NOT FOUND
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Owner not found"
+  }
+  ```
+
+- **Status Code:** 401 UNAUTHORIZED
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Unauthorized access"
+  }
+  ```
+
+- **Status Code:** 500 INTERNAL SERVER ERROR
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Internal server error"
+  }
+  ```
+
+## Delete Restaurant Owner account
+
+delete a restaurant owner.
+
+- **URL:** `{{host}}/restaurant/owner/account/`
+- **Method:** `DELETE`
+- **Authorization:** `token`
+
+### Success Response
+
+- **Status Code:** 200 OK
+- **Response Body:** (Example Response)
+
+  ```json
+  { message: 'Owner deleted successfully along with all his restaurant data' }
+  ```
+
+### Error Responses
+
+- **Status Code:** 400 BAD REQUEST
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Invalid token"
+  }
+  ```
+
 - **Status Code:** 500 INTERNAL SERVER ERROR
 - **Response Body:**
 
@@ -142,7 +249,7 @@ Retrieves information about a restaurant owner.
 
 Creates a new restaurant.
 
-- **URL:** `{{host}}/resturant/setup`
+- **URL:** `{{host}}/restaurant/setup`
 - **Method:** `POST`
 - **Content-Type:** `application/json`
 - **Authorization:** `token`
@@ -152,7 +259,7 @@ Creates a new restaurant.
   {
     "name": "Restaurant Name",
     "description": "Restaurant Description",
-    "Subscription": "YYYY-MM-DD"
+    "subscription": "YYYY-MM-DD"
   }
   ```
 
@@ -166,7 +273,7 @@ Creates a new restaurant.
     "id": 1234567890,
     "name": "Restaurant Name",
     "description": "Restaurant Description",
-    "Subscription": "YYYY-MM-DD",
+    "subscription": "YYYY-MM-DD",
     "ownerId": 1123456789
   }
   ```
@@ -195,7 +302,7 @@ Creates a new restaurant.
 
 Retrieves information about a restaurant by its ID.
 
-- **URL:** `{{host}}/resturant/{restaurantId}`
+- **URL:** `{{host}}/restaurant/info`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -209,7 +316,7 @@ Retrieves information about a restaurant by its ID.
     "id": 1234567890,
     "name": "Restaurant Name",
     "description": "Restaurant Description",
-    "Subscription": "YYYY-MM-DD",
+    "subscription": "YYYY-MM-DD",
     "ownerId": 1123456789
   }
   ```
@@ -236,9 +343,9 @@ Retrieves information about a restaurant by its ID.
 
 ## Edit Restaurant by ID
 
-Edits information about a restaurant by its ID.
+Edits information about a restaurant.
 
-- **URL:** `{{host}}/resturant/{restaurantId}`
+- **URL:** `{{host}}/restaurant/edit`
 - **Method:** `PUT`
 - **Content-Type:** `application/json`
 - **Authorization:** `token`
@@ -248,7 +355,7 @@ Edits information about a restaurant by its ID.
   {
     "name": "New Restaurant Name",
     "description": "New Restaurant Description",
-    "Subscription": "YYYY-MM-DD"
+    "subscription": "YYYY-MM-DD"
   }
   ```
 
@@ -262,7 +369,7 @@ Edits information about a restaurant by its ID.
     "id": 1234567890,
     "name": "New Restaurant Name",
     "description": "New Restaurant Description",
-    "Subscription": "YYYY-MM-DD",
+    "subscription": "YYYY-MM-DD",
     "ownerId": 1123456789
   }
   ```
@@ -296,11 +403,48 @@ Edits information about a restaurant by its ID.
   }
   ```
 
+## Delete Restaurant by ID
+
+Retrieves information about a restaurant.
+
+- **URL:** `{{host}}/restaurant/delete`
+- **Method:** `DELETE`
+- **Authorization:** `token`
+
+### Success Response
+
+- **Status Code:** 200 OK
+- **Response Body:** (Example Response)
+
+  ```json
+  { message: 'Restaurant deleted successfully with its data' }
+  ```
+
+### Error Responses
+
+- **Status Code:** 404 NOT FOUND
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Restaurant not found"
+  }
+  ```
+
+- **Status Code:** 500 INTERNAL SERVER ERROR
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Internal server error"
+  }
+  ```
+
 ## Create Products
 
 Creates multiple products for a restaurant.
 
-- **URL:** `{{host}}/resturant/products`
+- **URL:** `{{host}}/restaurant/products`
 - **Method:** `POST`
 - **Content-Type:** `application/json`
 - **Authorization:** `token`
@@ -387,7 +531,7 @@ Creates multiple products for a restaurant.
 
 Retrieves information about all products for a restaurant.
 
-- **URL:** `{{host}}/resturant/products/all`
+- **URL:** `{{host}}/restaurant/products/all`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -427,12 +571,21 @@ Retrieves information about all products for a restaurant.
     "error": "Internal server error"
   }
   ```
+- **Status Code:** 404 NOT FOUND
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Products not found"
+  }
+  ```
+
 
 ## Get Product by ID
 
 Retrieves information about a product by its ID.
 
-- **URL:** `{{host}}/resturant/products/{productId}`
+- **URL:** `{{host}}/restaurant/products/{productId}`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -476,7 +629,7 @@ Retrieves information about a product by its ID.
 
 Edits information about a product by its ID.
 
-- **URL:** `{{host}}/resturant/products/{productId}`
+- **URL:** `{{host}}/restaurant/products/{productId}`
 - **Method:** `PUT`
 - **Content-Type:** `application/json`
 - **Authorization:** `token`
@@ -531,7 +684,7 @@ Edits information about a product by its ID.
 
 Deletes a product by its ID.
 
-- **URL:** `{{host}}/resturant/products/{productId}`
+- **URL:** `{{host}}/restaurant/products/{productId}`
 - **Method:** `DELETE`
 - **Authorization:** `token`
 
@@ -646,6 +799,15 @@ Retrieves information about all extra items.
   ```json
   {
     "error": "Internal server error"
+  }
+  ```
+
+- **Status Code:** 404 NOT FOUND
+- **Response Body:**
+
+  ```json
+  {
+    "error": "Extras not found"
   }
   ```
 
@@ -783,7 +945,7 @@ Deletes an extra item by its ID.
 
 Associates extra items with a product.
 
-- **URL:** `{{host}}/products/{ProductProductId}/extras`
+- **URL:** `{{host}}/restaurant/products/{productId}/extras`
 - **Method:** `POST`
 - **Content-Type:** `application/json`
 - **Authorization:** `token`
@@ -805,8 +967,8 @@ Associates extra items with a product.
     "message": "Extras associated with product successfully",
     "data": {
       "id": 1,
-      "ProductProductId": 123,
-      "ExtraExtraId": 1
+      "productId": 123,
+      "extraId": 1
     }
   }
   ```
@@ -835,7 +997,7 @@ Associates extra items with a product.
 
 Retrieves all extras associated with a product.
 
-- **URL:** `{{host}}/products/{ProductProductId}/extras`
+- **URL:** `{{host}}/restaurant/products/{productId}/extras`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -848,13 +1010,13 @@ Retrieves all extras associated with a product.
   [
     {
       "id": 1,
-      "ProductProductId": 123,
-      "ExtraExtraId": 1
+      "productId": 123,
+      "extraId": 1
     },
     {
       "id": 2,
-      "ProductProductId": 123,
-      "ExtraExtraId": 2
+      "productId": 123,
+      "extraId": 2
     }
   ]
   ```
@@ -872,9 +1034,9 @@ Retrieves all extras associated with a product.
 
 ## Get All Product Extras
 
-Retrieves all product extras.
+Retrieves all product extras for the restaurant.
 
-- **URL:** `{{host}}/productExtras`
+- **URL:** `{{host}}/restaurant/productExtras`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -887,13 +1049,13 @@ Retrieves all product extras.
   [
     {
       "id": 1,
-      "ProductProductId": 123,
-      "ExtraExtraId": 1
+      "productId": 123,
+      "extraId": 1
     },
     {
       "id": 2,
-      "ProductProductId": 123,
-      "ExtraExtraId": 2
+      "productId": 123,
+      "extraId": 2
     }
   ]
   ```
@@ -913,7 +1075,7 @@ Retrieves all product extras.
 
 Edits a specific extra item associated with a product.
 
-- **URL:** `{{host}}/products/{ProductProductId}/extras/{ExtraExtraId}`
+- **URL:** `{{host}}/restaurant/products/{productId}/extras/{extraId}`
 - **Method:** `PUT`
 - **Content-Type:** `application/json`
 - **Authorization:** `token`
@@ -921,7 +1083,7 @@ Edits a specific extra item associated with a product.
 
   ```json
   {
-    "ExtraExtraId": 3
+    "extraId": 3
   }
   ```
 
@@ -933,8 +1095,8 @@ Edits a specific extra item associated with a product.
   ```json
   {
     "id": 1,
-    "ProductProductId": 123,
-    "ExtraExtraId": 3
+    "productId": 123,
+    "extraId": 3
   }
   ```
 
@@ -962,7 +1124,7 @@ Edits a specific extra item associated with a product.
 
 Deletes all extra items associated with a product.
 
-- **URL:** `{{host}}/products/{ProductProductId}/extras`
+- **URL:** `{{host}}/restaurant/products/{productId}/extras`
 - **Method:** `DELETE`
 - **Authorization:** `token`
 
@@ -1001,7 +1163,7 @@ Deletes all extra items associated with a product.
 
 Uploads a menu for a restaurant.
 
-- **URL:** `{{host}}/restaurants/{restaurantId}/menu`
+- **URL:** `{{host}}/restaurant/menu/upload`
 - **Method:** `POST`
 - **Content-Type:** `multipart/form-data`
 - **Authorization:** `token`
@@ -1054,7 +1216,7 @@ Uploads a menu for a restaurant.
 
 Retrieves the menu for a restaurant.
 
-- **URL:** `{{host}}/restaurants/{restaurantId}/menu/{menuId}`
+- **URL:** `{{host}}/restaurant/menu/get`
 - **Method:** `GET`
 - **Authorization:** `token`
 
@@ -1064,10 +1226,18 @@ Retrieves the menu for a restaurant.
 - **Response Body:** (Example Response)
 
   ```json
-  {
-    "description": "Menu Description",
-    "menuImage": (binary)
-  }
+  [
+    {
+      "menuId": 1,
+      "description": "Menu Description",
+      "menuImage": (binary)
+    },
+    {
+      "menuId": 2,
+      "description": "Menu Description",
+      "menuImage": (binary)
+    }
+  ]
   ```
 
 ### Error Responses
@@ -1094,7 +1264,7 @@ Retrieves the menu for a restaurant.
 
 Edits the menu for a restaurant.
 
-- **URL:** `{{host}}/restaurants/{restaurantId}/menu/{menuId}`
+- **URL:** `{{host}}/restaurant/menu/{menuId}`
 - **Method:** `PUT`
 - **Content-Type:** `multipart/form-data`
 - **Authorization:** `token`
@@ -1110,6 +1280,15 @@ Edits the menu for a restaurant.
 ### Success Response
 
 - **Status Code:** 200 OK
+- **Response Body:** (Example Response)
+
+  ```json
+  {
+    "menuId": 1,
+    "description": "New Menu Description",
+    "menuImage": (binary)
+  }
+  ```
 
 ### Error Responses
 
@@ -1131,34 +1310,39 @@ Edits the menu for a restaurant.
   }
   ```
 
-## Delete Menu
+[## Delete Menu]: #
 
-Deletes the menu for a restaurant.
+[Deletes the menu for a restaurant.]: #
 
-- **URL:** `{{host}}/restaurants/{restaurantId}/menu/{menuId}`
-- **Method:** `DELETE`
-- **Authorization:** `token`
+[- **URL:** `{{host}}/restaurant/menu/{menuId}`]: #
 
-### Success Response
+[- **Method:** `DELETE`]: #
 
-- **Status Code:** 200 OK
+[- **Authorization:** `token`]: #
 
-### Error Responses
+[### Success Response]: #
 
-- **Status Code:** 404 NOT FOUND
-- **Response Body:**
+[- **Status Code:** 200 OK]: #
 
-  ```json
-  {
-    "error": "Menu not found"
-  }
-  ```
+[### Error Responses]: #
 
-- **Status Code:** 500 INTERNAL SERVER ERROR
-- **Response Body:**
+[- **Status Code:** 404 NOT FOUND]: #
 
-  ```json
-  {
-    "error": "Internal server error"
-  }
-  ```
+
+[- **Response Body:**]: #
+
+  [```json]: #
+  
+  [{"error": "Menu not found"}]: #
+  
+  [```]: #
+  
+[- **Status Code:** 500 INTERNAL SERVER ERROR]: #
+
+[- **Response Body:**]: #
+
+  [```json]: #
+  
+  [{"error": "Internal server error"}]: #
+  
+  [```]: #

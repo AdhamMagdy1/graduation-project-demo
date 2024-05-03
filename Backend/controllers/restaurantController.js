@@ -2,14 +2,15 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const { Op } = require('sequelize');
 const {
   Owner,
-  Resturant,
+  Restaurant,
   Product,
   Extra,
-  productExtra,
-  Restaurant_menu,
-  Resturant_worker,
+  ProductExtra,
+  RestaurantMenu,
+  RestaurantWorker,
 } = require('../models/allModels'); // Import the Restaurant Owner model
 const { AppError } = require('../utils/error'); // Import the custom error class
 
@@ -40,35 +41,47 @@ const createOwner = async (req, res, next) => {
   }
 };
 
-// Controller function for restaurant owner login
-const loginOwner = async (req, res, next) => {
-  const { email, password } = req.body;
+// Controller function for restaurant owner/worker login
+const login = async (req, res, next) => {
+  const { email, password, accountType } = req.body;
 
   try {
-    // Find the owner by email
-    const owner = await Owner.findOne({ where: { email } });
-    if (!owner) {
+    let user;
+
+    if (accountType === 'owner') {
+      // Find the owner by email
+      user = await Owner.findOne({ where: { email } });
+    } else if (accountType === 'worker') {
+      // Find the worker by email
+      user = await RestaurantWorker.findOne({ where: { email } });
+    } else {
+      return next(new AppError('Invalid account type', 400));
+    }
+
+    if (!user) {
       return next(new AppError('Invalid email or password', 401));
     }
 
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, owner.password);
+    const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return next(new AppError('Invalid email or password', 401));
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: owner.ownerid }, process.env.JWT_SECRET, {
+    const tokenPayload = accountType === 'owner' ? { id: user.ownerId } : { id: user.workerId };
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
       expiresIn: '180h',
     });
 
     // Send token in response
     return res.status(200).json({ token });
   } catch (error) {
-    console.error('Error logging in restaurant owner:', error);
+    console.error('Error logging in:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
+
 
 // controller function to get owner by id
 const getOwnerById = async (req, res, next) => {
@@ -117,7 +130,12 @@ const deleteOwner = async (req, res, next) => {
       return next(new AppError('Owner not found', 404));
     }
     await owner.destroy();
-    return res.status(200).json({ message: 'Owner deleted successfully' });
+    return res
+      .status(200)
+      .json({
+        message:
+          'Owner deleted successfully along with all his restaurant data',
+      });
   } catch (error) {
     console.error('Error deleting owner:', error);
     return next(new AppError('Internal server error', 500));
@@ -126,36 +144,40 @@ const deleteOwner = async (req, res, next) => {
 
 // Controller function to create restaurant information
 const createRestaurant = async (req, res, next) => {
-  const { name, description, Subscription } = req.body;
+  const { name, description, subscription, themeColor } = req.body;
+  const logo = req.file.buffer.toString('base64');
   const ownerId = req.user.id; // Extract owner ID from token
 
   try {
     // Create new restaurant
-    const newRestaurant = await Resturant.create({
+    const newRestaurant = await Restaurant.create({
       name,
       description,
-      Subscription: new Date(Subscription),
+      subscription: new Date(subscription),
+      themeColor,
+      logo,
       ownerId,
     });
 
     // Generate worker data based on restaurant information
-    const workerName = `${name}_${newRestaurant.resturantId}`;
-    const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}__${
-      newRestaurant.resturantId
+    const workerName = `${name}_${newRestaurant.restaurantId}`;
+    const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}_${
+      newRestaurant.restaurantId
     }@email.com`;
-    const workerPassword = `${name}_${newRestaurant.resturantId}`;
+    const workerPassword = `${name}_${newRestaurant.restaurantId}`;
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(workerPassword, 10);
 
     // Create restaurant worker
-    const newWorker = await Resturant_worker.create({
+    const newWorker = await RestaurantWorker.create({
       name: workerName,
       email: workerEmail,
       password: hashedPassword,
-      resturantId: newRestaurant.resturantId,
+      restaurantId: newRestaurant.restaurantId,
     });
-
+    // Update owner's hasRestaurant field
+    await Owner.update({ hasRestaurant: true }, { where: { ownerId } });
     return res
       .status(201)
       .json({ restaurant: newRestaurant, worker: newWorker });
@@ -164,10 +186,14 @@ const createRestaurant = async (req, res, next) => {
     return next(new AppError('Internal server error', 500));
   }
 };
+
 // Controller function to get all restaurants
 const getAllRestaurants = async (req, res, next) => {
   try {
-    const restaurants = await Resturant.findAll();
+    const restaurants = await Restaurant.findAll();
+    if (restaurants.length === 0) {
+      return next(new AppError('Restaurants not found', 404));
+    }
     return res.status(200).json(restaurants);
   } catch (error) {
     console.error('Error getting restaurants:', error);
@@ -181,14 +207,14 @@ const getRestaurantById = async (req, res, next) => {
 
   try {
     // Find restaurant by ID
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
 
-    const resturantId = restaurant.resturantId;
+    const restaurantId = restaurant.restaurantId;
     // Find workers related to the restaurant
-    const workers = await Resturant_worker.findOne({ where: { resturantId } });
+    const workers = await RestaurantWorker.findOne({ where: { restaurantId } });
 
     return res.status(200).json({ restaurant, workers });
   } catch (error) {
@@ -197,11 +223,14 @@ const getRestaurantById = async (req, res, next) => {
   }
 };
 
+// Controller function to get all workers
 const getAllWorkers = async (req, res, next) => {
   try {
     // Find all workers
-    const workers = await Resturant_worker.findAll();
-
+    const workers = await RestaurantWorker.findAll();
+    if (workers.length === 0) {
+      return next(new AppError('Workers not found', 404));
+    }
     return res.status(200).json(workers);
   } catch (error) {
     console.error('Error getting workers:', error);
@@ -209,15 +238,16 @@ const getAllWorkers = async (req, res, next) => {
   }
 };
 
+// Controller to update worker information
 const updateWorker = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   const { name, email, password } = req.body;
 
   try {
     // Find the worker by ID
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
-    const resturantId = restaurant.resturantId;
-    const worker = await Resturant_worker.findOne({ where: { resturantId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    const worker = await RestaurantWorker.findOne({ where: { restaurantId } });
     // Hash the password
     if (!worker) {
       return next(new AppError('Worker not found', 404));
@@ -242,18 +272,21 @@ const updateWorker = async (req, res, next) => {
 // Controller function to edit restaurant information by ID
 const editRestaurantById = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
-  const { name, description, Subscription } = req.body;
-
+  const { name, description, subscription, themeColor } = req.body;
   try {
     // Find restaurant by ID
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
     // Update restaurant details
     restaurant.name = name || restaurant.name;
     restaurant.description = description || restaurant.description;
-    restaurant.Subscription = new Date(Subscription) || restaurant.Subscription; // Convert Subscription string to Date object
+    restaurant.subscription = subscription || restaurant.subscription; // Convert subscription string to Date object
+    restaurant.themeColor = themeColor || restaurant.themeColor;
+    if (req.file) {
+      restaurant.logo = req.file.buffer.toString('base64');
+    }
     restaurant.ownerId = restaurant.ownerId;
     await restaurant.save();
 
@@ -264,16 +297,19 @@ const editRestaurantById = async (req, res, next) => {
   }
 };
 
-// Controller function to delete restaurant by ID
-const deleteRestaurantById = async (req, res, next) => {
+const deleteOwnerRestaurant = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   try {
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
-    await restaurant.destroy();
-    return res.status(200).json({ message: 'Restaurant deleted successfully' });
+    const restaurantId = restaurant.restaurantId;
+    await Restaurant.destroy({ where: { restaurantId } });
+    await Owner.update({ hasRestaurant: false }, { where: { ownerId } });
+    return res
+      .status(200)
+      .json({ message: 'Restaurant deleted successfully with its data' });
   } catch (error) {
     console.error('Error deleting restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -288,21 +324,22 @@ const createProducts = async (req, res, next) => {
 
   try {
     // Find the restaurant associated with the owner
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found for the owner', 404));
     }
 
     const createdProducts = await Promise.all(
       productsData.map(async (productData) => {
-        const { name, description, price, quantity } = productData;
+        const { name, description, price, quantity, category } = productData;
         // Create product with associated restaurantId
         const newProduct = await Product.create({
           name,
           description,
           price,
           quantity,
-          resturantId: restaurant.resturantId,
+          category,
+          restaurantId: restaurant.restaurantId,
         });
         return newProduct;
       })
@@ -322,10 +359,13 @@ const createProducts = async (req, res, next) => {
 const getAllProducts = async (req, res, next) => {
   const ownerId = req.user.id; // Extract ownerId from token
   try {
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
     const restaurantId = restaurant.restaurantId;
 
     const products = await Product.findAll({ where: { restaurantId } });
+    if (products.length === 0) {
+      return next(new AppError('Products not found', 404));
+    }
     return res.status(200).json(products);
   } catch (error) {
     console.error('Error getting products:', error);
@@ -351,7 +391,7 @@ const getProductById = async (req, res, next) => {
 // Edit product by ID
 const editProductById = async (req, res, next) => {
   const { productId } = req.params;
-  const { name, description, price, quantity } = req.body;
+  const { name, description, price, quantity, category } = req.body;
 
   try {
     const product = await Product.findByPk(productId);
@@ -362,6 +402,7 @@ const editProductById = async (req, res, next) => {
     product.description = description || product.description;
     product.price = price || product.price;
     product.quantity = quantity || product.quantity;
+    product.category = category || product.category;
     product.restaurantId = product.restaurantId;
     await product.save();
     return res.status(200).json(product);
@@ -388,9 +429,12 @@ const deleteProductById = async (req, res, next) => {
 
 // Create a new extra
 const createExtra = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract ownerId from token
   const { name, price } = req.body;
   try {
-    const newExtra = await Extra.create({ name, price });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    const newExtra = await Extra.create({ name, price, restaurantId });
     res
       .status(201)
       .json({ message: 'Extra created successfully', extra: newExtra });
@@ -400,10 +444,16 @@ const createExtra = async (req, res, next) => {
   }
 };
 
-// Get all extras
+// Get all extras for a restaurant
 const getAllExtras = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract ownerId from token
   try {
-    const extras = await Extra.findAll();
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    const extras = await Extra.findAll({ where: { restaurantId } });
+    if (extras.length === 0) {
+      return next(new AppError('Extras not found', 404));
+    }
     return res.status(200).json(extras);
   } catch (error) {
     console.error('Error getting extras:', error);
@@ -464,29 +514,27 @@ const deleteExtraById = async (req, res, next) => {
 
 // Associate extras with a product
 const associateExtrasWithProduct = async (req, res, next) => {
-  const { ProductProductId } = req.params;
+  const { productId } = req.params;
   const extras = req.body.extras;
 
   try {
     // Find the product
-    const product = await Product.findByPk(ProductProductId);
+    const product = await Product.findByPk(productId);
     if (!product) {
       return next(new AppError('Product not found', 404));
     }
     let associated;
     // Associate extras with the product using the ProductExtra table
     await Promise.all(
-      extras.map(async (ExtraExtraId) => {
-        const extra = await Extra.findByPk(ExtraExtraId);
+      extras.map(async (extraId) => {
+        const extra = await Extra.findByPk(extraId);
         if (!extra) {
-          return next(
-            new AppError(`Extra with ID ${ExtraExtraId} not found`, 404)
-          );
+          return next(new AppError(`Extra with ID ${extraId} not found`, 404));
         }
         // Create an entry in the ProductExtra table to associate the product with the extra
-        associated = await productExtra.create({
-          ProductProductId,
-          ExtraExtraId,
+        associated = await ProductExtra.create({
+          productId,
+          extraId,
         });
       })
     );
@@ -503,14 +551,16 @@ const associateExtrasWithProduct = async (req, res, next) => {
 
 // Get all extras associated with a product
 const getAssociatedExtrasForProduct = async (req, res, next) => {
-  const { ProductProductId } = req.params;
+  const { productId } = req.params;
 
   try {
     // Find all entries in the ProductExtra table associated with the given product ID
-    const productExtras = await productExtra.findAll({
-      where: { ProductProductId },
+    const productExtras = await ProductExtra.findAll({
+      where: { productId },
     });
-
+    if (productExtras.length === 0) {
+      return next(new AppError('Extras for product not found', 404));
+    }
     // Extract the associated extras from the productExtras
     // const associatedExtras = productExtras.map((entry) => entry.Extra);
 
@@ -521,12 +571,21 @@ const getAssociatedExtrasForProduct = async (req, res, next) => {
   }
 };
 
-// Get all product extras
+// Get all product extras for a specific restaurant
 const getAllProductExtras = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract ownerId from token
   try {
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    const products = await Product.findAll({ where: { restaurantId } });
+    const productIds = products.map((product) => product.productId);
     // Find all entries in the ProductExtra table
-    const productExtras = await productExtra.findAll();
-
+    const productExtras = await ProductExtra.findAll({
+      where: { productId: { [Op.in]: productIds } },
+    });
+    if (productExtras.length === 0) {
+      return next(new AppError('Product extras not found', 404));
+    }
     res.status(200).json({ productExtras });
   } catch (error) {
     console.error('Error fetching all product extras:', error);
@@ -534,19 +593,19 @@ const getAllProductExtras = async (req, res, next) => {
   }
 };
 
-// Edit a specific extra of a product in productExtra table
+// Edit a specific extra of a product in ProductExtra table
 const editProductExtra = async (req, res, next) => {
-  const { ProductProductId, ExtraExtraId } = req.params;
+  const { productId, extraId } = req.params;
   try {
-    const updatedExtraId = req.body.ExtraExtraId;
-    await productExtra.update(
-      { ExtraExtraId: updatedExtraId || ProductExtra.ExtraExtraId },
-      { where: { ProductProductId, ExtraExtraId } }
+    const updatedExtraId = req.body.extraId;
+    await ProductExtra.update(
+      { extraId: updatedExtraId || ProductExtra.extraId },
+      { where: { productId, extraId } }
     );
-    const ProductExtra = await productExtra.findOne({
-      where: { ProductProductId, ExtraExtraId: updatedExtraId },
+    const productExtra = await ProductExtra.findOne({
+      where: { productId, extraId: updatedExtraId },
     });
-    return res.status(200).json(ProductExtra);
+    return res.status(200).json(productExtra);
   } catch (error) {
     console.error('Error editing product extras:', error);
     return next(new AppError('Internal server error', 500));
@@ -555,12 +614,12 @@ const editProductExtra = async (req, res, next) => {
 
 // Delete all extras for a product
 const deleteProductExtras = async (req, res, next) => {
-  const { ProductProductId } = req.params;
+  const { productId } = req.params;
   try {
-    const productExtras = await productExtra.findAll({
-      where: { ProductProductId },
+    const productExtras = await ProductExtra.findAll({
+      where: { productId },
     });
-    if (!productExtras) {
+    if (productExtras.length === 0) {
       return next(new AppError('Product extras not found', 404));
     }
     await Promise.all(
@@ -585,16 +644,16 @@ const uploadMenu = async (req, res, next) => {
     const menuImage = req.file.buffer.toString('base64');
     const ownerId = req.user.id; // Extract ownerId from token
     // Find the restaurant associated with the owner
-    const restaurant = await Resturant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found for the owner', 404));
     }
 
     // Save menu to database
-    const menu = await Restaurant_menu.create({
+    const menu = await RestaurantMenu.create({
       description,
       menuImage,
-      resturantId: restaurant.resturantId,
+      restaurantId: restaurant.restaurantId,
     });
 
     // Send response
@@ -606,16 +665,15 @@ const uploadMenu = async (req, res, next) => {
 
 // controller to get menu
 const getMenu = async (req, res, next) => {
-  const { menuId } = req.params;
+  const ownerId = req.user.id; // Extract ownerId from token
   try {
-    const menu = await Restaurant_menu.findByPk(menuId);
-    if (!menu) {
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    const menu = await RestaurantMenu.findAll({ where: { restaurantId } });
+    if (menu.length === 0) {
       return next(new AppError('Menu not found', 404));
     }
-    const description = menu.description;
-    const image = Buffer.from(menu.menuImage, 'base64');
-    const menuObj = { description: description, menuImage: image };
-    return res.status(200).send(menuObj);
+    return res.status(200).send(menu);
   } catch (error) {
     console.error('Error getting menu:', error);
     return next(new AppError('Internal server error', 500));
@@ -627,7 +685,7 @@ const editMenu = async (req, res, next) => {
   const { menuId } = req.params;
   const { description } = req.body;
   try {
-    const menu = await Restaurant_menu.findByPk(menuId);
+    const menu = await RestaurantMenu.findByPk(menuId);
     if (!menu) {
       return next(new AppError('Menu not found', 404));
     }
@@ -636,30 +694,16 @@ const editMenu = async (req, res, next) => {
       menu.menuImage = req.file.buffer.toString('base64');
     }
     await menu.save();
+    return res.status(200).json(menu);
   } catch (error) {
     console.error('Error editing menu:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
 
-// controller to delete menu
-const deleteMenu = async (req, res, next) => {
-  const { menuId } = req.params;
-  try {
-    const menu = await Restaurant_menu.findByPk(menuId);
-    if (!menu) {
-      return next(new AppError('Menu not found', 404));
-    }
-    await menu.destroy();
-  } catch (error) {
-    console.error('Error deleting menu:', error);
-    return next(new AppError('Internal server error', 500));
-  }
-};
-
 module.exports = {
   createOwner,
-  loginOwner,
+  login,
   getOwnerById,
   editOwner,
   deleteOwner,
@@ -667,7 +711,6 @@ module.exports = {
   getAllRestaurants,
   getRestaurantById,
   editRestaurantById,
-  deleteRestaurantById,
   createProducts,
   getAllProducts,
   getProductById,
@@ -686,7 +729,7 @@ module.exports = {
   uploadMenu,
   getMenu,
   editMenu,
-  deleteMenu,
   getAllWorkers,
   updateWorker,
+  deleteOwnerRestaurant,
 };
