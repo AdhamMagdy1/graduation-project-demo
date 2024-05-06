@@ -37,6 +37,15 @@ const fakeOrders = [
 		phone: 789456123,
 		bill: 220,
 		address: "miami",
+		status: 'waiting',
+	},
+	{
+		id: nanoid(),
+		customer: "name",
+		product: "burger",
+		phone: 789456123,
+		bill: 220,
+		address: "miami",
 		status: 'delieverd',
 	}
 ];
