@@ -87,7 +87,7 @@ const login = async (req, res, next) => {
 };
 
 // controller function to get owner by id
-const getOwnerById = async (req, res, next) => {
+const getOwner = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   try {
     const owner = await Owner.findByPk(ownerId/*, {
@@ -253,7 +253,7 @@ const deleteRestaurantDeliveryAreas = async (req, res, next) => {
 
 
 // Controller function to get restaurant information by ID
-const getRestaurantById = async (req, res, next) => {
+const getRestaurant = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
 
   try {
@@ -321,7 +321,7 @@ const updateWorker = async (req, res, next) => {
 };
 
 // Controller function to edit restaurant information by ID
-const editRestaurantById = async (req, res, next) => {
+const editRestaurant = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   const { name, description, subscription, themeColor } = req.body;
   try {
@@ -368,31 +368,6 @@ const deleteOwnerRestaurant = async (req, res, next) => {
 };
 
 
-
-const createProduct = async (req, res, next) => {
-  const ownerId = req.user.id; // Extract ownerId from token
-  const restaurant = await Restaurant.findOne({ where: { ownerId } });
-  const restaurantId = restaurant.restaurantId;
-  const { name, description, price, quantity, category, size } = req.body;
-  const ingredientData = req.body.ingredientData;
-  try {
-    const createdProduct = await Product.create({ name, description, price, quantity, category, size, restaurantId });
-    // console.log('createdProduct:', createdProduct);
-    await createdProduct.save();
-    const ingredients = await Promise.all(ingredientData.map(async (ingredient) => {
-      const ingredientName = ingredient.ingredientName;
-      const createdIngredient = await ProductIngredient.create({ ingredientName, productId: createdProduct.productId });
-      await createdIngredient.save();
-      return createdIngredient;
-    }));
-    res.status(201).json({ message: 'Product created successfully', product: createdProduct, ingredients: ingredients })
-  } catch (error) {
-    console.error('Error creating product:', error);
-    next(new AppError('Internal server error', 500));
-  }
-};
-
-
 // Get all ingredients for a product
 const getAllProductIngredients = async (req, res, next) => {
   const { productId } = req.params;
@@ -410,10 +385,14 @@ const getAllProductIngredients = async (req, res, next) => {
 
 
 
+
+
 // Create a new product
 // Create multiple products
-const createProducts = async (req, res, next) => {
-  const productsData = req.body.products; // Array of products
+const createProduct = async (req, res, next) => {
+  const productData = req.body.product;
+  const ingredientsData = req.body.ingredientData;
+  const productExtrasData = req.body.productExtras;
   const ownerId = req.user.id; // Extract ownerId from token
 
   try {
@@ -423,8 +402,6 @@ const createProducts = async (req, res, next) => {
       return next(new AppError('Restaurant not found for the owner', 404));
     }
 
-    const createdProducts = await Promise.all(
-      productsData.map(async (productData) => {
         const { name, description, price, quantity, categoryId, size } = productData;
         // Create product with associated restaurantId
         const newProduct = await Product.create({
@@ -436,14 +413,22 @@ const createProducts = async (req, res, next) => {
           size,
           restaurantId: restaurant.restaurantId,
         });
-        return newProduct;
-      })
-    );
-
-    res.status(201).json({
-      message: 'Products created successfully',
-      products: createdProducts,
-    });
+        const ingredients = await Promise.all(ingredientsData.map(async (ingredient) => {
+          const ingredientName = ingredient.ingredientName;
+          const createdIngredient = await ProductIngredient.create({ ingredientName, productId: newProduct.productId });
+          await createdIngredient.save();
+          return createdIngredient;
+        }));
+        
+        // Associate extras with the product
+        const extras = await associateExtrasWithProduct(newProduct.productId, productExtrasData);
+        
+        res.status(201).json({
+          message: 'Products created successfully',
+          product: newProduct,
+          ingredients,
+          extras,
+        });
   } catch (error) {
     console.error('Error creating products:', error);
     next(new AppError('Internal server error', 500));
@@ -608,36 +593,24 @@ const deleteExtraById = async (req, res, next) => {
 };
 
 // Associate extras with a product
-const associateExtrasWithProduct = async (req, res, next) => {
-  const { productId } = req.params;
-  const extras = req.body.extras;
-
+const associateExtrasWithProduct = async (productId, extrasData) => {
   try {
-    // Find the product
-    const product = await Product.findByPk(productId);
-    if (!product) {
-      return next(new AppError('Product not found', 404));
-    }
-    let associated;
+    // let associated;
     // Associate extras with the product using the ProductExtra table
-    await Promise.all(
-      extras.map(async (extraId) => {
+    const extras = await Promise.all(
+      extrasData.map(async (extraId) => {
         const extra = await Extra.findByPk(extraId);
         if (!extra) {
           return next(new AppError(`Extra with ID ${extraId} not found`, 404));
         }
-        // Create an entry in the ProductExtra table to associate the product with the extra
-        associated = await ProductExtra.create({
+        const associated = await ProductExtra.create({
           productId,
           extraId,
         });
+        return associated;
       })
     );
-
-    res.status(200).json({
-      message: 'Extras associated with product successfully',
-      data: associated,
-    });
+    return extras;
   } catch (error) {
     console.error('Error associating extras with product:', error);
     next(new AppError('Internal server error', 500));
@@ -842,9 +815,11 @@ const editCategory = async (req, res, next) => {
 };
 
 // Controller to get all the categories of a resturant
-const getCategoriesByRestaurantId = async (req, res, next) => {
-  const restaurantId = req.params.restaurantId;
+const getRestaurantCategories = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract ownerId from token
   try {
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
     const categories = await Category.findAll({ where: { restaurantId } });
     res.status(200).json({ categories });
   } catch (error) {
@@ -871,14 +846,14 @@ const deleteCategory = async (req, res, next) => {
 module.exports = {
   createOwner,
   login,
-  getOwnerById,
+  getOwner,
   editOwner,
   deleteOwner,
   createRestaurant,
   getAllRestaurants,
-  getRestaurantById,
-  editRestaurantById,
-  createProducts,
+  getRestaurant,
+  editRestaurant,
+  createProduct,
   getAllProducts,
   getProductById,
   editProductById,
@@ -902,9 +877,8 @@ module.exports = {
   createCategory,
   editCategory,
   deleteCategory,
-  getCategoriesByRestaurantId,
-  createProduct,
+  getRestaurantCategories,
   getAllProductIngredients,
   getRestaurantDeliveryAreas,
-  deleteRestaurantDeliveryAreas
+  deleteRestaurantDeliveryAreas // no routes for this
 };
