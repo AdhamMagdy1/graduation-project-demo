@@ -6,25 +6,11 @@ const { redisClient } = require('../config/database'); // Import the redis clien
 const { AppError } = require('../utils/error'); // Import the custom error class
 
 const {
-  Restaurant,
   Order,
-  OrderItem,
-  ItemExtra,
   Address,
   CustomerPhoneNumber,
   Customer
 } = require('../models/allModels'); // Import the customer related models
-
-
-// Customer has:
-// - Address
-// - Order
-// - CustomerPhoneNumber
-
-
-// Order has:
-// - OrderItem
-// - ItemExtra
 
 
 const customerController = {
@@ -59,7 +45,7 @@ const customerController = {
         },
       });
       // Generate JWT for user
-      const token = jwt.sign({id: user.email }, process.env.JWT_SECRET, { // check whether to change the user to customer.customerId or not
+      const token = jwt.sign({id: user.email }, process.env.JWT_SECRET, {
         expiresIn: '180h',
       });
       console.log(customer, created);
@@ -68,21 +54,6 @@ const customerController = {
     } catch (error) {
       console.error(error);
       res.status(401).json({ error: 'Invalid token' });
-    }
-  },
-  
-  getRestaurantMiddleware: async (req, res, next) => {
-    try {
-      const restaurantId = req.params.restaurantId; // figure how to get the restaurant id from the link
-      const restaurant = await Restaurant.findByPk(restaurantId);
-      if (!restaurant) {
-        return next(new AppError("Restaurant not found", 404));
-      }
-      req.restaurantId = restaurantId;
-      next();
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
     }
   },
 
@@ -100,11 +71,9 @@ const customerController = {
     }
   },
 
-  // editWaitingOrder: async (req, res, next) => {},
-
   createOrder: async (req, res, next) => {
     customerEmail = req.user.id;
-    const restaurantId = req.restaurantId;
+    const { restaurantId } = req.body;
     try {
       const deliveyCost = 20;
       const customer = await Customer.findOne({ where: { email: customerEmail } });
@@ -123,6 +92,41 @@ const customerController = {
         (await redisClient).json.del(`customerId:${customerId}`);
         return res.status(201).json({ order });
       });
+    } catch (error) {
+      console.error("Error :", error);
+      return next(new AppError("Internal Server Error", 500));
+    }
+  },
+
+  editOrderStatus: async (req, res, next) => {
+    const orderId = req.params.orderId;
+    try {
+      const order = await Order.findByPk(orderId);
+      if (!order) {
+        return next(new AppError("Order not found", 404));
+      }
+      if (order.status === "pending") {
+        order.status = "finished";
+        await order.save();
+        return res.status(200).json({ order });
+      } else {
+        order.status = "pending";
+        await order.save();
+        return res.status(200).json({ order });
+      }
+    } catch (error) {
+      console.error("Error :", error);
+      return next(new AppError("Internal Server Error", 500));
+    }
+  },
+
+  getAllOrders : async (req, res, next) => {
+    try {
+      const orders = await Order.findAll();
+      if (orders.length === 0) {
+        return next(new AppError("No orders found", 404));
+      }
+      return res.status(200).json({ orders });
     } catch (error) {
       console.error("Error :", error);
       return next(new AppError("Internal Server Error", 500));
@@ -181,6 +185,5 @@ const customerController = {
   }
 
 };
-
 
 module.exports = customerController;
