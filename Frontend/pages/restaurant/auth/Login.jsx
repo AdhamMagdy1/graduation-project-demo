@@ -6,6 +6,7 @@ const Login = () => {
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [accountType, setAccountType] = useState('');
 	const [errMsg, setErrMsg] = useState('');
 	const [success, setSuccess] = useState(false);
 	const navigate = useNavigate();
@@ -20,9 +21,11 @@ const Login = () => {
 		const data = {
 			"email": email,
 			"password": password,
+			"accountType": accountType
 		};
 
 		const login = async () => {
+			console.log(data);
 			try {
 				const response = await fetch('http://localhost:5000/restaurant/login', {
 					method: 'POST',
@@ -36,6 +39,7 @@ const Login = () => {
 					setErrMsg(result.message);
 				} else {
 					setSuccess(true);
+
 
 					const token = result.token;
 					console.log(token);
@@ -53,7 +57,7 @@ const Login = () => {
 					localStorage.setItem("userData", JSON.stringify(userData));
 					localStorage.setItem("isLogged", true);
 
-					navigate("/restaurant/menu");
+					navigate("/restaurant/stats");
 
 				}
 
@@ -87,6 +91,21 @@ const Login = () => {
 						placeholder="enter password"
 						className="auth-form-input input-block"
 						onChange={(e) => setPassword(e.target.value)} />
+
+					<div className="radio-container">
+						<label className='label' htmlFor="owner">owner</label>
+						<input type="radio" name="account" id="owner" value="owner"
+							onChange={(e) => setAccountType(e.target.value)}
+						/>
+					</div>
+
+
+					<div className="radio-container">
+						<label className='label' htmlFor="worker">worker</label>
+						<input type="radio" name="account" id="worker" value="worker"
+							onChange={(e) => setAccountType(e.target.value)}
+						/>
+					</div>
 
 					<input type="submit" value="sign in" className="btn btn-block" />
 

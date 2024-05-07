@@ -4,6 +4,9 @@ import Login from "../pages/restaurant/auth/Login";
 import Menu from "../pages/restaurant/dashboard/Menu";
 import Orders from "../pages/restaurant/dashboard/Orders";
 import Chat from '../pages/customer/Chat';
+import Stats from '../pages/restaurant/dashboard/Stats';
+import Extras from '../pages/restaurant/dashboard/Extras';
+import Categories from '../pages/restaurant/dashboard/Categories';
 
 function App() {
 
@@ -14,6 +17,9 @@ function App() {
           <Route path="/" element={<Navigate to={"/restaurant/register"} />} />
           <Route path="/restaurant/login" element={<Login />} />
           <Route path="/restaurant/register" element={<Register />} />
+          <Route path="/restaurant/stats" element={<Stats />} />
+          <Route path="/restaurant/categories" element={<Categories />} />
+          <Route path="/restaurant/extras" element={<Extras />} />
           <Route path="/restaurant/menu" element={<Menu />} />
           <Route path="/restaurant/orders" element={<Orders />} />
           <Route path="/restaurant/chat" element={<Chat />} />

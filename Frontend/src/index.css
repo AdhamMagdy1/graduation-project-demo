@@ -1,11 +1,13 @@
 /* || GLOBAL_RULES */
 :root {
   --primary-1: #eaa90f;
+  --primary-light: #eba90f4d;
   --primary-2: #ffe9bd;
   --white: #fff;
   --black: #000;
   --border: #898888;
   --side-background: #363638;
+  --light-red: #ff3535;
 }
 * {
   padding: 0;
@@ -44,6 +46,7 @@ ul {
 .special-heading .second-word {
   color: var(--primary-1);
 }
+/* || BUTTONS */
 .btn {
   display: block;
   border-color: transparent;
@@ -55,8 +58,8 @@ ul {
   background-color: var(--primary-1);
   cursor: pointer;
 }
-.btn-close {
-  background-color: rgb(255, 61, 61);
+.btn-red {
+  color: var(--light-red);
 }
 .btn-block {
   width: 100%;
@@ -65,6 +68,15 @@ ul {
 .btn-black {
   background-color: var(--black);
 }
+.btn-action {
+  cursor: pointer;
+  display: inline;
+  background-color: transparent;
+  border-color: transparent;
+  font-size: 1.2rem;
+}
+/*================================*/
+
 .page-container {
   width: 100vw;
   height: 100vh;
@@ -80,8 +92,7 @@ ul {
   justify-content: start;
   height: 100vh;
   overflow: hidden;
-  width: fit-content;
-  width: 215px;
+  width: 250px;
 }
 .side-container {
   background-color: var(--side-background);
@@ -102,17 +113,45 @@ ul {
 }
 .side-link:hover {
   padding-left: 0.5rem;
-  background-color: hsla(42, 88%, 49%, 0.3);
+  background-color: var(--primary-light);
 }
 .link-icon {
+  display: inline;
   color: var(--primary-1);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 .side-link .a {
   text-transform: capitalize;
   color: var(--white);
   text-decoration: none;
 }
+
+.dropdown-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  text-align: center;
+  color: var(--white);
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 1rem;
+  background-color: transparent;
+  border-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.dropdown-btn:hover {
+  background-color: var(--primary-light);
+}
+.dropdown-btn svg {
+  font-size: 1.3rem;
+  color: var(--primary-1);
+  transition: 0.5s;
+}
+.flipped {
+  transform: rotateX(180deg);
+}
+
 /*===============*/
 
 /* || AUTH_FORMS */
@@ -178,12 +217,31 @@ main {
 }
 .auth-form-input {
   color: var(--white);
+  margin-bottom: 0.75rem;
+}
+.radio-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+input[type='radio'] {
+  appearance: none;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #999;
+  border-radius: 50%;
+  outline: none;
+  box-shadow: 0 0 5px #999;
+  transition: box-shadow 0.3s ease;
+}
+input[type='radio']:checked {
+  background: var(--primary-1);
 }
 input:focus {
   outline: transparent;
-}
-input {
-  margin-bottom: 0.75rem;
 }
 .info {
   font-size: 0.7rem;
@@ -203,22 +261,22 @@ input {
 }
 /*==============*/
 
-/* || MENU */
-.menu {
+/* || CATEGORIES */
+.categories {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 1rem;
   overflow-y: auto;
 }
-.menu-nav {
+.categories-nav {
   padding: 1.5rem;
   display: flex;
   align-items: start;
   justify-content: space-between;
   height: fit-content;
 }
-.menu-heading {
+.categories-heading {
   font-size: 2rem;
   text-transform: capitalize;
   font-weight: 500;
@@ -226,12 +284,12 @@ input {
 .add-item {
   width: fit-content;
 }
-.menu-items {
+.categories-items {
   padding: 0.5rem 1rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
 }
-.menu-item {
+.category {
   width: fit-content;
   padding: 0.5rem 0.75rem;
   text-align: center;
@@ -280,8 +338,8 @@ input {
 }
 .modal-container {
   background-color: var(--white);
-  min-width: 50vw;
-  height: 50vh;
+  min-width: 40vw;
+  height: fit-content;
   border-radius: var(--borderRadius);
   max-width: var(--fixed-width);
   text-align: center;
@@ -296,6 +354,11 @@ input {
 }
 .modal-form {
   width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 .close-modal-btn {
   position: absolute;
@@ -334,7 +397,6 @@ table {
 table tr:nth-child(even) {
   background-color: #e8e8e8;
 }
-
 tr {
   border-bottom: 1px solid #363638;
 }
@@ -345,9 +407,29 @@ th {
 td,
 tr,
 th {
-  padding: 1rem 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 td {
   text-align: center;
+  text-transform: capitalize;
+}
+.red,
+.green,
+.blue {
+  padding: 0 0 0 0;
+  margin-top: 2px;
+  width: fit-content;
+  color: var(--white);
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+.green {
+  background-color: #7df971;
+}
+.blue {
+  background-color: #44d0fb;
+}
+.red {
+  background-color: #fc8585;
 }
 /*==============*/
