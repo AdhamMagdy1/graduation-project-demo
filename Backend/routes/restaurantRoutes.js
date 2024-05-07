@@ -11,13 +11,12 @@ const {
   login,
   editOwner,
   deleteOwner,
-  getOwnerById,
+  getOwner,
   deleteOwnerRestaurant,
   createRestaurant,
   getAllRestaurants,
-  getRestaurantById,
-  editRestaurantById,
-  createProducts,
+  getRestaurant,
+  editRestaurant,
   getAllProducts,
   getProductById,
   editProductById,
@@ -27,7 +26,7 @@ const {
   getExtraById,
   editExtraById,
   deleteExtraById,
-  associateExtrasWithProduct,
+  // associateExtrasWithProduct,
   getAssociatedExtrasForProduct,
   getAllProductExtras,
   editProductExtra,
@@ -37,17 +36,21 @@ const {
   editMenu,
   getAllWorkers,
   updateWorker,
+  createProduct,
+  getAllProductIngredients,
+  getRestaurantDeliveryAreas,
   createCategory,
   editCategory,
   deleteCategory,
-  getCategoriesByRestaurantId,
+  getRestaurantCategories,
+  // deleteRestaurantDeliveryAreas, // no routes for this
 } = require('../controllers/restaurantController');
 const authenticateUser = require('../middleware/authenticateUser');
 
 // Route to create a new restaurant Owner
 router.post('/create', createOwner);
 router.post('/login', login);
-router.get('/owner/', authenticateUser, getOwnerById);
+router.get('/owner/', authenticateUser, getOwner);
 router.put('/owner/', authenticateUser, editOwner);
 router.delete('/owner/account', authenticateUser, deleteOwner);
 
@@ -59,20 +62,20 @@ router.post(
   createRestaurant
 );
 router.get('/all', authenticateUser, getAllRestaurants);
-router.get('/info', authenticateUser, getRestaurantById);
+router.get('/info', authenticateUser, getRestaurant);
 router.get('/workers', authenticateUser, getAllWorkers);
 router.put('/worker', authenticateUser, updateWorker);
 router.put(
   '/edit',
   upload.single('logo'),
   authenticateUser,
-  editRestaurantById
+  editRestaurant
 );
 router.delete('/delete', authenticateUser, deleteOwnerRestaurant);
 
 router.get('/products/productExtras', authenticateUser, getAllProductExtras);
 // products
-router.post('/products', authenticateUser, createProducts);
+router.post('/product', authenticateUser, createProduct);
 router.get('/products/all', authenticateUser, getAllProducts);
 router.get('/products/:productId', authenticateUser, getProductById);
 router.put('/products/:productId', authenticateUser, editProductById);
@@ -86,11 +89,11 @@ router.put('/extras/:extraId', authenticateUser, editExtraById);
 router.delete('/extras/:extraId', authenticateUser, deleteExtraById);
 
 //productsExstras
-router.post(
-  '/products/:productId/extras',
-  authenticateUser,
-  associateExtrasWithProduct
-);
+// router.post(
+//   '/products/:productId/extras',
+//   authenticateUser,
+//   associateExtrasWithProduct
+// );
 router.get(
   '/products/:productId/extras',
   authenticateUser,
@@ -124,13 +127,14 @@ router.put(
   editMenu
 );
 
+// Ingredients
+router.get('/ingredient/:productId', authenticateUser, getAllProductIngredients);
+// Delivery Areas
+router.get('/deliveryAreas', authenticateUser, getRestaurantDeliveryAreas);
+
 // Category routes
 router.post('/category', authenticateUser, createCategory);
+router.get('/category/all', authenticateUser, getRestaurantCategories);
 router.put('/category/:id', authenticateUser, editCategory);
-router.get(
-  '/category/:restaurantId',
-  authenticateUser,
-  getCategoriesByRestaurantId
-);
 router.delete('/category/:id', authenticateUser, deleteCategory);
 module.exports = router;
