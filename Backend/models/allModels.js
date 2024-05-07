@@ -10,14 +10,18 @@ const Customer = sequelize.define(
       primaryKey: true,
       allowNull: false,
     },
-    firstName: {
+    name: {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    lastName: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
+    // firstName: {
+    //   type: DataTypes.STRING(50),
+    //   allowNull: false,
+    // },
+    // lastName: {
+    //   type: DataTypes.STRING(50),
+    //   allowNull: false,
+    // },
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -78,10 +82,14 @@ const Restaurant = sequelize.define(
       type: DataTypes.STRING(20),
       allowNull: true,
     },
-    logo: {
-      type: DataTypes.BLOB,
-      allowNull: true,
+    logo : {
+      type:DataTypes.BLOB,
+      allowNull:true
     },
+    link:{
+      type:DataTypes.STRING(100),
+      allowNull: true
+    }
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -110,6 +118,10 @@ const Product = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    size: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    }
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -249,12 +261,12 @@ const RestaurantWorker = sequelize.define(
 const ProductIngredient = sequelize.define(
   'ProductIngredient',
   {
-    id: {
+    ingredientId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
+    ingredientName: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
@@ -282,6 +294,10 @@ const Order = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    orderDetails: {
+      type: DataTypes.JSON,
+      allowNull: true
+    }
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -501,4 +517,5 @@ module.exports = {
   RestaurantMenu,
   Owner,
   Category,
+  Customer,
 };

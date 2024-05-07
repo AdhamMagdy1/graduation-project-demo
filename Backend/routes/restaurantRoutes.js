@@ -37,6 +37,9 @@ const {
   editMenu,
   getAllWorkers,
   updateWorker,
+  createProduct,
+  getAllProductIngredients,
+  getRestaurantDeliveryAreas,
   createCategory,
   editCategory,
   deleteCategory,
@@ -72,11 +75,13 @@ router.delete('/delete', authenticateUser, deleteOwnerRestaurant);
 
 router.get('/products/productExtras', authenticateUser, getAllProductExtras);
 // products
+// test create product -> size is working
 router.post('/products', authenticateUser, createProducts);
 router.get('/products/all', authenticateUser, getAllProducts);
 router.get('/products/:productId', authenticateUser, getProductById);
 router.put('/products/:productId', authenticateUser, editProductById);
 router.delete('/products/:productId', authenticateUser, deleteProductById);
+router.delete('/category', authenticateUser, deleteProductsByCategory);
 
 // extras
 router.post('/extras', authenticateUser, createExtra);
@@ -123,6 +128,11 @@ router.put(
   authenticateUser,
   editMenu
 );
+
+// test following routes -> working
+router.post('/newProduct', authenticateUser, createProduct);
+router.get('/ingredient/all', authenticateUser, getAllProductIngredients);
+router.get('/deliveryAreas', authenticateUser, getRestaurantDeliveryAreas);
 
 // Category routes
 router.post('/category', authenticateUser, createCategory);

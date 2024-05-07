@@ -6,13 +6,15 @@ const { Op } = require('sequelize');
 const {
   Owner,
   Restaurant,
+  RestaurantDeliveryAreas,
+  ProductIngredient,
   Product,
   Extra,
   ProductExtra,
   RestaurantMenu,
   RestaurantWorker,
   Category,
-} = require('../models/allModels'); // Import the Restaurant Owner model
+} = require('../models/allModels'); // Import the Restaurant related models
 const { AppError } = require('../utils/error'); // Import the custom error class
 
 // Controller function to create a new restaurant Owner
@@ -88,7 +90,9 @@ const login = async (req, res, next) => {
 const getOwnerById = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   try {
-    const owner = await Owner.findByPk(ownerId);
+    const owner = await Owner.findByPk(ownerId/*, {
+      attributes: { exclude: ['password'] },
+    }*/);
     if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
@@ -115,7 +119,7 @@ const editOwner = async (req, res, next) => {
       owner.password = hashedPassword;
     }
     await owner.save();
-    return res.status(200).json(owner);
+    return res.status(200).json("owner updated successfully");
   } catch (error) {
     console.error('Error editing owner:', error);
     return next(new AppError('Internal server error', 500));
@@ -144,6 +148,7 @@ const deleteOwner = async (req, res, next) => {
 const createRestaurant = async (req, res, next) => {
   const { name, description, subscription, themeColor } = req.body;
   const logo = req.file.buffer.toString('base64');
+  const restaurantDeliveryAreas = JSON.parse(req.body.deliveryAreas);
   const ownerId = req.user.id; // Extract owner ID from token
 
   try {
@@ -156,13 +161,32 @@ const createRestaurant = async (req, res, next) => {
       logo,
       ownerId,
     });
+    
+    const restaurantId = newRestaurant.restaurantId;
+    // check docs for create function to see how to get the restaurant id and save function wether the id will be placed after the create function or after the save function
+    const restaurant = await Restaurant.findByPk(restaurantId);
+    restaurant.link = `/restaurant${restaurantId}`;
+    await restaurant.save();
+
+    // Update owner's hasRestaurant field
+    await Owner.update({ hasRestaurant: true }, { where: { ownerId } });
+    // Create delivery areas for the restaurant
+    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
+      const { city, area } = deliveryArea;
+      const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+        city,
+        area,
+        restaurantId,
+      });
+      return createdDeliveryArea
+    }));
 
     // Generate worker data based on restaurant information
-    const workerName = `${name}_${newRestaurant.restaurantId}`;
+    const workerName = `${name}_${restaurantId}`;
     const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}_${
       newRestaurant.restaurantId
     }@email.com`;
-    const workerPassword = `${name}_${newRestaurant.restaurantId}`;
+    const workerPassword = `${name}_${restaurantId}`;
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(workerPassword, 10);
@@ -172,13 +196,11 @@ const createRestaurant = async (req, res, next) => {
       name: workerName,
       email: workerEmail,
       password: hashedPassword,
-      restaurantId: newRestaurant.restaurantId,
+      restaurantId: restaurantId,
     });
-    // Update owner's hasRestaurant field
-    await Owner.update({ hasRestaurant: true }, { where: { ownerId } });
     return res
       .status(201)
-      .json({ restaurant: newRestaurant, worker: newWorker });
+      .json({ restaurant: restaurant, worker: newWorker, deliveryAreas: deliveryAreas});
   } catch (error) {
     console.error('Error creating restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -198,6 +220,37 @@ const getAllRestaurants = async (req, res, next) => {
     return next(new AppError('Internal server error', 500));
   }
 };
+
+const getRestaurantDeliveryAreas = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract owner ID from token
+  try {
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    const deliveryAreas = await RestaurantDeliveryAreas.findAll({ where: { restaurantId } });
+    if (deliveryAreas.length === 0) {
+      return next(new AppError('Delivery areas not found', 404));
+    }
+    return res.status(200).json(deliveryAreas);
+  } catch (error) {
+    console.error('Error getting delivery areas:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
+const deleteRestaurantDeliveryAreas = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract owner ID from token
+  const { deliveryAreasId } = req.body;
+  try {
+    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurantId = restaurant.restaurantId;
+    await RestaurantDeliveryAreas.destroy({ where: { deliveryAreasId, restaurantId } });
+    return res.status(200).json({ message: 'Delivery areas deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting delivery areas:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
 
 // Controller function to get restaurant information by ID
 const getRestaurantById = async (req, res, next) => {
@@ -314,6 +367,49 @@ const deleteOwnerRestaurant = async (req, res, next) => {
   }
 };
 
+
+
+const createProduct = async (req, res, next) => {
+  const ownerId = req.user.id; // Extract ownerId from token
+  const restaurant = await Restaurant.findOne({ where: { ownerId } });
+  const restaurantId = restaurant.restaurantId;
+  const { name, description, price, quantity, category, size } = req.body;
+  const ingredientData = req.body.ingredientData;
+  try {
+    const createdProduct = await Product.create({ name, description, price, quantity, category, size, restaurantId });
+    // console.log('createdProduct:', createdProduct);
+    await createdProduct.save();
+    const ingredients = await Promise.all(ingredientData.map(async (ingredient) => {
+      const ingredientName = ingredient.ingredientName;
+      const createdIngredient = await ProductIngredient.create({ ingredientName, productId: createdProduct.productId });
+      await createdIngredient.save();
+      return createdIngredient;
+    }));
+    res.status(201).json({ message: 'Product created successfully', product: createdProduct, ingredients: ingredients })
+  } catch (error) {
+    console.error('Error creating product:', error);
+    next(new AppError('Internal server error', 500));
+  }
+};
+
+
+// Get all ingredients for a product
+const getAllProductIngredients = async (req, res, next) => {
+  const { productId } = req.params;
+  try {
+    const ingredients = await ProductIngredient.findAll({ where: { productId } });
+    if (ingredients.length === 0) {
+      return next(new AppError('Ingredients not found', 404));
+    }
+    return res.status(200).json(ingredients);
+  } catch (error) {
+    console.error('Error getting ingredients:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
+
+
 // Create a new product
 // Create multiple products
 const createProducts = async (req, res, next) => {
@@ -329,7 +425,7 @@ const createProducts = async (req, res, next) => {
 
     const createdProducts = await Promise.all(
       productsData.map(async (productData) => {
-        const { name, description, price, quantity, categoryId } = productData;
+        const { name, description, price, quantity, categoryId, size } = productData;
         // Create product with associated restaurantId
         const newProduct = await Product.create({
           name,
@@ -337,6 +433,7 @@ const createProducts = async (req, res, next) => {
           price,
           quantity,
           categoryId,
+          size,
           restaurantId: restaurant.restaurantId,
         });
         return newProduct;
@@ -806,4 +903,8 @@ module.exports = {
   editCategory,
   deleteCategory,
   getCategoriesByRestaurantId,
+  createProduct,
+  getAllProductIngredients,
+  getRestaurantDeliveryAreas,
+  deleteRestaurantDeliveryAreas
 };
