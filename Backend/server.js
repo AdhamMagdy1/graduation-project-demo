@@ -65,7 +65,7 @@ const restaurant = io.of('/restaurant');
 runSocket(io, chat, restaurant);
 
 // Use the customer routes
-app.use(customerRoutes);
+app.use('/customer', customerRoutes);
 // Use the customer routes
 app.use('/restaurant', restaurantRoutes);
 
