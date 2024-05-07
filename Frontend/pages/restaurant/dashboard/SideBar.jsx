@@ -1,8 +1,10 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useState } from 'react';
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
 
-	const navigate = useNavigate();
+	const [isAddsOpen, setIsAddsOpen] = useState(false);
+
 
 	return (
 		<>
@@ -11,23 +13,58 @@ const SideBar = () => {
 					<div className="special-heading">our <span className="second-word">website</span></div>
 					<div className="side-links">
 
-						<Link to="/restaurant/menu" className="side-link" >
+						<Link to="/restaurant/stats" className="side-link" >
 							<div className="link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="#eaa90f" d="M14 9.9V8.2q.825-.35 1.688-.525T17.5 7.5q.65 0 1.275.1T20 7.85v1.6q-.6-.225-1.213-.337T17.5 9q-.95 0-1.825.238T14 9.9m0 5.5v-1.7q.825-.35 1.688-.525T17.5 13q.65 0 1.275.1t1.225.25v1.6q-.6-.225-1.213-.338T17.5 14.5q-.95 0-1.825.225T14 15.4m0-2.75v-1.7q.825-.35 1.688-.525t1.812-.175q.65 0 1.275.1T20 10.6v1.6q-.6-.225-1.213-.338T17.5 11.75q-.95 0-1.825.238T14 12.65M6.5 16q1.175 0 2.288.263T11 17.05V7.2q-1.025-.6-2.175-.9T6.5 6q-.9 0-1.788.175T3 6.7v9.9q.875-.3 1.738-.45T6.5 16m6.5 1.05q1.1-.525 2.213-.787T17.5 16q.9 0 1.763.15T21 16.6V6.7q-.825-.35-1.713-.525T17.5 6q-1.175 0-2.325.3T13 7.2zM12 20q-1.2-.95-2.6-1.475T6.5 18q-1.05 0-2.062.275T2.5 19.05q-.525.275-1.012-.025T1 18.15V6.1q0-.275.138-.525T1.55 5.2q1.15-.6 2.4-.9T6.5 4q1.45 0 2.838.375T12 5.5q1.275-.75 2.663-1.125T17.5 4q1.3 0 2.55.3t2.4.9q.275.125.413.375T23 6.1v12.05q0 .575-.487.875t-1.013.025q-.925-.5-1.937-.775T17.5 18q-1.5 0-2.9.525T12 20m-5-8.35" /></svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M0 13h16v2H0zm2-4h2v3H2zm3-4h2v7H5zm3 3h2v4H8zm3-6h2v10h-2z" /></svg>
 							</div>
-							<div className="a">menu</div>
+							<div className="a">stats</div>
 						</Link>
+
 						<Link to="/restaurant/orders" className="side-link" >
 							<div className="link-icon">
 								<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 2048 2048"><path fill="#eaa90f" d="m2029 1453l-557 558l-269-270l90-90l179 178l467-466zM1024 640H640V512h384zm0 256H640V768h384zm-384 128h384v128H640zM512 640H384V512h128zm0 256H384V768h128zm-128 128h128v128H384zm768-384V128H256v1792h896v128H128V0h1115l549 549v731l-128 128V640zm128-128h293l-293-293z" /></svg>
 							</div>
 							<div className="a">orders</div>
 						</Link>
+
+						<div className="dropdown">
+							<button
+								className='dropdown-btn'
+								onClick={() => setIsAddsOpen(!isAddsOpen)}>
+								<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20"><g fill="currentColor"><path d="M6.5 6a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m0 4a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m0 4a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0" /><path fillRule="evenodd" d="M7.5 6a1 1 0 0 1 1-1h7a1 1 0 1 1 0 2h-7a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h7a1 1 0 1 1 0 2h-7a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h7a1 1 0 1 1 0 2h-7a1 1 0 0 1-1-1" clipRule="evenodd" /></g></svg>
+								adds
+								<svg
+									className={isAddsOpen ? 'flipped' : ''}
+									xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M11.18 15.83L6.543 9.203C5.892 8.275 6.556 7 7.689 7h8.622c1.133 0 1.797 1.275 1.147 2.203l-4.639 6.627a1 1 0 0 1-1.638 0" /></svg>
+							</button>
+							{
+								isAddsOpen && (
+									<div className="dropdown-list">
+										<div className="option">
+											<Link to="/restaurant/menu" className="side-link" >
+												<div className="a">menu</div>
+											</Link>
+										</div>
+										<div className="option">
+											<Link to="/restaurant/categories" className="side-link" >
+												<div className="a">categories</div>
+											</Link>
+										</div>
+										<div className="option">
+											<Link to="/restaurant/extras" className="side-link" >
+												<div className="a">extras</div>
+											</Link>
+										</div>
+									</div>
+								)
+							}
+						</div>
+
 					</div>
 				</div>
 			</section>
 		</>
-	)
-}
+	);
+};
 
-export default SideBar
+export default SideBar;
