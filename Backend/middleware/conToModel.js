@@ -9,6 +9,8 @@ const fetch = require('node-fetch');
 
 const getModelRes = async (communicatedMessage) => {
   try {
+    let result = ''; // Initialize an empty string to store the result
+
     // Sending the communicated message via fetch POST request
     const response = await fetch(
       'http://localhost:5005/webhooks/rest/webhook',
@@ -27,14 +29,16 @@ const getModelRes = async (communicatedMessage) => {
     // Looping through each object in the response array
     for (const data of responseData) {
       if (data.hasOwnProperty('custom')) {
-        // If 'custom' property exists, call the customAction function and return its response
-        const customResponse = customAction(data.custom);
-        return customResponse;
+        // If 'custom' property exists, call the customAction function and append its response to the result
+        const customResponse = await customAction(data.custom);
+        result += customResponse;
       } else {
-        // If 'custom' property doesn't exist, return the message
-        return data.text;
+        // If 'custom' property doesn't exist, append the message to the result
+        result += data.text;
       }
     }
+
+    return result; // Return the concatenated result string
   } catch (error) {
     console.error('Error:', error);
     return 'Error occurred while processing the request.';
@@ -42,10 +46,20 @@ const getModelRes = async (communicatedMessage) => {
 };
 
 // Custom action function
+// Custom action function
 const customAction = (customObject) => {
-  // Implement custom action logic here based on the customObject
-  // For now, just returning a sample response
-  return 'Custom action performed successfully.';
+  if (customObject.code === 420) {
+    // If code is 420, return nothing
+    return '';
+  } else if (customObject.code === 422) {
+    // If code is 422, call createOrderMessage function and return food extra and food size
+    const foodExtra = customObject.foodExtra || '';
+    const foodSize = customObject.foodSize || '';
+    return `Food Extra: ${foodExtra}, Food Size: ${foodSize}`;
+  } else {
+    // For other codes, return a default message
+    return 'Default custom action performed.';
+  }
 };
 
 module.exports = {
