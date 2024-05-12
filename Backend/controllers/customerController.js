@@ -50,7 +50,6 @@ const customerController = {
       });
       console.log(customer, created);
       res.json({ user, token });
-      // console.log({ user, token })
     } catch (error) {
       console.error(error);
       res.status(401).json({ error: 'Invalid token' });
