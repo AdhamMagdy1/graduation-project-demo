@@ -1,14 +1,10 @@
-const {
-  Order,
-  CustomerPhoneNumber,
-} = require('../models/allModels'); // Import the customer related models
-
+const { Order, CustomerPhoneNumber } = require('../models/allModels'); // Import the customer related models
 
 const getModelRes2 = (mainNamespace, communicatedMassage) => {
   return `user: ${communicatedMassage.metadata.socket_id} have sent this message ${communicatedMassage.message}`;
 };
 
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 
 const getModelRes = async (mainNamespace, communicatedMessage) => {
   try {
@@ -56,20 +52,24 @@ const customAction = async (mainNamespace, customObject) => {
     return '';
   } else if (customObject.code === 422) {
     // If code is 422, call createOrderMessage function and return food extra and food size
-    const { restaurant_id, customer_id/*, socket_id*/, phone_number } = customObject;
+    const { restaurant_id, customer_id /*, socket_id*/, phone_number } =
+      customObject;
     const customerPhoneNumber = await CustomerPhoneNumber.create({
       phoneNumber: phone_number,
-      customerId: customer_id
+      customerId: customer_id,
     });
-    const orderDetails = { food: customObject.food_extra, size: customObject.food_size };
+    const orderDetails = {
+      food: customObject.food_extra,
+      size: customObject.food_size,
+    };
     const order = await Order.create({
       deliveryCost: 20,
       orderDetails,
       restaurantId: restaurant_id,
-      customerId: customer_id
+      customerId: customer_id,
     });
     mainNamespace.to(`${restaurant_id}`).emit('order', order);
-    return "";
+    return '';
     // return `Food Extra: ${foodExtra}, Food Size: ${foodSize}`;
   } else {
     // For other codes, return a default message
@@ -79,13 +79,19 @@ const customAction = async (mainNamespace, customObject) => {
 
 const orderState = async (order) => {
   if (order.state === 'finished') {
-    const order = await Order.update({ state: 'pending' }, { where: { id: order.id } });
+    const order = await Order.update(
+      { state: 'pending' },
+      { where: { id: order.id } }
+    );
     return order;
   } else {
-    const order = await Order.update({ state: 'finished' }, { where: { id: order.id } });
+    const order = await Order.update(
+      { state: 'finished' },
+      { where: { id: order.id } }
+    );
     return order;
   }
-}
+};
 
 module.exports = {
   getModelRes,
