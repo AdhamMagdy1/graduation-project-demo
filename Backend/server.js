@@ -39,7 +39,7 @@ const io = new Server(server, {
     origin: [
       `http://localhost:${process.env.FRONTEND_PORT}`,
       'https://admin.socket.io',
-      "http://localhost:3001"
+      'http://localhost:3000'
     ],
     credentials: true,
   },
@@ -59,13 +59,13 @@ io.adapter(adapter);
 // console.log(io.sockets.adapter);
 
 const chat = io.of('/chat');
-const restaurant = io.of('/restaurant');
+// const restaurant = io.of('/restaurant');
 
 // Import socket.js functionality and run it
-runSocket(io, chat, restaurant);
+runSocket(io, chat);
 
 // Use the customer routes
-app.use(customerRoutes);
+app.use('/customer', customerRoutes);
 // Use the customer routes
 app.use('/restaurant', restaurantRoutes);
 
