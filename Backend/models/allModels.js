@@ -289,10 +289,12 @@ const Order = sequelize.define(
     status: {
       type: DataTypes.STRING(20),
       allowNull: false,
+      defaultValue: 'pending'
     },
     orderTime: {
       type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: Date.now()
     },
     orderDetails: {
       type: DataTypes.JSON,
