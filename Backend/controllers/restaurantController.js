@@ -90,9 +90,9 @@ const login = async (req, res, next) => {
 const getOwner = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   try {
-    const owner = await Owner.findByPk(ownerId/*, {
+    const owner = await Owner.findByPk(ownerId, {
       attributes: { exclude: ['password'] },
-    }*/);
+    });
     if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
@@ -114,10 +114,6 @@ const editOwner = async (req, res, next) => {
     }
     owner.name = name || owner.name;
     owner.email = email || owner.email;
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      owner.password = hashedPassword;
-    }
     await owner.save();
     return res.status(200).json("owner updated successfully");
   } catch (error) {
@@ -125,6 +121,29 @@ const editOwner = async (req, res, next) => {
     return next(new AppError('Internal server error', 500));
   }
 };
+
+//controller to update password
+// const ownerUpdatePassword = async (req, res, next) => {
+//   const { currentPassword, newPassword } = req.body;
+//   const ownerId = req.user.id; // Extract owner ID from token
+//   try {
+//     const owner = await Owner.findByPk(ownerId);
+//     if (!owner) {
+//       return next(new AppError('Owner not found', 404));
+//     }
+//     const isPasswordCorrect = await bcrypt.compare(currentPassword, owner.password);
+//     if (!isPasswordCorrect) {
+//       return next(new AppError('Invalid current password', 400));
+//     }
+//     const hashedPassword = await bcrypt.hash(newPassword, 10);
+//     owner.password = hashedPassword;
+//     await owner.save();
+//     return res.status(200).json({ message: 'Password updated successfully' });
+//   } catch (error) {
+//     console.error('Error updating owner password', error);
+//     return next(new AppError('Internal server error', 500));
+//   }
+// }
 
 // Controller function to delete owner
 const deleteOwner = async (req, res, next) => {
@@ -258,7 +277,7 @@ const getRestaurant = async (req, res, next) => {
 
   try {
     // Find restaurant by ID
-    const restaurant = await Restaurant.findOne({ where: { ownerId } });
+    const restaurant = await Restaurant.findOne({attributes: { exclude: ['logo'] }}, { where: { ownerId } });
     if (!restaurant) {
       return next(new AppError('Restaurant not found', 404));
     }
@@ -896,5 +915,7 @@ module.exports = {
   getAllProductIngredients,
   getRestaurantDeliveryAreas,
   getAllCategoryProducts,
-  deleteRestaurantDeliveryAreas // no routes for this
+  deleteRestaurantDeliveryAreas, // no routes for this
+  // new
+  // ownerUpdatePassword
 };
