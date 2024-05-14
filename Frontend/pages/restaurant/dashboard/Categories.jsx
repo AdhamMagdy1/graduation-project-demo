@@ -61,7 +61,7 @@ const Categories = () => {
 		setIsLoading(true);
 		try {
 			const token = localStorage.getItem("token");
-			const response = await fetch(`${URL}/restaurant/category/12`, {
+			const response = await fetch(`${URL}/restaurant/category/all`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
