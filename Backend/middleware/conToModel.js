@@ -1,13 +1,16 @@
-// const getModelRes = (communicatedMassage) => {
-//   return `user: ${communicatedMassage.socketId} have sent this message ${communicatedMassage.message}`;
-// };
-// module.exports = {
-//   getModelRes,
-// };
+const {
+  Order,
+  CustomerPhoneNumber,
+} = require('../models/allModels'); // Import the customer related models
+
+
+const getModelRes2 = (mainNamespace, communicatedMassage) => {
+  return `user: ${communicatedMassage.metadata.socket_id} have sent this message ${communicatedMassage.message}`;
+};
 
 const fetch = require('node-fetch');
 
-const getModelRes = async (communicatedMessage) => {
+const getModelRes = async (mainNamespace, communicatedMessage) => {
   try {
     let result = ''; // Initialize an empty string to store the result
 
@@ -30,7 +33,7 @@ const getModelRes = async (communicatedMessage) => {
     for (const data of responseData) {
       if (data.hasOwnProperty('custom')) {
         // If 'custom' property exists, call the customAction function and append its response to the result
-        const customResponse = await customAction(data.custom);
+        const customResponse = await customAction(mainNamespace, data.custom);
         result += customResponse;
       } else {
         // If 'custom' property doesn't exist, append the message to the result
@@ -47,21 +50,45 @@ const getModelRes = async (communicatedMessage) => {
 
 // Custom action function
 // Custom action function
-const customAction = (customObject) => {
+const customAction = async (mainNamespace, customObject) => {
   if (customObject.code === 420) {
     // If code is 420, return nothing
     return '';
   } else if (customObject.code === 422) {
     // If code is 422, call createOrderMessage function and return food extra and food size
-    const foodExtra = customObject.foodExtra || '';
-    const foodSize = customObject.foodSize || '';
-    return `Food Extra: ${foodExtra}, Food Size: ${foodSize}`;
+    const { restaurant_id, customer_id/*, socket_id*/, phone_number } = customObject;
+    const customerPhoneNumber = await CustomerPhoneNumber.create({
+      phoneNumber: phone_number,
+      customerId: customer_id
+    });
+    const orderDetails = { food: customObject.food_extra, size: customObject.food_size };
+    const order = await Order.create({
+      deliveryCost: 20,
+      orderDetails,
+      restaurantId: restaurant_id,
+      customerId: customer_id
+    });
+    mainNamespace.to(`${restaurant_id}`).emit('order', order);
+    return "";
+    // return `Food Extra: ${foodExtra}, Food Size: ${foodSize}`;
   } else {
     // For other codes, return a default message
     return 'Default custom action performed.';
   }
 };
 
+const orderState = async (order) => {
+  if (order.state === 'finished') {
+    const order = await Order.update({ state: 'pending' }, { where: { id: order.id } });
+    return order;
+  } else {
+    const order = await Order.update({ state: 'finished' }, { where: { id: order.id } });
+    return order;
+  }
+}
+
 module.exports = {
   getModelRes,
+  orderState,
+  getModelRes2,
 };
