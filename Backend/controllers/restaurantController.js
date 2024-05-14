@@ -453,6 +453,21 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
+// Get all products in a category
+const getAllCategoryProducts = async (req, res, next) => {
+  const { categoryId } = req.params;
+  try {
+    const products = await Product.findAll({ where: { categoryId } });
+    if (products.length === 0) {
+      return next(new AppError('Products not found', 404));
+    }
+    return res.status(200).json(products);
+  } catch (error) {
+    console.error('Error getting products:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
 // Get product by ID
 const getProductById = async (req, res, next) => {
   const { productId } = req.params;
@@ -880,5 +895,6 @@ module.exports = {
   getRestaurantCategories,
   getAllProductIngredients,
   getRestaurantDeliveryAreas,
+  getAllCategoryProducts,
   deleteRestaurantDeliveryAreas // no routes for this
 };
