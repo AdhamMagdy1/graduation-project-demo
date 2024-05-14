@@ -43,6 +43,7 @@ const {
   editCategory,
   deleteCategory,
   getRestaurantCategories,
+  getAllCategoryProducts,
   // deleteRestaurantDeliveryAreas, // no routes for this
 } = require('../controllers/restaurantController');
 const authenticateUser = require('../middleware/authenticateUser');
@@ -77,6 +78,7 @@ router.get('/products/productExtras', authenticateUser, getAllProductExtras);
 // products
 router.post('/product', authenticateUser, createProduct);
 router.get('/products/all', authenticateUser, getAllProducts);
+router.get('/products/category/:categoryId', authenticateUser, getAllCategoryProducts);
 router.get('/products/:productId', authenticateUser, getProductById);
 router.put('/products/:productId', authenticateUser, editProductById);
 router.delete('/products/:productId', authenticateUser, deleteProductById);
