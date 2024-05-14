@@ -8,7 +8,8 @@ entities:
   - food
   - phone_number
   - food_size
-
+  - send_signal
+  
 
 slots:
    food:
@@ -29,9 +30,16 @@ slots:
      mappings:
      - type: from_entity
        entity: food_size
+   signal:
+     type: text
+     influence_conversation: true
+     mappings:
+     - type: from_entity
+       entity: send_signal
 
 
-
+   
+ 
 responses:
   utter_greet:
   - text: "ازيك يا صاحبي?"
@@ -44,17 +52,17 @@ responses:
   - text : "مع السلامة يا حبيبي"
   - text : "باي يا حبيبي"
   - text : "اشوفك بعدين يا صاحبي"
-  - text : "يلا توكل علي الله انت"
-
+  - text : "يلا توكل علي الله انت" 
+  utter_signal:
+  - text: "ابعت الاوردر علي كدة ؟"
   utter_submit:
   - text: "تمام يا صاحبي حعملك الاوردر"
   - text: "تمام يا حبيبي حعملك الاوردر"
   - text: "طلبك وصل يا قلبي"
   - text: "طلبك وصل يا حبيبي"
 
-  utter_ask_food_size:
-  - text: "ممكن حضرتك تقولي  تحب حجم طلبك ايه"
-  - text: " عاوز انهي size"
+  utter_food_slots:
+  - text: "action_custom_utterance"
 
   utter_finalise_order:
   - text: "لو تحب تطلب حاجة تانية ممكن تتفضل لو خلصت الاوردر ممكن تقولي رقم تليفون اتواصل بيه معاك"
@@ -66,18 +74,19 @@ actions:
   - utter_greet
   - utter_goodbye
   - utter_submit
+  - utter_food_slots
   - validate_food_form
-  - utter_ask_food_size
   - utter_finalise_order
+  - utter_signal
   - foodslots
-
 forms:
   food_form:
     required_slots:
       - food
       - phone_number
       - food_size
-
+      - signal
+    
 
 session_config:
   session_expiration_time: 60
