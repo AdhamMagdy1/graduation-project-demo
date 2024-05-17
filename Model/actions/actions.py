@@ -63,7 +63,7 @@ class ValidateRestaurantForm(FormValidationAction):
         return {"socket_id":socket_id,"restaurant_id":restaurant_id,"customer_id":customer_id,"code":code}
 
     def get_food_sizes(self):
-        return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":[],"شاورما":["صغير","كبير"]}
+        return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":[],"شاورما":["كبير"]}
     def get_extra(self):
         """Database of supported foods with extra"""
         return {"فراخ محمرة": ["رز مقمر","بصل"], "مكرونة بشاميل": ["مخلل","طحينة"],"شاورما":["تومية"]}
@@ -297,7 +297,7 @@ class ValidateRestaurantForm(FormValidationAction):
         food_sizes = self.get_food_sizes()
         #print("foods inside ask_food_size",foods)
         for food in foods:
-            if (food_sizes[food] != []) and (food not in self.container_sizes[tracker.sender_id]):
+            if (food_sizes[food] != [] and len(food_sizes[food])>1 ) and (food not in self.container_sizes[tracker.sender_id]):
                 food_size = food_sizes[food]
                 food_size = " و ".join(food_size)
                 #print("metadata : ",tracker.latest_message['metadata']["restaurant_id"])
@@ -305,6 +305,7 @@ class ValidateRestaurantForm(FormValidationAction):
                                          json_message=self.get_metadata(tracker= tracker))
                 self.container_sizes[tracker.sender_id]["_next_"] = food
                 return None
+
         mapping = str(self.container_sizes[tracker.sender_id])
         return mapping
             
@@ -333,7 +334,7 @@ class ValidateRestaurantForm(FormValidationAction):
                                          json_message=self.get_metadata(tracker= tracker))
         else:
             #print(flag1,flag2,self.container_sizes[tracker.sender_id].get("_next_"))
-            if food_sizes != []:
+            if food_sizes != [] :
                 self.food_sizes_mapping(dispatcher, tracker, food_sizes)
             if mapping == None:
                 mapping = self.ask_food_size(dispatcher, tracker)
