@@ -59,7 +59,7 @@ const Orders = () => {
 		<>
 			<div className="page-container">
 				<SideBar />
-				<div className="orders">
+				<div className="side-page">
 					<div className="orders-center">
 						<div className="orders-heading">
 							<h2>recent orders</h2>

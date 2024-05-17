@@ -77,7 +77,7 @@ const Extras = () => {
 						extras.map((extra) => {
 							return <li key={extra.extraId} className='simple-item'>
 								<h4 className='item-name' >{extra.name}</h4>
-								<span className='item-price' >{extra.price}</span>
+								<span className='item-price' >{extra.price}$</span>
 
 								<div className="actions">
 									<button className="btn-action btn-red">
