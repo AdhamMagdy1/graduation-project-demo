@@ -7,6 +7,7 @@ import Chat from '../pages/customer/Chat';
 import Stats from '../pages/restaurant/dashboard/Stats';
 import Extras from '../pages/restaurant/dashboard/Extras';
 import Categories from '../pages/restaurant/dashboard/Categories';
+import Products from '../pages/restaurant/dashboard/Products';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/restaurant/extras" element={<Extras />} />
           <Route path="/restaurant/menu" element={<Menu />} />
           <Route path="/restaurant/orders" element={<Orders />} />
+          <Route path="/restaurant/products/:categoryId" element={<Products />} />
           <Route path="/restaurant/chat" element={<Chat />} />
         </Routes>
       </BrowserRouter>
