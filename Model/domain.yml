@@ -4,6 +4,9 @@ intents:
   - greet
   - goodbye
   - order
+  - menu
+  - feedback
+  
 entities:
   - food
   - phone_number
@@ -38,8 +41,6 @@ slots:
        entity: send_signal
 
 
-   
- 
 responses:
   utter_greet:
   - text: "ازيك يا صاحبي?"
@@ -53,13 +54,20 @@ responses:
   - text : "باي يا حبيبي"
   - text : "اشوفك بعدين يا صاحبي"
   - text : "يلا توكل علي الله انت" 
+  
   utter_signal:
-  - text: "ابعت الاوردر علي كدة ؟"
+  - text: "ابعت الاوردر علي كده ؟"
+  
   utter_submit:
-  - text: "تمام يا صاحبي حعملك الاوردر"
-  - text: "تمام يا حبيبي حعملك الاوردر"
-  - text: "طلبك وصل يا قلبي"
-  - text: "طلبك وصل يا حبيبي"
+  - text: "تمام يا صاحبي حعملك الاوردر. يا ريت بس لو حضرتك تقولنا رأيك في التجربة دي"
+  - text: "تمام يا حبيبي حعملك الاوردر. وأحنا مهتمين جدا نسمع رأيك فينا"
+  - text: "طلبك وصل يا قلبي. يا ريت بس لو تعرفنا رأيك في اكلنا وخدمة التوصيل"
+  - text: "طلبك وصل يا حبيبي. حابين بس ناخد فيدباك ونعرف رأي حضرتك"
+
+  utter_feedback:
+  - text: "شكرا جدا ليك على رأيك يا فندم "
+  - text: "مبسوطين بمشاركة حضرتك لرأيك معانا"
+  - text: "وصلنا رأي حضرتك وبنسعى نقدم لحضرتك أفضل خدمة دايما"
 
   utter_food_slots:
   - text: "action_custom_utterance"
@@ -74,11 +82,13 @@ actions:
   - utter_greet
   - utter_goodbye
   - utter_submit
+  - utter_feedback
   - utter_food_slots
   - validate_food_form
   - utter_finalise_order
   - utter_signal
   - foodslots
+  
 forms:
   food_form:
     required_slots:
