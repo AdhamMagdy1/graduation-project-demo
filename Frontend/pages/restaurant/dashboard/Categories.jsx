@@ -1,18 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useGlobalContext } from './context';
 import { FaTimes } from "react-icons/fa";
 import SideBar from './SideBar';
 import Loading from '../../../src/Loading';
 import { Link } from 'react-router-dom';
+import Empty from './Empty';
+import useFetch from './useFetch';
 
+const url = `/restaurant/category/all`;
 
 const Categories = () => {
 	const URL = import.meta.env.VITE_REACT_API_URL;
 
-	const [isLoading, setIsLoading] = useState(true);
+	const [updateTrigger, setUpdateTrigger] = useState(0);
+	const { isLoading, isError, data: resp } = useFetch(url, [updateTrigger]);
 
-	const [categories, setCategories] = useState([]);
 	const [categoryName, setCategoryName] = useState("");
 	const [errMsg, setErrMsg] = useState();
 	const [currentCategoryId, setCurrentCategoryId] = useState();
@@ -47,7 +50,7 @@ const Categories = () => {
 				console.log(errMsg);
 			} else {
 				console.log(result.message);
-				fetchData();
+				setUpdateTrigger(prev => prev + 1);
 			}
 		} catch (error) {
 			console.log(error);
@@ -57,30 +60,6 @@ const Categories = () => {
 	const resetCategory = () => {
 		setCategoryName("");
 	};
-
-	const fetchData = async () => {
-		setIsLoading(true);
-		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`${URL}/restaurant/category/all`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': token,
-				},
-			});
-			const data = await response.json();
-			console.log(data);
-			setCategories(data.categories);
-		} catch (error) {
-			console.log(error);
-		}
-		setIsLoading(false);
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -104,7 +83,7 @@ const Categories = () => {
 				setErrMsg(result.message);
 				console.log(errMsg);
 			} else {
-				fetchData();
+				setUpdateTrigger(prev => prev + 1);
 			}
 		} catch (error) {
 			console.log(error);
@@ -134,13 +113,21 @@ const Categories = () => {
 				console.log(errMsg);
 			} else {
 				console.log(result.message);
-				fetchData();
+				setUpdateTrigger(prev => prev + 1);
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+	if (isError) {
+		return <div className="page-container">
+			<SideBar />
+			<div className="side-page">
+				sorry something went wrong
+			</div>
+		</div>;
+	}
 
 	if (isLoading) {
 		return (
@@ -150,6 +137,13 @@ const Categories = () => {
 			</div>
 		);
 	}
+
+	if (!resp || !resp.categories) {
+		return <Empty pageName={'categories'} />;
+	}
+
+	const categories = resp.categories;
+
 
 	return (
 		<>

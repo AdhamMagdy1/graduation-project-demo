@@ -1,57 +1,38 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import SideBar from './SideBar';
 import Loading from '../../../src/Loading';
+import { useGlobalContext } from './context';
+import Empty from './Empty';
+import useFetch from './useFetch';
 
 
 const Products = (props) => {
-	const URL = import.meta.env.VITE_REACT_API_URL;
+	// const URL = import.meta.env.VITE_REACT_API_URL;
 
-	const [activeId, setActiveID] = useState();
+
+	const { categoryId } = useParams();
+	const url = `/restaurant/products/category/${categoryId}`;
+	const { isLoading, data: products } = useFetch(url, []);
+
+
+	const { isFirstModalOpen, openFirstModal, closeFirstModal } = useGlobalContext();
+
+
+	const [productName, setProductName] = useState("");
+	const [productDescription, setProductDescription] = useState("");
+
 
 	const toggleProduct = (id) => {
 		const newActiveId = id === activeId ? null : id;
 		setActiveID(newActiveId);
 	};
 
-	const [products, setProducts] = useState();
-	const [isLoading, setIsLoading] = useState(true);
-
-	const { categoryId } = useParams();
 
 
-	const fetchData = async () => {
-		setIsLoading(true);
-		try {
-			const token = localStorage.getItem("token");
-			console.log(`${URL}/restaurant/products/category/${categoryId}`);
-			const response = await fetch(`${URL}/restaurant/products/category/${categoryId}`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': token,
-				},
-			});
-
-			console.log(response);
-
-			if (response.status === 404) {
-				setProducts(null);
-			} else {
-
-				const data = await response.json();
-				setProducts(data);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-		setIsLoading(false);
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, []);
+	const [activeId, setActiveID] = useState();
 
 
 	if (isLoading) {
@@ -63,19 +44,7 @@ const Products = (props) => {
 	}
 
 	if (products === null) {
-		return <div className="page-container">
-			<SideBar />
-			<div className="side-page">
-				<div className="side-page-nav">
-					<div className="side-page-heading">products</div>
-					<div className="add-item">
-						<button type='button' className='btn'
-						>add new product</button>
-					</div>
-				</div>
-				this category do not have any products yet
-			</div>
-		</div>;
+		return <Empty pageName={"products"} />;
 	}
 
 	return (
@@ -85,7 +54,7 @@ const Products = (props) => {
 				<div className="side-page-nav">
 					<div className="side-page-heading">products</div>
 					<div className="add-item">
-						<button type='button' className='btn'
+						<button onClick={openFirstModal} type='button' className='btn'
 						>add new product</button>
 					</div>
 				</div>
@@ -130,6 +99,40 @@ const Products = (props) => {
 						})
 					}
 				</ul>
+
+				<div className={isFirstModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+					<div className="modal-container">
+						<h2 className="modal-heading">
+							add product
+						</h2>
+						<form className='modal-form'>
+
+							<input
+								type="text"
+								placeholder='product name'
+								className='modal-input input-block'
+								value={productName}
+								onChange={(e) => setProductName(e.target.value)}
+							/>
+
+							<input
+								type="text"
+								placeholder='product description'
+								className='modal-input input-block'
+								value={productDescription}
+								onChange={(e) => setProductDescription(e.target.value)}
+							/>
+
+
+
+							<button type='submit' className='btn btn-block btn-black '>add</button>
+						</form>
+
+						<button className="close-modal-btn" onClick={closeFirstModal}>
+							<FaTimes />
+						</button>
+					</div>
+				</div>
 
 			</div>
 		</div>

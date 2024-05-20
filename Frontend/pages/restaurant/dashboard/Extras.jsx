@@ -2,51 +2,26 @@ import { FaTimes } from 'react-icons/fa';
 import SideBar from './SideBar';
 import { useGlobalContext } from './context';
 import Loading from '../../../src/Loading';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Empty from './Empty';
+import useFetch from './useFetch';
+
+const url = `/restaurant/extras/all`;
 
 const Extras = () => {
 
+	const { isLoading, data: resp } = useFetch(url, []);
 
-	const URL = import.meta.env.VITE_REACT_API_URL;
-
-	const [isLoading, setIsLoading] = useState(true);
-
-	const [extras, setExtras] = useState([]);
 	const [extraName, setExtraName] = useState("");
 	const [extraPrice, setExtraPrice] = useState("");
-	// const [errMsg, setErrMsg] = useState();
-	// const [currentExtraId, setCurrentExtraId] = useState();
+
+
 
 	const {
 		isFirstModalOpen,
 		openFirstModal,
 		closeFirstModal,
 	} = useGlobalContext();
-
-	const fetchData = async () => {
-		setIsLoading(true);
-		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`${URL}/restaurant/extras/all`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': token,
-				},
-			});
-			const data = await response.json();
-			console.log(data);
-			setExtras(data);
-		} catch (error) {
-			console.log(error);
-		}
-		setIsLoading(false);
-	};
-
-
-	useEffect(() => {
-		fetchData();
-	}, []);
 
 
 	if (isLoading) {
@@ -57,6 +32,12 @@ const Extras = () => {
 			</div>
 		);
 	}
+
+	if (!resp || !resp.categories) {
+		return <Empty pageName={'extras'} />;
+	}
+
+	const extras = resp;
 
 	return (
 		<div className='page-container'>
