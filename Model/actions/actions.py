@@ -66,7 +66,7 @@ class ValidateRestaurantForm(FormValidationAction):
         return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":[],"شاورما":["كبير"]}
     def get_extra(self):
         """Database of supported foods with extra"""
-        return {"فراخ محمرة": ["رز مقمر","بصل"], "مكرونة بشاميل": ["مخلل","طحينة"],"شاورما":["تومية"]}
+        return {"فراخ محمرة": ["رز معمر","بصل"], "مكرونة بشاميل": ["مخلل","طحينة"],"شاورما":["تومية"]}
     def word2vec(self, word):
         embeds = self.bpemb_model.embed(word)
         if len(embeds) > 1:
