@@ -11,6 +11,8 @@ const Login = () => {
 	const [success, setSuccess] = useState(false);
 	const navigate = useNavigate();
 
+	// const [hasRestaurant, setHasRestaurant] = useState(false);
+
 
 	useEffect(() => {
 		setErrMsg('');
@@ -25,7 +27,6 @@ const Login = () => {
 		};
 
 		const login = async () => {
-			console.log(data);
 			try {
 				const response = await fetch('http://localhost:5000/restaurant/login', {
 					method: 'POST',
@@ -39,8 +40,6 @@ const Login = () => {
 					setErrMsg(result.message);
 				} else {
 					setSuccess(true);
-
-
 					const token = result.token;
 					console.log(token);
 					localStorage.setItem("token", token);
@@ -57,7 +56,13 @@ const Login = () => {
 					localStorage.setItem("userData", JSON.stringify(userData));
 					localStorage.setItem("isLogged", true);
 
-					navigate("/restaurant/stats");
+
+					if (userData.hasRestaurant) {
+						navigate("/restaurant/stats");
+					} else {
+						navigate("/restaurant/create");
+					}
+
 
 				}
 
