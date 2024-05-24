@@ -32,6 +32,7 @@ slots:
      influence_conversation: true
      mappings:
      - type: from_entity
+       auto_fill: false
        entity: food_size
    signal:
      type: text
@@ -72,11 +73,18 @@ responses:
   utter_food_slots:
   - text: "action_custom_utterance"
 
+ 
+
   utter_finalise_order:
   - text: "لو تحب تطلب حاجة تانية ممكن تتفضل لو خلصت الاوردر ممكن تقولي رقم تليفون اتواصل بيه معاك"
   - text: "تحب تطلب حاجة تانية يا صاحبي؟ ممكن تتفضل لو الاوردر تمام تقولي رقم تليفون اتواصل بيه معاك"
   - text: "تحب تطلب اكل تاني لو خلاص اكتبلي رقم تليفونك"
   - text: "لو خلصت الاوردر ممكن تديني رقم تليفونك"
+  utter_ask_feedback:
+  - text: "نتشرف برأي حضرتك عن تجربتك مع المطعم"
+  - text: "نتمنى نعرف رأيك فينا"
+  - text: "نتمنى نعرف رأيك في الخدمة"
+  - text: "نتمنى نعرف رأيك في الاكل"
 
 actions:
   - utter_greet
@@ -84,11 +92,12 @@ actions:
   - utter_submit
   - utter_feedback
   - utter_food_slots
+  - utter_ask_feedback
   - validate_food_form
   - utter_finalise_order
   - utter_signal
   - foodslots
-  
+  - send_feedback  
 forms:
   food_form:
     required_slots:
@@ -101,3 +110,6 @@ forms:
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+  store_entities_as_slots: false
+
+

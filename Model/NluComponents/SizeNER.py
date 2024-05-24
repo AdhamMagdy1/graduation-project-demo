@@ -77,7 +77,7 @@ class SizeEntityExtractor(EntityExtractorMixin, GraphComponent):
     
     def extract_order_size_category(self, order_text):
         # Define the regular expression pattern for order size categories:
-        pattern = re.compile(r'\b(small|medium|large|single|double|trible|extra large|jumbo|combo|family|صغير|كبير|وسط|سنجل|دوبل|تربل|جامبو|كومبو|عائلي|اكسترا لارج)\b', re.IGNORECASE)
+        pattern = re.compile(r'\b(small|medium|large|single|double|trible|extra large|jumbo|combo|family|صغير|كبير|وسط|سنجل|دوبل|تربل|عادي|جامبو|كومبو|عائلي|اكسترا لارج)\b', re.IGNORECASE)
 
         # Search for the pattern in the order text:
         match = pattern.search(order_text)

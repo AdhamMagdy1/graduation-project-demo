@@ -138,7 +138,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         """
         text = re.sub(r"(؟+|\.+|,+|،+|\d+|!+)","",text)
         text = re.sub(r"\s?[a-zA-Z]+\s?", " ", text)
-        text = re.sub(r'\b(small|medium|large|single|double|trible|extra large|jumbo|combo|family|صغير|كبير|وسط|سنجل|دوبل|تربل|جامبو|كومبو|عائلي|اكسترا لارج)\b',"",text)
+        text = re.sub(r'\b(small|medium|large|single|double|trible|extra large|jumbo|combo|family|صغير|كبير|وسط|سنجل|دوبل|تربل|جامبو|كومبو|عائلي|عادي|اكسترا لارج)\b',"",text)
         text = re.sub(r"\s+"," ",text)
         tokens = text.split(" ")
         cleaned_tokens = []

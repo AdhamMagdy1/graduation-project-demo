@@ -17,11 +17,10 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: utter_submit
-  - action: utter_goodbye
+  - action: utter_ask_feedback
 
 - rule: Receive_feedback
   steps:
   - intent: feedback
   - action : utter_feedback
   - active_loop: null
-  - action: foodslots
