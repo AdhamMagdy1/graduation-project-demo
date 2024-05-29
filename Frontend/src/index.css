@@ -48,15 +48,16 @@ a {
 ul {
   list-style: none;
 }
-.special-heading {
-  text-transform: capitalize;
+.logo {
+  text-transform: lowercase;
+  letter-spacing: 0.275rem;
   text-align: center;
   margin-top: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--white);
 }
-.special-heading .second-word {
+.logo .second-word {
   color: var(--primary-1);
 }
 /* || BUTTONS */
@@ -107,7 +108,7 @@ ul {
 .side-page {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100vw - 200px);
   gap: 1rem;
   overflow-y: auto;
 }
@@ -134,12 +135,13 @@ ul {
   justify-content: start;
   height: 100vh;
   overflow: hidden;
-  width: 250px;
+  width: 200px;
 }
 .side-container {
   background-color: var(--side-background);
   height: 100%;
   padding: 1.5rem;
+  width: 200px;
 }
 .side-links {
   margin-top: 1rem;
@@ -312,10 +314,12 @@ input:focus {
   justify-content: center;
   padding: 0.5rem 1rem;
 }
+.list-items .li {
+  width: 100%;
+}
 .interactive-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   width: 100%;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--grey-300);
@@ -328,13 +332,34 @@ input:focus {
   padding-left: 0.3rem;
 }
 .simple-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
   width: 100%;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--grey-300);
   background-color: var(--white);
+  transition: 0.3s;
+}
+.long-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--grey-300);
+  color: var(--grey-600);
+  transition: 0.3s;
+}
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 0.75rem;
   transition: 0.3s;
 }
 .item-name {
@@ -344,7 +369,8 @@ input:focus {
   padding-left: 0.5rem;
 }
 .item-price {
-  text-transform: uppercase;
+  text-align: center;
+  text-transform: capitalize;
 }
 /*==============*/
 
@@ -383,7 +409,7 @@ input:focus {
 .name-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  color: var(--grey-600);
 }
 
 @media (max-width: 767px) {
@@ -455,7 +481,6 @@ input:focus {
 
 /* || Orders */
 .orders {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
