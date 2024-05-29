@@ -1,5 +1,14 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
+const bcrypt = require('bcrypt');
+// add hooks here
+// add hooks to owner model to hash the password before saving it also add a hook to the restaurant model to add the link to the restaurant after creating it
+// check the difference between create, save and update hooks in sequelize and when to use each one also save hooks have proxies
+// ex: 
+// beforeSave: { params: 2, proxies: ['beforeUpdate', 'beforeCreate'] }
+// afterSave: { params: 2, proxies: ['afterUpdate', 'afterCreate'] }
+
+// ask about why not specify default value for subscription in the restaurant model
 
 const Customer = sequelize.define(
   'Customer',
@@ -53,6 +62,13 @@ const Owner = sequelize.define(
     hasRestaurant: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },passwordResetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    passwordResetExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
   { timestamps: false, freezeTableName: true }
@@ -106,10 +122,10 @@ const Product = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    price: {
-      type: DataTypes.DECIMAL(6, 2),
-      allowNull: false,
-    },
+    // price: {
+    //   type: DataTypes.DECIMAL(6, 2),
+    //   allowNull: false,
+    // },
     description: {
       type: DataTypes.STRING(300),
       allowNull: false,
@@ -158,17 +174,17 @@ const Address = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    streetNumber: {
+    streetName: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
     },
-    buildingNo: {
+    buildingName: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     flatNumber: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
     },
     extraDescription: {
       type: DataTypes.STRING(400),
@@ -504,6 +520,26 @@ RestaurantMenu.belongsTo(Restaurant, {
 CustomerPhoneNumber.belongsTo(Customer, {
   foreignKey: { name: 'customerId', allowNull: false },
 });
+
+// Hooks
+
+// Owner Hooks
+Owner.beforeSave(async (owner, option) => {
+  const hashedPassword = await bcrypt.hash(owner.password, 10);
+  owner.password = hashedPassword;
+});
+
+// // Restaurant Hooks
+Restaurant.afterCreate(async (restaurant, option) => {
+  const link = `/restaurant${restaurant.restaurantId}`;
+  restaurant.link = link;
+  await restaurant.save();
+});
+
+// RestaurantWorker.beforeSave(async (worker, option) => {
+//   const hashedPassword = await bcrypt.hash(worker.password, 10);
+//   worker.password = hashedPassword;
+// });
 
 module.exports = {
   Restaurant,
