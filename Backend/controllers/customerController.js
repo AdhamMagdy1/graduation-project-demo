@@ -2,7 +2,6 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const { redisClient } = require('../config/database'); // Import the redis client
 const { AppError } = require('../utils/error'); // Import the custom error class
 
 const {
@@ -48,74 +47,10 @@ const customerController = {
       const token = jwt.sign({id: user.email }, process.env.JWT_SECRET, {
         expiresIn: '180h',
       });
-      console.log(customer, created);
-      res.json({ user, token });
+      res.json({ customer, token });
     } catch (error) {
       console.error(error);
       res.status(401).json({ error: 'Invalid token' });
-    }
-  },
-
-  createWaitingOrder: async (req, res, next) => {
-    const customerEmail = req.user.id;
-    const orderDetails = req.body.orderDetails;
-    try {
-      const customer = await Customer.findOne({ where: { email: customerEmail } });
-      const customerId = customer.customerId;
-      (await redisClient).json.set(`customerId:${customerId}`, '$', orderDetails);
-      return res.status(201).json({ message: "Order created successfully"});
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
-    }
-  },
-
-  createOrder: async (req, res, next) => {
-    customerEmail = req.user.id;
-    const { restaurantId } = req.body;
-    try {
-      const deliveyCost = 20;
-      const customer = await Customer.findOne({ where: { email: customerEmail } });
-      const customerId = customer.customerId;
-      const address = await Address.findOne({ where: { customerId } });
-      (await redisClient).json.get(`customerId:${customerId}`, '$').then( async (orderDetails) => {
-        const order = await Order.create({
-          deliveyCost,
-          status: "pending",
-          orderTime: new Date(),
-          orderDetails,
-          customerId,
-          restaurantId,
-          addressId: address.addressId
-        });
-        (await redisClient).json.del(`customerId:${customerId}`);
-        return res.status(201).json({ order });
-      });
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
-    }
-  },
-
-  editOrderStatus: async (req, res, next) => {
-    const orderId = req.params.orderId;
-    try {
-      const order = await Order.findByPk(orderId);
-      if (!order) {
-        return next(new AppError("Order not found", 404));
-      }
-      if (order.status === "pending") {
-        order.status = "finished";
-        await order.save();
-        return res.status(200).json({ order });
-      } else {
-        order.status = "pending";
-        await order.save();
-        return res.status(200).json({ order });
-      }
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
     }
   },
 
@@ -153,23 +88,6 @@ const customerController = {
     }
   },
 
-  createCustomerPhoneNumber: async (req, res, next) => {
-    customerEmail = req.user.id;
-    const { phoneNumber } = req.body;
-    try {
-      const customer = await Customer.findOne({ where: { email: customerEmail } });
-      const customerId = customer.customerId;
-      const customerPhoneNumber = await CustomerPhoneNumber.create({
-        phoneNumber,
-        customerId
-      });
-      return res.status(201).json({ customerPhoneNumber });
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
-    }
-  },
-
   getAllCustomers: async (req, res, next) => {
     try {
       const customers = await Customer.findAll();
@@ -181,8 +99,30 @@ const customerController = {
       console.error("Error :", error);
       return next(new AppError("Internal Server Error", 500));
     }
-  }
+  },
 
+  getAllCustomersPhoneNumber: async (req, res, next) => {
+    try {
+      const customerPhoneNumbers = await CustomerPhoneNumber.findAll();
+      if (customerPhoneNumbers.length === 0) {
+        return next(new AppError("No customer phone numbers found", 404));
+      }
+      return res.status(200).json({ customerPhoneNumbers });
+    } catch (error) {
+      console.error("Error :", error);
+      return next(new AppError("Internal Server Error", 500));
+    }
+  },
+
+  deleteAllOrders: async (req, res, next) => {
+    try {
+      const orders = await Order.destroy({ truncate: true });
+      return res.status(200).json({ message: "All orders deleted successfully" });
+    } catch (error) {
+      console.error("Error :", error);
+      return next(new AppError("Internal Server Error", 500));
+    }
+  },
 };
 
 module.exports = customerController;
