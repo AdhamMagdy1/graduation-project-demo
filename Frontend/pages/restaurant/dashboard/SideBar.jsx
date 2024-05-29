@@ -10,7 +10,7 @@ const SideBar = () => {
 		<>
 			<section className="side-bar">
 				<div className="side-container">
-					<div className="special-heading">our <span className="second-word">website</span></div>
+					<div className="logo">chef<span className="second-word">bot</span></div>
 					<div className="side-links">
 
 						<Link to="/restaurant/stats" className="side-link" >
