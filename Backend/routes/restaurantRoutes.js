@@ -27,7 +27,7 @@ const {
   editExtraById,
   deleteExtraById,
   // associateExtrasWithProduct,
-  getAssociatedExtrasForProduct,
+  // getAssociatedExtrasForProduct,
   getAllProductExtras,
   editProductExtra,
   deleteProductExtras,
@@ -37,7 +37,6 @@ const {
   getAllWorkers,
   updateWorker,
   createProduct,
-  getAllProductIngredients,
   getRestaurantDeliveryAreas,
   createCategory,
   editCategory,
@@ -45,6 +44,9 @@ const {
   getRestaurantCategories,
   getAllCategoryProducts,
   // deleteRestaurantDeliveryAreas, // no routes for this
+  forgotPassword,
+  resetPassword,
+  ownerUpdatePassword,
 } = require('../controllers/restaurantController');
 const authenticateUser = require('../middleware/authenticateUser');
 
@@ -54,6 +56,9 @@ router.post('/login', login);
 router.get('/owner/', authenticateUser, getOwner);
 router.put('/owner/', authenticateUser, editOwner);
 router.delete('/owner/account', authenticateUser, deleteOwner);
+router.patch('/owner/changePassword', authenticateUser, ownerUpdatePassword);
+router.post('/owner/forgotPassword', forgotPassword);
+router.patch('/owner/resetPassword/:resetToken', resetPassword);
 
 // Apply authentication middleware to resturant info routes
 router.post(
@@ -96,11 +101,11 @@ router.delete('/extras/:extraId', authenticateUser, deleteExtraById);
 //   authenticateUser,
 //   associateExtrasWithProduct
 // );
-router.get(
-  '/products/:productId/extras',
-  authenticateUser,
-  getAssociatedExtrasForProduct
-);
+// router.get(
+//   '/products/:productId/extras',
+//   authenticateUser,
+//   getAssociatedExtrasForProduct
+// );
 router.put(
   '/products/:productId/extras/:extraId',
   authenticateUser,
@@ -129,8 +134,6 @@ router.put(
   editMenu
 );
 
-// Ingredients
-router.get('/ingredient/:productId', authenticateUser, getAllProductIngredients);
 // Delivery Areas
 router.get('/deliveryAreas', authenticateUser, getRestaurantDeliveryAreas);
 
