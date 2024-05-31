@@ -15,12 +15,22 @@
   --grey-100: #f1f5f9;
   --grey-200: #e2e8f0;
   --grey-300: #cbd5e1;
+  --grey-350: #a9b9d0;
   --grey-400: #94a3b8;
   --grey-500: #64748b;
   --grey-600: #475569;
   --grey-700: #334155;
   --grey-800: #1e293b;
   --grey-900: #0f172a;
+
+  /* box shadow*/
+  --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 * {
   padding: 0;
@@ -92,6 +102,14 @@ ul {
   border-color: transparent;
   font-size: 1.2rem;
 }
+.plus-icon,
+.minus-icon {
+  font-size: 2rem;
+  background-color: transparent;
+  border-color: transparent;
+  cursor: pointer;
+}
+
 /*================================*/
 
 .page-container {
@@ -539,3 +557,86 @@ td {
   background-color: #fc8585;
 }
 /*==============*/
+
+/* || create new Restaurant form */
+
+.container {
+  padding: 1.75rem 2rem 3rem;
+  background-color: #f2f2f2;
+  margin: 2.5rem auto;
+  max-width: 800px;
+  box-shadow: var(--shadow-2);
+  height: fit-content;
+}
+.container:hover {
+  box-shadow: var(--shadow-3);
+}
+.container-heading {
+  text-transform: capitalize;
+}
+.container p {
+  color: var(--grey-500);
+  padding-bottom: 1rem;
+}
+.color-input {
+  margin-left: 0.5rem;
+}
+.input {
+  margin-bottom: 0.5rem;
+}
+.input:focus {
+  outline: none;
+}
+label {
+  text-transform: capitalize;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+textarea {
+  resize: none;
+}
+.delivery-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.delivery-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select {
+  width: 100%;
+  max-width: 100%;
+  height: fit-content;
+  color: var(--grey-500);
+  font-size: 1rem;
+  font-weight: 500;
+  border-color: var(--grey-350);
+  border-radius: 0.3rem;
+}
+.select:focus {
+  outline: none;
+}
+.select-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+.mini-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+.minus-icon {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: 450px;
+  }
+}
