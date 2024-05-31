@@ -8,7 +8,7 @@ assistant_id: 20231206-045253-fat-equity
 
 # Configuration for Rasa NLU.
 # https://rasa.com/docs/rasa/nlu/components/
-language: en
+language: ar
 
 pipeline:
 - name: WhitespaceTokenizer
@@ -24,6 +24,8 @@ pipeline:
   entity_name: phone_number
 - name: NluComponents.SizeNER.SizeEntityExtractor
   entity_name: food_size
+- name: NluComponents.SignalNER.SignalEntityExtractor
+  entity_name: send_signal
 policies: null
 # # No configuration for policies was provided. The following default policies were used to train your model.
 # # If you'd like to customize them, uncomment and adjust the policies.

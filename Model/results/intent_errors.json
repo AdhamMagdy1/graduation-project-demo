@@ -1,0 +1,130 @@
+[
+  {
+    "text": "اشوفك بعدين يا بنات.",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.5559248328208923
+    }
+  },
+  {
+    "text": "غور في داهية",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.4910944998264313
+    }
+  },
+  {
+    "text": "ايه الاخبار",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.999997615814209
+    }
+  },
+  {
+    "text": "رايح على البيت، إشوفك لما أشوفك",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.5495840907096863
+    }
+  },
+  {
+    "text": "بشوفك في الغد",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.7173071503639221
+    }
+  },
+  {
+    "text": "اشوفك بعدين يا فندم.",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.5512229800224304
+    }
+  },
+  {
+    "text": "صباح الخير يا جماعة.",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.4628962576389313
+    }
+  },
+  {
+    "text": "الله يسلمكم من كل شر",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.9997908473014832
+    }
+  },
+  {
+    "text": "مع السلامة",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.9780327081680298
+    }
+  },
+  {
+    "text": "يا طيب، مع السلامة",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.5766707062721252
+    }
+  },
+  {
+    "text": "صباح الطاعة والبركة",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.7414886951446533
+    }
+  },
+  {
+    "text": "صباح الفل يا قمر.",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.7825506925582886
+    }
+  },
+  {
+    "text": "السلام عليكم",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.45553842186927795
+    }
+  },
+  {
+    "text": "كيفك يا غالي؟",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.7568727135658264
+    }
+  },
+  {
+    "text": "زيت الزيتون",
+    "intent": "order",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.430676132440567
+    }
+  },
+  {
+    "text": "سلام",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "order",
+      "confidence": 0.9993613362312317
+    }
+  }
+]

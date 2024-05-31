@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const multer = require('multer');
+const multer = require("multer");
 
 //Multer configuration
 const storage = multer.memoryStorage();
@@ -26,8 +26,6 @@ const {
   getExtraById,
   editExtraById,
   deleteExtraById,
-  // associateExtrasWithProduct,
-  getAssociatedExtrasForProduct,
   getAllProductExtras,
   editProductExtra,
   deleteProductExtras,
@@ -37,106 +35,250 @@ const {
   getAllWorkers,
   updateWorker,
   createProduct,
-  getAllProductIngredients,
   getRestaurantDeliveryAreas,
   createCategory,
   editCategory,
   deleteCategory,
   getRestaurantCategories,
   getAllCategoryProducts,
-  // deleteRestaurantDeliveryAreas, // no routes for this
-} = require('../controllers/restaurantController');
-const authenticateUser = require('../middleware/authenticateUser');
-
-// Route to create a new restaurant Owner
-router.post('/create', createOwner);
-router.post('/login', login);
-router.get('/owner/', authenticateUser, getOwner);
-router.put('/owner/', authenticateUser, editOwner);
-router.delete('/owner/account', authenticateUser, deleteOwner);
-
-// Apply authentication middleware to resturant info routes
-router.post(
-  '/setup',
-  upload.single('logo'),
+  // editRestaurantDeliveryAreas, // no routes for this
+  forgotPassword,
+  resetPassword,
+  ownerUpdatePassword,
+} = require("../controllers/restaurantController");
+const { Owner } = require("../models/allModels");
+const {
   authenticateUser,
+  autherizeUser,
+} = require("../middleware/authenticateUser");
+
+// Owner routes
+router.post("/create", createOwner);
+router.post("/login", login);
+router.get(
+  "/owner/",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getOwner
+);
+router.put(
+  "/owner/",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  editOwner
+);
+router.delete(
+  "/owner/account",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  deleteOwner
+);
+router.patch(
+  "/owner/changePassword",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  ownerUpdatePassword
+);
+router.post("/owner/forgotPassword", forgotPassword);
+router.patch("/owner/resetPassword/:resetToken", resetPassword);
+
+// Resturant routes
+router.post(
+  "/setup",
+  upload.single("logo"),
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
   createRestaurant
 );
-router.get('/all', authenticateUser, getAllRestaurants);
-router.get('/info', authenticateUser, getRestaurant);
-router.get('/workers', authenticateUser, getAllWorkers);
-router.put('/worker', authenticateUser, updateWorker);
+router.get(
+  "/all",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getAllRestaurants
+);
+router.get(
+  "/info",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getRestaurant
+);
+router.get(
+  "/workers",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getAllWorkers
+);
 router.put(
-  '/edit',
-  upload.single('logo'),
-  authenticateUser,
+  "/worker",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  updateWorker
+);
+router.put(
+  "/edit",
+  upload.single("logo"),
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
   editRestaurant
 );
-router.delete('/delete', authenticateUser, deleteOwnerRestaurant);
+router.delete(
+  "/delete",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  deleteOwnerRestaurant
+);
 
-router.get('/products/productExtras', authenticateUser, getAllProductExtras);
-// products
-router.post('/product', authenticateUser, createProduct);
-router.get('/products/all', authenticateUser, getAllProducts);
-router.get('/products/category/:categoryId', authenticateUser, getAllCategoryProducts);
-router.get('/products/:productId', authenticateUser, getProductById);
-router.put('/products/:productId', authenticateUser, editProductById);
-router.delete('/products/:productId', authenticateUser, deleteProductById);
-
-// extras
-router.post('/extras', authenticateUser, createExtra);
-router.get('/extras/all', authenticateUser, getAllExtras);
-router.get('/extras/:extraId', authenticateUser, getExtraById);
-router.put('/extras/:extraId', authenticateUser, editExtraById);
-router.delete('/extras/:extraId', authenticateUser, deleteExtraById);
-
-//productsExstras
-// router.post(
-//   '/products/:productId/extras',
-//   authenticateUser,
-//   associateExtrasWithProduct
-// );
 router.get(
-  '/products/:productId/extras',
-  authenticateUser,
-  getAssociatedExtrasForProduct
+  "/products/productExtras",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getAllProductExtras
+);
+
+// products
+router.post(
+  "/product",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  createProduct
+);
+router.get(
+  "/products/all",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getAllProducts
+);
+router.get(
+  "/products/category/:categoryId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getAllCategoryProducts
+);
+router.get(
+  "/products/:productId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getProductById
 );
 router.put(
-  '/products/:productId/extras/:extraId',
-  authenticateUser,
+  "/products/:productId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  editProductById
+);
+router.delete(
+  "/products/:productId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  deleteProductById
+);
+
+// extras
+router.post(
+  "/extras",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  createExtra
+);
+router.get(
+  "/extras/all",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getAllExtras
+);
+router.get(
+  "/extras/:extraId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getExtraById
+);
+router.put(
+  "/extras/:extraId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  editExtraById
+);
+router.delete(
+  "/extras/:extraId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  deleteExtraById
+);
+
+//productsExstras
+router.put(
+  "/products/:productId/extras/:extraId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
   editProductExtra
 );
 router.delete(
-  '/products/:productId/extras/',
-  authenticateUser,
+  "/products/:productId/extras/",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
   deleteProductExtras
 );
 
-//route to upload menu
+// Menu routes
 router.post(
-  '/menu/upload',
-  upload.single('menuImage'),
-  authenticateUser,
+  "/menu/upload",
+  upload.single("menuImage"),
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
   uploadMenu
 );
-//route to get menus
-router.get('/menu/get', authenticateUser, getMenu);
-//route to edit menu
+router.get(
+  "/menu/get",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getMenu
+);
 router.put(
-  '/menu/:menuId',
-  upload.single('menuImage'),
-  authenticateUser,
+  "/menu/:menuId",
+  upload.single("menuImage"),
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
   editMenu
 );
 
-// Ingredients
-router.get('/ingredient/:productId', authenticateUser, getAllProductIngredients);
-// Delivery Areas
-router.get('/deliveryAreas', authenticateUser, getRestaurantDeliveryAreas);
+// Delivery Areas routes
+router.get(
+  "/deliveryAreas",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getRestaurantDeliveryAreas
+);
+// router.put(
+//   "/editDeliveryAreas",
+//   authenticateUser(Owner),
+//   autherizeUser("Owner"),
+//   editRestaurantDeliveryAreas
+// );
 
 // Category routes
-router.post('/category', authenticateUser, createCategory);
-router.get('/category/all', authenticateUser, getRestaurantCategories);
-router.put('/category/:id', authenticateUser, editCategory);
-router.delete('/category/:id', authenticateUser, deleteCategory);
+router.post(
+  "/category",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  createCategory
+);
+router.get(
+  "/category/all",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  getRestaurantCategories
+);
+router.put(
+  "/category/:id",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  editCategory
+);
+router.delete(
+  "/category/:id",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  deleteCategory
+);
+
 module.exports = router;
