@@ -11,9 +11,6 @@ const Login = () => {
 	const [success, setSuccess] = useState(false);
 	const navigate = useNavigate();
 
-	// const [hasRestaurant, setHasRestaurant] = useState(false);
-
-
 	useEffect(() => {
 		setErrMsg('');
 	}, [success]);
@@ -56,31 +53,24 @@ const Login = () => {
 					localStorage.setItem("userData", JSON.stringify(userData));
 					localStorage.setItem("isLogged", true);
 
-
 					if (userData.hasRestaurant) {
 						navigate("/restaurant/stats");
 					} else {
 						navigate("/restaurant/create");
 					}
-
-
 				}
-
 			} catch (error) {
 				// Handle any errors that occurred during the fetch
 				console.error(error);
 			}
 		};
-
 		login();
 	};
 
 	return (
 		<main>
 			<div className="form-container">
-				<div className="special-heading">
-					our <span className="second-word">website</span>
-				</div>
+				<div className="logo">chef<span className="second-word">bot</span></div>
 				<p className="text">sign in!</p>
 
 				<form onSubmit={handleSubmit} className="form">

@@ -70,7 +70,7 @@ const RestaurantRegister = () => {
 			"name": user,
 			"password": pwd,
 			"email": email,
-		}
+		};
 
 		const register = async () => {
 			try {
@@ -80,12 +80,12 @@ const RestaurantRegister = () => {
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify(data)
-				})
+				});
 				const result = await response.json();
 				if (response.status != 201) {
 					setErrMsg(result.message);
 				} else {
-					setSuccess(true)
+					setSuccess(true);
 					console.log(result.message);
 				}
 
@@ -93,11 +93,11 @@ const RestaurantRegister = () => {
 				// Handle any errors that occurred during the fetch
 				console.error(error);
 			}
-		}
+		};
 
 		register();
 
-	}
+	};
 
 
 
@@ -108,7 +108,7 @@ const RestaurantRegister = () => {
 			) : (
 				<main>
 					<div className="form-container">
-						<div className="special-heading">our <span className="second-word">website</span ></div >
+						<div className="logo">chef<span className="second-word">bot</span></div>
 						<p className="text">sign up as a shop owner</p>
 
 
@@ -212,7 +212,7 @@ const RestaurantRegister = () => {
 				</main >
 			)}
 		</>
-	)
+	);
 };
 
 
