@@ -36,22 +36,5 @@ const testDbConnection = async () => {
   }
 };
 
-<<<<<<< HEAD
-// redis configuration
-const redis = require('redis');
-
-const redisClient = redis
-  .createClient({
-    password: process.env.REDIS_PASSWORD,
-    socket: {
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
-    },
-  })
-  .on('error', (error) => console.log('Redis Client Error', error))
-  .connect();
-=======
-
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
 
 module.exports = { sequelize, testDbConnection };
