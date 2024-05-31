@@ -87,17 +87,9 @@ const login = async (req, res, next) => {
 const getOwner = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
   try {
-<<<<<<< HEAD
-    const owner = await Owner.findByPk(
-      ownerId /*, {
-      attributes: { exclude: ['password'] },
-    }*/
-    );
-=======
     const owner = await Owner.findByPk(ownerId, {
       attributes: { exclude: ['password', 'passwordResetToken', 'passwordResetExpires'] },
     });
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
     if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
@@ -120,7 +112,7 @@ const editOwner = async (req, res, next) => {
     owner.name = name || owner.name;
     owner.email = email || owner.email;
     await owner.save();
-    return res.status(200).json('owner updated successfully');
+    return res.status(200).json("owner updated successfully");
   } catch (error) {
     console.error('Error editing owner:', error);
     return next(new AppError('Internal server error', 500));
@@ -255,40 +247,10 @@ const createRestaurant = async (req, res, next) => {
     const newRestaurant = await Restaurant.create({
       name,
       description,
-<<<<<<< HEAD
-      // subscription: new Date(subscription),
-=======
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
       themeColor,
       logo,
       ownerId,
     });
-<<<<<<< HEAD
-
-    const restaurantId = newRestaurant.restaurantId;
-    // check docs for create function to see how to get the restaurant id and save function wether the id will be placed after the create function or after the save function
-    const restaurant = await Restaurant.findByPk(restaurantId);
-    restaurant.link = `/restaurant${restaurantId}`;
-    await restaurant.save();
-
-    // Update owner's hasRestaurant field
-    await Owner.update(
-      { hasRestaurant: newRestaurant.restaurantId },
-      { where: { ownerId } }
-    );
-    // Create delivery areas for the restaurant
-    const deliveryAreas = await Promise.all(
-      restaurantDeliveryAreas.map(async (deliveryArea) => {
-        const { city, area } = deliveryArea;
-        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-          city,
-          area,
-          restaurantId,
-        });
-        return createdDeliveryArea;
-      })
-    );
-=======
 
     // Update owner's hasRestaurant field
     // await Owner.update({ hasRestaurant: true }, { where: { ownerId } });
@@ -323,7 +285,6 @@ const createRestaurant = async (req, res, next) => {
     //   });
     //   return createdDeliveryArea
     // }));
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
 
     // Generate worker data based on restaurant information
     const workerName = `${name}_${newRestaurant.restaurantId}`;
@@ -339,17 +300,9 @@ const createRestaurant = async (req, res, next) => {
       password: workerPassword,
       restaurantId: newRestaurant.restaurantId,
     });
-<<<<<<< HEAD
-    return res.status(201).json({
-      restaurant: restaurant,
-      worker: newWorker,
-      deliveryAreas: deliveryAreas,
-    });
-=======
     return res
       .status(201)
       .json({ restaurant: newRestaurant, worker: newWorker, deliveryAreas: deliveryAreas});
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
   } catch (error) {
     console.error('Error creating restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -374,20 +327,12 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
   const restaurantId = req.user.hasRestaurant;
   try {
-<<<<<<< HEAD
-    const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    const restaurantId = restaurant.restaurantId;
-    const deliveryAreas = await RestaurantDeliveryAreas.findAll({
-      where: { restaurantId },
-    });
-=======
     // const restaurant = await Restaurant.findOne({ where: { ownerId } });
     // const restaurantId = restaurant.restaurantId;
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
     const deliveryAreas = await RestaurantDeliveryAreas.findAll({ where: { restaurantId } });
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
     if (deliveryAreas.length === 0) {
       return next(new AppError('Delivery areas not found', 404));
     }
@@ -398,26 +343,6 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
-const deleteRestaurantDeliveryAreas = async (req, res, next) => {
-  const ownerId = req.user.id; // Extract owner ID from token
-  const { deliveryAreasId } = req.body;
-  try {
-    const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    const restaurantId = restaurant.restaurantId;
-    await RestaurantDeliveryAreas.destroy({
-      where: { deliveryAreasId, restaurantId },
-    });
-    return res
-      .status(200)
-      .json({ message: 'Delivery areas deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting delivery areas:', error);
-    return next(new AppError('Internal server error', 500));
-  }
-};
-
-=======
 // make it edit controller by using create query after deleteing one
 // const editRestaurantDeliveryAreas = async (req, res, next) => {
 //   const ownerId = req.user.ownerId; // Extract owner ID from token
@@ -451,7 +376,6 @@ const deleteRestaurantDeliveryAreas = async (req, res, next) => {
 // };
 
 // change it to use include instead of another query for worker
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
 // Controller function to get restaurant information by ID
 const getRestaurant = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
@@ -603,26 +527,7 @@ const deleteOwnerRestaurant = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
-// Get all ingredients for a product
-const getAllProductIngredients = async (req, res, next) => {
-  const { productId } = req.params;
-  try {
-    const ingredients = await ProductIngredient.findAll({
-      where: { productId },
-    });
-    if (ingredients.length === 0) {
-      return next(new AppError('Ingredients not found', 404));
-    }
-    return res.status(200).json(ingredients);
-  } catch (error) {
-    console.error('Error getting ingredients:', error);
-    return next(new AppError('Internal server error', 500));
-  }
-};
-=======
 
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
 
 // Create a new product
 // Create multiple products
@@ -637,25 +542,6 @@ const createProduct = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-<<<<<<< HEAD
-
-    const { name, description, quantity, categoryId, size } = productData;
-    // Create product with associated restaurantId
-    const newProduct = await Product.create({
-      name,
-      description,
-      quantity,
-      categoryId,
-      size,
-      restaurantId: restaurant.restaurantId,
-    });
-    const ingredients = await Promise.all(
-      ingredientsData.map(async (ingredient) => {
-        const ingredientName = ingredient.ingredientName;
-        const createdIngredient = await ProductIngredient.create({
-          ingredientName,
-          productId: newProduct.productId,
-=======
     // Find the restaurant associated with the owner
     // const restaurant = await Restaurant.findOne({ where: { ownerId } });
     // if (!restaurant) {
@@ -692,25 +578,7 @@ const createProduct = async (req, res, next) => {
           product: newProduct,
           ingredients,
           extras,
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
         });
-        await createdIngredient.save();
-        return createdIngredient;
-      })
-    );
-
-    // Associate extras with the product
-    const extras = await associateExtrasWithProduct(
-      newProduct.productId,
-      productExtrasData
-    );
-
-    res.status(201).json({
-      message: 'Products created successfully',
-      product: newProduct,
-      ingredients,
-      extras,
-    });
   } catch (error) {
     console.error('Error creating products:', error);
     next(new AppError('Internal server error', 500));
@@ -1213,9 +1081,6 @@ module.exports = {
   getRestaurantCategories,
   getRestaurantDeliveryAreas,
   getAllCategoryProducts,
-<<<<<<< HEAD
-  deleteRestaurantDeliveryAreas, // no routes for this
-=======
   // editRestaurantDeliveryAreas,
   // no routes for this
   workerUpdatePassword,
@@ -1223,5 +1088,4 @@ module.exports = {
   ownerUpdatePassword,
   forgotPassword,
   resetPassword,
->>>>>>> 7fe2bfe22b200ef2f6bf09f293827cb12478f3c9
 };
