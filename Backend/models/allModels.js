@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
+const bcrypt = require('bcrypt');
 
 const Customer = sequelize.define(
   'Customer',
@@ -50,9 +51,17 @@ const Owner = sequelize.define(
       type: DataTypes.STRING(256),
       allowNull: false,
     },
-    hasRestaurant: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+    // hasRestaurant: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false,
+    // },
+    passwordResetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    passwordResetExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
   { timestamps: false, freezeTableName: true }
@@ -77,6 +86,7 @@ const Restaurant = sequelize.define(
     subscription: {
       type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: Date.now()
     },
     themeColor: {
       type: DataTypes.STRING(20),
@@ -360,13 +370,15 @@ const RestaurantMenu = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
-// Categoryassociations
+
+// Category associations
 Category.belongsTo(Restaurant, {
   foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Category.hasMany(Product, {
   foreignKey: { name: 'categoryId', allowNull: false },
 });
+
 // Customer associations
 Customer.hasMany(Address, {
   foreignKey: { name: 'customerId', allowNull: false },
@@ -378,14 +390,9 @@ Customer.hasMany(CustomerPhoneNumber, {
   foreignKey: { name: 'customerId', allowNull: false },
 });
 
-// Owner associations
-Owner.hasOne(Restaurant, {
-  foreignKey: { name: 'ownerId', allowNull: false, unique: true },
-});
-
 // Restaurant associations
-Restaurant.belongsTo(Owner, {
-  foreignKey: { name: 'ownerId', allowNull: false },
+Restaurant.hasOne(Owner, {
+  foreignKey: { name: "hasRestaurant", allowNull: true, unique: true },
 });
 Restaurant.hasMany(Product, {
   foreignKey: { name: 'restaurantId', allowNull: false },
@@ -409,6 +416,12 @@ Restaurant.hasMany(Category, {
 Restaurant.hasMany(Order, {
   foreignKey: { name: 'restaurantId' /*, allowNull: false*/ },
 });
+
+// Owner associations
+Owner.belongsTo(Restaurant, {
+  foreignKey: { name: "hasRestaurant", allowNull: true },
+});
+
 // Product associations
 Product.belongsTo(Restaurant, {
   foreignKey: { name: 'restaurantId', allowNull: false },
@@ -502,6 +515,27 @@ RestaurantMenu.belongsTo(Restaurant, {
 // CustomerPhoneNumber associations
 CustomerPhoneNumber.belongsTo(Customer, {
   foreignKey: { name: 'customerId', allowNull: false },
+});
+
+// Hooks
+
+// Owner Hooks
+Owner.beforeSave(async (owner, option) => {
+  const hashedPassword = await bcrypt.hash(owner.password, 10);
+  owner.password = hashedPassword;
+});
+
+// // Restaurant Hooks
+Restaurant.afterCreate(async (restaurant, option) => {
+  const link = `/restaurant${restaurant.restaurantId}`;
+  restaurant.link = link;
+  await restaurant.save();
+});
+
+// RestaurantWorker Hooks
+RestaurantWorker.beforeSave(async (worker, option) => {
+  const hashedPassword = await bcrypt.hash(worker.password, 10);
+  worker.password = hashedPassword;
 });
 
 module.exports = {

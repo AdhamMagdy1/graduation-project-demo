@@ -15,12 +15,12 @@ from nltk.corpus import stopwords
 from nltk import everygrams
 from string import punctuation                             # all punctuations as string
 import re
-from bpemb import BPEmb
+from bpemb import BPEmb                                          
 import numpy as np
 #
 from rasa.shared.nlu.constants import TEXT, INTENT
 from rasa.shared.nlu.constants import (
-
+    
     ENTITY_ATTRIBUTE_TYPE,
     ENTITY_ATTRIBUTE_START,
     ENTITY_ATTRIBUTE_END,
@@ -36,11 +36,11 @@ logger = logging.getLogger(__name__)
     DefaultV1Recipe.ComponentType.ENTITY_EXTRACTOR, is_trainable=False
 )
 class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
-
+    
     @classmethod
     def required_components(cls) -> List[Type]:
         return [IntentClassifier]
-
+    
     @staticmethod
     def required_packages() -> List[Text]:
         """Any extra python dependencies required for this component to run."""
@@ -60,14 +60,14 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         self.entity_name = config.get("entity_name")
         self.bpemb_model = BPEmb(dim = 300,emb_file = r"Loaded Models\arz.wiki.bpe.vs100000.d300.w2v.bin",\
                            model_file = r"Loaded Models\arz.wiki.bpe.vs100000.model")
-        with open(r'Loaded Models\BPEmb_SVM.pkl', 'rb') as file:
-            # Call load method to deserialze
-            self.model = pickle.load(file)
+        with open(r'Loaded Models\BPEmb_SVM.pkl', 'rb') as file: 
+            # Call load method to deserialze 
+            self.model = pickle.load(file) 
         # We need to use these later when saving the trained component.
         self._model_storage = model_storage
         self._resource = resource
 
-
+    
     def train(self, training_data: TrainingData) -> Resource:
         """training the component is configured properly."""
         pass
@@ -81,7 +81,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         execution_context: ExecutionContext,
     ) -> GraphComponent:
         return cls(config, execution_context.node_name, model_storage, resource)
-
+    
     def word2vec(self, word):
         """
         get the word embedding from the bpemb model and if the word is not in the dictionary
@@ -94,9 +94,9 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         embeds = self.bpemb_model.embed(word)
         if len(embeds) > 1:
             embeds = np.sum(embeds, axis = 0).reshape([1,embeds.shape[1]])
-
+        
         return embeds.tolist()[0]
-
+    
 
     def process(self, messages: List[Message]) -> List[Message]:
         for message in messages:
@@ -108,11 +108,11 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
     def food_Tokenizer(self, tokens):
         tokens = [' '.join(token) for token in everygrams(tokens, 1, 2)]
         return tokens
-
+    
     def get_embeddings(self, X):
         """
         Converts a sentence into a matrix of input embeddings of dim n x d
-        d is embeddings length
+        d is embeddings length 
         n is the list of words length
         input :
         X (list) -------------> list of words
@@ -123,10 +123,10 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         """
         tokens = []
         for word in X:
-             tokens.append(self.word2vec(word))
+             tokens.append(self.word2vec(word))      
         tokens =  np.array(tokens, dtype = np.float32)
-        return tokens
-
+        return tokens  
+        
     def text_cleaner(self, text):
         """
         this function is used to clean the text from punctuations,numbers
@@ -138,27 +138,30 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         """
         text = re.sub(r"(؟+|\.+|,+|،+|\d+|!+)","",text)
         text = re.sub(r"\s?[a-zA-Z]+\s?", " ", text)
+        text = re.sub(r'\b(small|medium|large|single|double|trible|extra large|jumbo|combo|family|صغير|كبير|وسط|سنجل|دوبل|تربل|جامبو|كومبو|عائلي|اكسترا لارج)\b',"",text)
         text = re.sub(r"\s+"," ",text)
         tokens = text.split(" ")
         cleaned_tokens = []
         stop_words = stopwords.words("arabic")
         for token in tokens:
             token = token.strip()
-            if token in stop_words or token in punctuation or token in cleaned_tokens:
+            if token in stop_words or token in punctuation: #or token in cleaned_tokens:
                 continue
             else:
                 cleaned_tokens.append(token)
         cleaned_tokens = self.food_Tokenizer(cleaned_tokens)
-        return cleaned_tokens
-
+        #print("cleaned tokens : ",cleaned_tokens)
+        return cleaned_tokens   
+    
     def _set_entities(self, message: Message, **kwargs: Any) -> None:
-        text               = message.get("text")
+        text               = message.get("text") 
         cleaned_tokens     = self.text_cleaner(text)
         X                  = self.get_embeddings(np.array(cleaned_tokens))
         extracted_entities = []
         if len(X) != 0:
             predictions        = self.model.predict(X)
             tokens             = np.array(cleaned_tokens)[predictions == 1]
+            #print(tokens)
             for token in tokens:
                 if len(token.split()) > 1:
                     token1 = token.split()[0]
@@ -179,7 +182,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
                             "confidence": 0.9,
                         }
                     )
-
+            
         message.set(
             ENTITIES, message.get(ENTITIES, []) + extracted_entities, add_to_output=True
         )
@@ -192,3 +195,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
     def validate_config(cls, config: Dict[Text, Any]) -> None:
         """Validates that the component is configured properly."""
         pass
+
+
+
+
