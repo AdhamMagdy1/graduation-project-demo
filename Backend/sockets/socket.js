@@ -18,7 +18,7 @@ const runSocket = (io, mainNamespace) => {
       const communicatedMessage = {
         sender: 2,
         message: msg,
-        metadata: { restaurant_id: 11, customer_id: 1, socket_id: 3 },
+        metadata: { restaurant_id: 11, customer_id: 1, socket_id: socket.id },
       };
       const emitMessage = await getModelRes(mainNamespace, communicatedMessage);
       mainNamespace.to(socket.id).emit('message', emitMessage);

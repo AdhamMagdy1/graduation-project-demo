@@ -1,14 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
 const bcrypt = require('bcrypt');
-// add hooks here
-// add hooks to owner model to hash the password before saving it also add a hook to the restaurant model to add the link to the restaurant after creating it
-// check the difference between create, save and update hooks in sequelize and when to use each one also save hooks have proxies
-// ex: 
-// beforeSave: { params: 2, proxies: ['beforeUpdate', 'beforeCreate'] }
-// afterSave: { params: 2, proxies: ['afterUpdate', 'afterCreate'] }
-
-// ask about why not specify default value for subscription in the restaurant model
 
 const Customer = sequelize.define(
   'Customer',
@@ -59,10 +51,11 @@ const Owner = sequelize.define(
       type: DataTypes.STRING(256),
       allowNull: false,
     },
-    hasRestaurant: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },passwordResetToken: {
+    // hasRestaurant: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false,
+    // },
+    passwordResetToken: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -93,6 +86,7 @@ const Restaurant = sequelize.define(
     subscription: {
       type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: Date.now()
     },
     themeColor: {
       type: DataTypes.STRING(20),
@@ -179,7 +173,7 @@ const Address = sequelize.define(
       allowNull: true,
     },
     buildingName: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
     flatNumber: {
@@ -376,13 +370,15 @@ const RestaurantMenu = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
-// Categoryassociations
+
+// Category associations
 Category.belongsTo(Restaurant, {
   foreignKey: { name: 'restaurantId', allowNull: false },
 });
 Category.hasMany(Product, {
   foreignKey: { name: 'categoryId', allowNull: false },
 });
+
 // Customer associations
 Customer.hasMany(Address, {
   foreignKey: { name: 'customerId', allowNull: false },
@@ -394,14 +390,9 @@ Customer.hasMany(CustomerPhoneNumber, {
   foreignKey: { name: 'customerId', allowNull: false },
 });
 
-// Owner associations
-Owner.hasOne(Restaurant, {
-  foreignKey: { name: 'ownerId', allowNull: false, unique: true },
-});
-
 // Restaurant associations
-Restaurant.belongsTo(Owner, {
-  foreignKey: { name: 'ownerId', allowNull: false },
+Restaurant.hasOne(Owner, {
+  foreignKey: { name: "hasRestaurant", allowNull: true, unique: true },
 });
 Restaurant.hasMany(Product, {
   foreignKey: { name: 'restaurantId', allowNull: false },
@@ -425,6 +416,12 @@ Restaurant.hasMany(Category, {
 Restaurant.hasMany(Order, {
   foreignKey: { name: "restaurantId"/*, allowNull: false*/ },
 });
+
+// Owner associations
+Owner.belongsTo(Restaurant, {
+  foreignKey: { name: "hasRestaurant", allowNull: true },
+});
+
 // Product associations
 Product.belongsTo(Restaurant, {
   foreignKey: { name: 'restaurantId', allowNull: false },
@@ -536,10 +533,11 @@ Restaurant.afterCreate(async (restaurant, option) => {
   await restaurant.save();
 });
 
-// RestaurantWorker.beforeSave(async (worker, option) => {
-//   const hashedPassword = await bcrypt.hash(worker.password, 10);
-//   worker.password = hashedPassword;
-// });
+// RestaurantWorker Hooks
+RestaurantWorker.beforeSave(async (worker, option) => {
+  const hashedPassword = await bcrypt.hash(worker.password, 10);
+  worker.password = hashedPassword;
+});
 
 module.exports = {
   Restaurant,
