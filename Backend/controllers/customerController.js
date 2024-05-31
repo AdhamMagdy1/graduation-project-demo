@@ -44,7 +44,7 @@ const customerController = {
         },
       });
       // Generate JWT for user
-      const token = jwt.sign({id: user.email }, process.env.JWT_SECRET, {
+      const token = jwt.sign({id: customer.customerId }, process.env.JWT_SECRET, {
         expiresIn: '180h',
       });
       res.json({ customer, token });
@@ -68,15 +68,13 @@ const customerController = {
   },
 
   createAddress: async (req, res, next) => {
-    customerEmail = req.user.id;
-    const { area, streetNumber, buildingNo, flatNumber, extraDescription } = req.body;
+    const customerId = req.user.customerId;
+    const { area, streetName, buildingName, flatNumber, extraDescription } = req.body;
     try {
-      const customer = await Customer.findOne({ where: { email: customerEmail } });
-      const customerId = customer.customerId;
       const address = await Address.create({
         area,
-        streetNumber,
-        buildingNo,
+        streetName,
+        buildingName,
         flatNumber,
         extraDescription,
         customerId
