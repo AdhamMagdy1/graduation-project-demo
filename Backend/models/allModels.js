@@ -82,14 +82,14 @@ const Restaurant = sequelize.define(
       type: DataTypes.STRING(20),
       allowNull: true,
     },
-    logo : {
-      type:DataTypes.BLOB,
-      allowNull:true
+    logo: {
+      type: DataTypes.BLOB,
+      allowNull: true,
     },
-    link:{
-      type:DataTypes.STRING(100),
-      allowNull: true
-    }
+    link: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -106,10 +106,10 @@ const Product = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    price: {
-      type: DataTypes.DECIMAL(6, 2),
-      allowNull: false,
-    },
+    // price: {
+    //   type: DataTypes.DECIMAL(6, 2),
+    //   allowNull: false,
+    // },
     description: {
       type: DataTypes.STRING(300),
       allowNull: false,
@@ -121,7 +121,7 @@ const Product = sequelize.define(
     size: {
       type: DataTypes.JSON,
       allowNull: true,
-    }
+    },
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -158,17 +158,17 @@ const Address = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    streetNumber: {
+    streetName: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
     },
-    buildingNo: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    buildingName: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
     },
     flatNumber: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
     },
     extraDescription: {
       type: DataTypes.STRING(400),
@@ -289,17 +289,17 @@ const Order = sequelize.define(
     status: {
       type: DataTypes.STRING(20),
       allowNull: false,
-      defaultValue: 'pending'
+      defaultValue: 'pending',
     },
     orderTime: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Date.now()
+      defaultValue: Date.now(),
     },
     orderDetails: {
       type: DataTypes.JSON,
-      allowNull: true
-    }
+      allowNull: true,
+    },
   },
   { timestamps: false, freezeTableName: true }
 );
@@ -407,7 +407,7 @@ Restaurant.hasMany(Category, {
 });
 // uncomment allow null constraint when integreating with frontend is tested
 Restaurant.hasMany(Order, {
-  foreignKey: { name: "restaurantId"/*, allowNull: false*/ },
+  foreignKey: { name: 'restaurantId' /*, allowNull: false*/ },
 });
 // Product associations
 Product.belongsTo(Restaurant, {
@@ -468,7 +468,7 @@ ProductIngredient.belongsTo(Product, {
 // Order associations
 // uncomment allow null constraint when integreating with frontend is tested
 Order.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId"/*, allowNull: false*/ },
+  foreignKey: { name: 'restaurantId' /*, allowNull: false*/ },
 });
 Order.belongsTo(Address, {
   foreignKey: { name: 'addressId', allowNull: false },
@@ -493,7 +493,6 @@ Order.belongsTo(Customer, {
 //   foreignKey: { name: 'orderItemId', allowNull: false },
 //   otherKey: { name: 'extraId', allowNull: false },
 // });
-
 
 // RestaurantMenu associations
 RestaurantMenu.belongsTo(Restaurant, {

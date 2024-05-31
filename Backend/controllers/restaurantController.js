@@ -90,9 +90,11 @@ const login = async (req, res, next) => {
 const getOwner = async (req, res, next) => {
   const ownerId = req.user.id; // Extract owner ID from token
   try {
-    const owner = await Owner.findByPk(ownerId/*, {
+    const owner = await Owner.findByPk(
+      ownerId /*, {
       attributes: { exclude: ['password'] },
-    }*/);
+    }*/
+    );
     if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
@@ -119,7 +121,7 @@ const editOwner = async (req, res, next) => {
       owner.password = hashedPassword;
     }
     await owner.save();
-    return res.status(200).json("owner updated successfully");
+    return res.status(200).json('owner updated successfully');
   } catch (error) {
     console.error('Error editing owner:', error);
     return next(new AppError('Internal server error', 500));
@@ -146,7 +148,7 @@ const deleteOwner = async (req, res, next) => {
 
 // Controller function to create restaurant information
 const createRestaurant = async (req, res, next) => {
-  const { name, description, subscription, themeColor } = req.body;
+  const { name, description, themeColor } = req.body;
   const logo = req.file.buffer.toString('base64');
   const restaurantDeliveryAreas = JSON.parse(req.body.deliveryAreas);
   const ownerId = req.user.id; // Extract owner ID from token
@@ -156,12 +158,12 @@ const createRestaurant = async (req, res, next) => {
     const newRestaurant = await Restaurant.create({
       name,
       description,
-      subscription: new Date(subscription),
+      // subscription: new Date(subscription),
       themeColor,
       logo,
       ownerId,
     });
-    
+
     const restaurantId = newRestaurant.restaurantId;
     // check docs for create function to see how to get the restaurant id and save function wether the id will be placed after the create function or after the save function
     const restaurant = await Restaurant.findByPk(restaurantId);
@@ -169,17 +171,22 @@ const createRestaurant = async (req, res, next) => {
     await restaurant.save();
 
     // Update owner's hasRestaurant field
-    await Owner.update({ hasRestaurant: true }, { where: { ownerId } });
+    await Owner.update(
+      { hasRestaurant: newRestaurant.restaurantId },
+      { where: { ownerId } }
+    );
     // Create delivery areas for the restaurant
-    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
-      const { city, area } = deliveryArea;
-      const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-        city,
-        area,
-        restaurantId,
-      });
-      return createdDeliveryArea
-    }));
+    const deliveryAreas = await Promise.all(
+      restaurantDeliveryAreas.map(async (deliveryArea) => {
+        const { city, area } = deliveryArea;
+        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+          city,
+          area,
+          restaurantId,
+        });
+        return createdDeliveryArea;
+      })
+    );
 
     // Generate worker data based on restaurant information
     const workerName = `${name}_${restaurantId}`;
@@ -198,9 +205,11 @@ const createRestaurant = async (req, res, next) => {
       password: hashedPassword,
       restaurantId: restaurantId,
     });
-    return res
-      .status(201)
-      .json({ restaurant: restaurant, worker: newWorker, deliveryAreas: deliveryAreas});
+    return res.status(201).json({
+      restaurant: restaurant,
+      worker: newWorker,
+      deliveryAreas: deliveryAreas,
+    });
   } catch (error) {
     console.error('Error creating restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -226,7 +235,9 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ where: { ownerId } });
     const restaurantId = restaurant.restaurantId;
-    const deliveryAreas = await RestaurantDeliveryAreas.findAll({ where: { restaurantId } });
+    const deliveryAreas = await RestaurantDeliveryAreas.findAll({
+      where: { restaurantId },
+    });
     if (deliveryAreas.length === 0) {
       return next(new AppError('Delivery areas not found', 404));
     }
@@ -243,14 +254,17 @@ const deleteRestaurantDeliveryAreas = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ where: { ownerId } });
     const restaurantId = restaurant.restaurantId;
-    await RestaurantDeliveryAreas.destroy({ where: { deliveryAreasId, restaurantId } });
-    return res.status(200).json({ message: 'Delivery areas deleted successfully' });
+    await RestaurantDeliveryAreas.destroy({
+      where: { deliveryAreasId, restaurantId },
+    });
+    return res
+      .status(200)
+      .json({ message: 'Delivery areas deleted successfully' });
   } catch (error) {
     console.error('Error deleting delivery areas:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
-
 
 // Controller function to get restaurant information by ID
 const getRestaurant = async (req, res, next) => {
@@ -357,7 +371,7 @@ const deleteOwnerRestaurant = async (req, res, next) => {
     }
     const restaurantId = restaurant.restaurantId;
     await Restaurant.destroy({ where: { restaurantId } });
-    await Owner.update({ hasRestaurant: false }, { where: { ownerId } });
+    await Owner.update({ hasRestaurant: null }, { where: { ownerId } });
     return res
       .status(200)
       .json({ message: 'Restaurant deleted successfully with its data' });
@@ -367,12 +381,13 @@ const deleteOwnerRestaurant = async (req, res, next) => {
   }
 };
 
-
 // Get all ingredients for a product
 const getAllProductIngredients = async (req, res, next) => {
   const { productId } = req.params;
   try {
-    const ingredients = await ProductIngredient.findAll({ where: { productId } });
+    const ingredients = await ProductIngredient.findAll({
+      where: { productId },
+    });
     if (ingredients.length === 0) {
       return next(new AppError('Ingredients not found', 404));
     }
@@ -382,10 +397,6 @@ const getAllProductIngredients = async (req, res, next) => {
     return next(new AppError('Internal server error', 500));
   }
 };
-
-
-
-
 
 // Create a new product
 // Create multiple products
@@ -402,33 +413,40 @@ const createProduct = async (req, res, next) => {
       return next(new AppError('Restaurant not found for the owner', 404));
     }
 
-        const { name, description, price, quantity, categoryId, size } = productData;
-        // Create product with associated restaurantId
-        const newProduct = await Product.create({
-          name,
-          description,
-          price,
-          quantity,
-          categoryId,
-          size,
-          restaurantId: restaurant.restaurantId,
+    const { name, description, quantity, categoryId, size } = productData;
+    // Create product with associated restaurantId
+    const newProduct = await Product.create({
+      name,
+      description,
+      quantity,
+      categoryId,
+      size,
+      restaurantId: restaurant.restaurantId,
+    });
+    const ingredients = await Promise.all(
+      ingredientsData.map(async (ingredient) => {
+        const ingredientName = ingredient.ingredientName;
+        const createdIngredient = await ProductIngredient.create({
+          ingredientName,
+          productId: newProduct.productId,
         });
-        const ingredients = await Promise.all(ingredientsData.map(async (ingredient) => {
-          const ingredientName = ingredient.ingredientName;
-          const createdIngredient = await ProductIngredient.create({ ingredientName, productId: newProduct.productId });
-          await createdIngredient.save();
-          return createdIngredient;
-        }));
-        
-        // Associate extras with the product
-        const extras = await associateExtrasWithProduct(newProduct.productId, productExtrasData);
-        
-        res.status(201).json({
-          message: 'Products created successfully',
-          product: newProduct,
-          ingredients,
-          extras,
-        });
+        await createdIngredient.save();
+        return createdIngredient;
+      })
+    );
+
+    // Associate extras with the product
+    const extras = await associateExtrasWithProduct(
+      newProduct.productId,
+      productExtrasData
+    );
+
+    res.status(201).json({
+      message: 'Products created successfully',
+      product: newProduct,
+      ingredients,
+      extras,
+    });
   } catch (error) {
     console.error('Error creating products:', error);
     next(new AppError('Internal server error', 500));
@@ -896,5 +914,5 @@ module.exports = {
   getAllProductIngredients,
   getRestaurantDeliveryAreas,
   getAllCategoryProducts,
-  deleteRestaurantDeliveryAreas // no routes for this
+  deleteRestaurantDeliveryAreas, // no routes for this
 };

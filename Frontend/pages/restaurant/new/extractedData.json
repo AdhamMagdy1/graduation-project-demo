@@ -1,0 +1,4447 @@
+[
+  {
+    "id": 1,
+    "code": "Alexandria",
+    "name": "الاسكندرية",
+    "namePrimaryLang": "Alex",
+    "nameSecondaryLang": "الاسكندرية",
+    "cityDataModels": [
+      {
+        "id": 5655,
+        "code": "5655",
+        "name": "ابيس",
+        "namePrimaryLang": "Abees",
+        "nameSecondaryLang": "ابيس"
+      },
+      {
+        "id": 5695,
+        "code": "5695",
+        "name": "ابى العباس",
+        "namePrimaryLang": "Abi Abbas",
+        "nameSecondaryLang": "ابى العباس"
+      },
+      {
+        "id": 5659,
+        "code": "5659",
+        "name": "ابى الدرداء",
+        "namePrimaryLang": "Abi El Dardaa",
+        "nameSecondaryLang": "ابى الدرداء"
+      },
+      {
+        "id": 5766,
+        "code": "5766",
+        "name": "ابو قير",
+        "namePrimaryLang": "Abu Qir",
+        "nameSecondaryLang": "ابو قير"
+      },
+      {
+        "id": 5691,
+        "code": "5691",
+        "name": "ابو يوسف",
+        "namePrimaryLang": "AbuYoussef",
+        "nameSecondaryLang": "ابو يوسف"
+      },
+      {
+        "id": 5648,
+        "code": "5648",
+        "name": "المتراس",
+        "namePrimaryLang": "Al Metras",
+        "nameSecondaryLang": "المتراس"
+      },
+      {
+        "id": 5650,
+        "code": "5650",
+        "name": "الورديان",
+        "namePrimaryLang": "Al Wardiyan",
+        "nameSecondaryLang": "الورديان"
+      },
+      {
+        "id": 5664,
+        "code": "5664",
+        "name": "امبروزو",
+        "namePrimaryLang": "Amberoz",
+        "nameSecondaryLang": "امبروزو"
+      },
+      {
+        "id": 5699,
+        "code": "5699",
+        "name": "الانفوشى",
+        "namePrimaryLang": "Anfushi",
+        "nameSecondaryLang": "الانفوشى"
+      },
+      {
+        "id": 5631,
+        "code": "5631",
+        "name": "ارض الصبحية",
+        "namePrimaryLang": "Ard El Sabhyas",
+        "nameSecondaryLang": "ارض الصبحية"
+      },
+      {
+        "id": 5735,
+        "code": "5735",
+        "name": "ارض تشاكوس",
+        "namePrimaryLang": "Ard Tshakoes",
+        "nameSecondaryLang": "ارض تشاكوس"
+      },
+      {
+        "id": 5726,
+        "code": "5726",
+        "name": "اول الرمل",
+        "namePrimaryLang": "Awel ElRaml",
+        "nameSecondaryLang": "اول الرمل"
+      },
+      {
+        "id": 5681,
+        "code": "5681",
+        "name": "باب شرق",
+        "namePrimaryLang": "Bab Sharq",
+        "nameSecondaryLang": "باب شرق"
+      },
+      {
+        "id": 5682,
+        "code": "5682",
+        "name": "بحرى",
+        "namePrimaryLang": "Bahry",
+        "nameSecondaryLang": "بحرى"
+      },
+      {
+        "id": 5724,
+        "code": "5724",
+        "name": "باكوس",
+        "namePrimaryLang": "Bakoos",
+        "nameSecondaryLang": "باكوس"
+      },
+      {
+        "id": 5719,
+        "code": "5719",
+        "name": "بولكلى",
+        "namePrimaryLang": "Bolokly",
+        "nameSecondaryLang": "بولكلى"
+      },
+      {
+        "id": 5634,
+        "code": "5634",
+        "name": "برج العرب",
+        "namePrimaryLang": "Borg El-Arab",
+        "nameSecondaryLang": "برج العرب"
+      },
+      {
+        "id": 5633,
+        "code": "5633",
+        "name": "برج العرب الجديدة",
+        "namePrimaryLang": "Borg ElArab ElGedeedah",
+        "nameSecondaryLang": "برج العرب الجديدة"
+      },
+      {
+        "id": 5644,
+        "code": "5644",
+        "name": "بيانكى",
+        "namePrimaryLang": "Byanky",
+        "nameSecondaryLang": "بيانكى"
+      },
+      {
+        "id": 5702,
+        "code": "5702",
+        "name": "كامب شيزار",
+        "namePrimaryLang": "Camp Shizar",
+        "nameSecondaryLang": "كامب شيزار"
+      },
+      {
+        "id": 5704,
+        "code": "5704",
+        "name": "كليوباترا",
+        "namePrimaryLang": "Cleopatra",
+        "nameSecondaryLang": "كليوباترا"
+      },
+      {
+        "id": 5721,
+        "code": "5721",
+        "name": "كليوباترا المحطة",
+        "namePrimaryLang": "Cleopatra ElMahattah",
+        "nameSecondaryLang": "كليوباترا المحطة"
+      },
+      {
+        "id": 5711,
+        "code": "5711",
+        "name": "كليوباترا الصغرى",
+        "namePrimaryLang": "Cleopatra ElSoghra",
+        "nameSecondaryLang": "كليوباترا الصغرى"
+      },
+      {
+        "id": 5718,
+        "code": "5718",
+        "name": "كليوباترا حمامات",
+        "namePrimaryLang": "Cleopatra Hmamat",
+        "nameSecondaryLang": "كليوباترا حمامات"
+      },
+      {
+        "id": 5640,
+        "code": "5640",
+        "name": "العجمى",
+        "namePrimaryLang": "EL Agmy",
+        "nameSecondaryLang": "العجمى"
+      },
+      {
+        "id": 5653,
+        "code": "5653",
+        "name": "البيطاش",
+        "namePrimaryLang": "EL Bitash",
+        "nameSecondaryLang": "البيطاش"
+      },
+      {
+        "id": 5748,
+        "code": "5748",
+        "name": "الاقبال",
+        "namePrimaryLang": "EL Ekbal",
+        "nameSecondaryLang": "الاقبال"
+      },
+      {
+        "id": 5641,
+        "code": "5641",
+        "name": "الهانوفيل",
+        "namePrimaryLang": "EL Hanofil",
+        "nameSecondaryLang": "الهانوفيل"
+      },
+      {
+        "id": 5654,
+        "code": "5654",
+        "name": "الباب الجديد",
+        "namePrimaryLang": "El Bab El Gedied",
+        "nameSecondaryLang": "الباب الجديد"
+      },
+      {
+        "id": 5709,
+        "code": "5709",
+        "name": "العوايد",
+        "namePrimaryLang": "El Owayed",
+        "nameSecondaryLang": "العوايد"
+      },
+      {
+        "id": 5749,
+        "code": "5749",
+        "name": "الرأس السوداء",
+        "namePrimaryLang": "El Ras El sawdaa",
+        "nameSecondaryLang": "الرأس السوداء"
+      },
+      {
+        "id": 5673,
+        "code": "5673",
+        "name": "الشلالات",
+        "namePrimaryLang": "El Shalalat",
+        "nameSecondaryLang": "الشلالات"
+      },
+      {
+        "id": 5694,
+        "code": "5694",
+        "name": "الشاطبى",
+        "namePrimaryLang": "El Shatby",
+        "nameSecondaryLang": "الشاطبى"
+      },
+      {
+        "id": 5688,
+        "code": "5688",
+        "name": "السلطان حسين",
+        "namePrimaryLang": "El Sultan Hussein",
+        "nameSecondaryLang": "السلطان حسين"
+      },
+      {
+        "id": 5676,
+        "code": "5676",
+        "name": "الطابية",
+        "namePrimaryLang": "El Tabia",
+        "nameSecondaryLang": "الطابية"
+      },
+      {
+        "id": 5720,
+        "code": "5720",
+        "name": "الظاهرية",
+        "namePrimaryLang": "El Zahirya",
+        "nameSecondaryLang": "الظاهرية"
+      },
+      {
+        "id": 5698,
+        "code": "5698",
+        "name": "الازاريطة",
+        "namePrimaryLang": "El azarita ",
+        "nameSecondaryLang": "الازاريطة"
+      },
+      {
+        "id": 5744,
+        "code": "5744",
+        "name": "الفراعنة",
+        "namePrimaryLang": "El far3na",
+        "nameSecondaryLang": "الفراعنة"
+      },
+      {
+        "id": 5636,
+        "code": "5636",
+        "name": "العامرية",
+        "namePrimaryLang": "El-Amreyah",
+        "nameSecondaryLang": "العامرية"
+      },
+      {
+        "id": 5755,
+        "code": "5755",
+        "name": "العصافرة",
+        "namePrimaryLang": "El-Asafrah",
+        "nameSecondaryLang": "العصافرة"
+      },
+      {
+        "id": 5663,
+        "code": "5663",
+        "name": "العطارين",
+        "namePrimaryLang": "El-Atareen",
+        "nameSecondaryLang": "العطارين"
+      },
+      {
+        "id": 5662,
+        "code": "5662",
+        "name": "البستان",
+        "namePrimaryLang": "El-Bostan",
+        "nameSecondaryLang": "البستان"
+      },
+      {
+        "id": 5645,
+        "code": "5645",
+        "name": "الدخيلة",
+        "namePrimaryLang": "El-Dekheilah",
+        "nameSecondaryLang": "الدخيلة"
+      },
+      {
+        "id": 5674,
+        "code": "5674",
+        "name": "الجمرك",
+        "namePrimaryLang": "El-Gomrok",
+        "nameSecondaryLang": "الجمرك"
+      },
+      {
+        "id": 5689,
+        "code": "5689",
+        "name": "الحضرة قبلى",
+        "namePrimaryLang": "El-Hadrah Qebly",
+        "nameSecondaryLang": "الحضرة قبلى"
+      },
+      {
+        "id": 5669,
+        "code": "5669",
+        "name": "الحى اللاتينى",
+        "namePrimaryLang": "El-Hay El Latiny",
+        "nameSecondaryLang": "الحى اللاتينى"
+      },
+      {
+        "id": 5693,
+        "code": "5693",
+        "name": "الابراهيمية",
+        "namePrimaryLang": "El-Ibrahimeyah",
+        "nameSecondaryLang": "الابراهيمية"
+      },
+      {
+        "id": 5657,
+        "code": "5657",
+        "name": "اللبان",
+        "namePrimaryLang": "El-Labban",
+        "nameSecondaryLang": "اللبان"
+      },
+      {
+        "id": 5763,
+        "code": "5763",
+        "name": "المعمورة",
+        "namePrimaryLang": "El-Mamoorah",
+        "nameSecondaryLang": "المعمورة"
+      },
+      {
+        "id": 5759,
+        "code": "5759",
+        "name": "المندرة",
+        "namePrimaryLang": "El-Mandarah",
+        "nameSecondaryLang": "المندرة"
+      },
+      {
+        "id": 5678,
+        "code": "5678",
+        "name": "المنشية",
+        "namePrimaryLang": "El-Mansheyah",
+        "nameSecondaryLang": "المنشية"
+      },
+      {
+        "id": 5679,
+        "code": "5679",
+        "name": "المنشية الجديدة",
+        "namePrimaryLang": "El-Mansheyah El-Gedeedah",
+        "nameSecondaryLang": "المنشية الجديدة"
+      },
+      {
+        "id": 5672,
+        "code": "5672",
+        "name": "المسلة شرق",
+        "namePrimaryLang": "El-Masallah Sharq",
+        "nameSecondaryLang": "المسلة شرق"
+      },
+      {
+        "id": 5649,
+        "code": "5649",
+        "name": "المكس",
+        "namePrimaryLang": "El-Max",
+        "nameSecondaryLang": "المكس"
+      },
+      {
+        "id": 5745,
+        "code": "5745",
+        "name": "الناصرية",
+        "namePrimaryLang": "El-Nasereyah",
+        "nameSecondaryLang": "الناصرية"
+      },
+      {
+        "id": 5661,
+        "code": "5661",
+        "name": "النزهة",
+        "namePrimaryLang": "El-Nozhah",
+        "nameSecondaryLang": "النزهة"
+      },
+      {
+        "id": 5651,
+        "code": "5651",
+        "name": "القبارى",
+        "namePrimaryLang": "El-Qabary",
+        "nameSecondaryLang": "القبارى"
+      },
+      {
+        "id": 5729,
+        "code": "5729",
+        "name": "السيوف بحرى",
+        "namePrimaryLang": "El-Seyoof Bahary",
+        "nameSecondaryLang": "السيوف بحرى"
+      },
+      {
+        "id": 5754,
+        "code": "5754",
+        "name": "العصافرة بحرى",
+        "namePrimaryLang": "ElAsafrah Bahary",
+        "nameSecondaryLang": "العصافرة بحرى"
+      },
+      {
+        "id": 5756,
+        "code": "5756",
+        "name": "العصافرة قبلى",
+        "namePrimaryLang": "ElAsafrah Qably",
+        "nameSecondaryLang": "العصافرة قبلى"
+      },
+      {
+        "id": 5667,
+        "code": "5667",
+        "name": "الحضرة",
+        "namePrimaryLang": "ElHadrah",
+        "nameSecondaryLang": "الحضرة"
+      },
+      {
+        "id": 5668,
+        "code": "5668",
+        "name": "الحضرة بحرى",
+        "namePrimaryLang": "ElHadrah Bahary",
+        "nameSecondaryLang": "الحضرة بحرى"
+      },
+      {
+        "id": 5690,
+        "code": "5690",
+        "name": "الحضرة الجديدة",
+        "namePrimaryLang": "ElHadrah El Gededa",
+        "nameSecondaryLang": "الحضرة الجديدة"
+      },
+      {
+        "id": 5703,
+        "code": "5703",
+        "name": "الهداية",
+        "namePrimaryLang": "ElHidaya",
+        "nameSecondaryLang": "الهداية"
+      },
+      {
+        "id": 5758,
+        "code": "5758",
+        "name": "الملاحة",
+        "namePrimaryLang": "ElMallaha",
+        "nameSecondaryLang": "الملاحة"
+      },
+      {
+        "id": 5764,
+        "code": "5764",
+        "name": "المعمورة البلد",
+        "namePrimaryLang": "ElMamoorah ElBalad",
+        "nameSecondaryLang": "المعمورة البلد"
+      },
+      {
+        "id": 5765,
+        "code": "5765",
+        "name": "المعمورة الشاطئ",
+        "namePrimaryLang": "ElMamoorah ElShate",
+        "nameSecondaryLang": "المعمورة الشاطئ"
+      },
+      {
+        "id": 5761,
+        "code": "5761",
+        "name": "المندرة البحرية",
+        "namePrimaryLang": "ElMandarah ElBahareyah",
+        "nameSecondaryLang": "المندرة البحرية"
+      },
+      {
+        "id": 5760,
+        "code": "5760",
+        "name": "المندره قبلى",
+        "namePrimaryLang": "ElMandarah Qebly",
+        "nameSecondaryLang": "المندره قبلى"
+      },
+      {
+        "id": 5666,
+        "code": "5666",
+        "name": "المنشية الصغرى",
+        "namePrimaryLang": "ElMansheyah ElSoghra",
+        "nameSecondaryLang": "المنشية الصغرى"
+      },
+      {
+        "id": 5687,
+        "code": "5687",
+        "name": "المينا الشرقية",
+        "namePrimaryLang": "ElMena El Shrqaya",
+        "nameSecondaryLang": "المينا الشرقية"
+      },
+      {
+        "id": 5739,
+        "code": "5739",
+        "name": "الرمل الميرى",
+        "namePrimaryLang": "ElRaml El Meary",
+        "nameSecondaryLang": "الرمل الميرى"
+      },
+      {
+        "id": 5750,
+        "code": "5750",
+        "name": "السرايا",
+        "namePrimaryLang": "ElSaray",
+        "nameSecondaryLang": "السرايا"
+      },
+      {
+        "id": 5658,
+        "code": "5658",
+        "name": "السكة الجديدة",
+        "namePrimaryLang": "ElSekkah ElGedeedah",
+        "nameSecondaryLang": "السكة الجديدة"
+      },
+      {
+        "id": 5675,
+        "code": "5675",
+        "name": "السيوف",
+        "namePrimaryLang": "ElSeyoof",
+        "nameSecondaryLang": "السيوف"
+      },
+      {
+        "id": 5727,
+        "code": "5727",
+        "name": "السيوف شماعة",
+        "namePrimaryLang": "ElSeyoof Shamaa",
+        "nameSecondaryLang": "السيوف شماعة"
+      },
+      {
+        "id": 5723,
+        "code": "5723",
+        "name": "الوزارة",
+        "namePrimaryLang": "ElWezarah",
+        "nameSecondaryLang": "الوزارة"
+      },
+      {
+        "id": 5715,
+        "code": "5715",
+        "name": "فلمينج",
+        "namePrimaryLang": "Fleming",
+        "nameSecondaryLang": "فلمينج"
+      },
+      {
+        "id": 5737,
+        "code": "5737",
+        "name": "جناكليس",
+        "namePrimaryLang": "Genaklees",
+        "nameSecondaryLang": "جناكليس"
+      },
+      {
+        "id": 5683,
+        "code": "5683",
+        "name": "غيط العنب",
+        "namePrimaryLang": "Gheit ElEnab",
+        "nameSecondaryLang": "غيط العنب"
+      },
+      {
+        "id": 5733,
+        "code": "5733",
+        "name": "غبريال",
+        "namePrimaryLang": "Ghobrial",
+        "nameSecondaryLang": "غبريال"
+      },
+      {
+        "id": 5656,
+        "code": "5656",
+        "name": "غربال",
+        "namePrimaryLang": "Ghorbal",
+        "nameSecondaryLang": "غربال"
+      },
+      {
+        "id": 5730,
+        "code": "5730",
+        "name": "جليم",
+        "namePrimaryLang": "Glem",
+        "nameSecondaryLang": "جليم"
+      },
+      {
+        "id": 5713,
+        "code": "5713",
+        "name": "حجر النواتية",
+        "namePrimaryLang": "Hagar El-Nawateyah",
+        "nameSecondaryLang": "حجر النواتية"
+      },
+      {
+        "id": 5684,
+        "code": "5684",
+        "name": "كرموز",
+        "namePrimaryLang": "Karmooz",
+        "nameSecondaryLang": "كرموز"
+      },
+      {
+        "id": 5736,
+        "code": "5736",
+        "name": "كفر عبده",
+        "namePrimaryLang": "Kefr Abdeh",
+        "nameSecondaryLang": "كفر عبده"
+      },
+      {
+        "id": 5692,
+        "code": "5692",
+        "name": "خورشيد",
+        "namePrimaryLang": "Khorsheed",
+        "nameSecondaryLang": "خورشيد"
+      },
+      {
+        "id": 5635,
+        "code": "5635",
+        "name": "كينج مريوط",
+        "namePrimaryLang": "King Maryoot",
+        "nameSecondaryLang": "كينج مريوط"
+      },
+      {
+        "id": 5665,
+        "code": "5665",
+        "name": "كوم الدكة",
+        "namePrimaryLang": "Kom Ad Dikah",
+        "nameSecondaryLang": "كوم الدكة"
+      },
+      {
+        "id": 5652,
+        "code": "5652",
+        "name": "كوم الشقافة",
+        "namePrimaryLang": "Koum El-Shaqafah",
+        "nameSecondaryLang": "كوم الشقافة"
+      },
+      {
+        "id": 5743,
+        "code": "5743",
+        "name": "لوران",
+        "namePrimaryLang": "Loran",
+        "nameSecondaryLang": "لوران"
+      },
+      {
+        "id": 5722,
+        "code": "5722",
+        "name": "محطة الرمل",
+        "namePrimaryLang": "Mahattah ElRaml",
+        "nameSecondaryLang": "محطة الرمل"
+      },
+      {
+        "id": 5732,
+        "code": "5732",
+        "name": "محطة مصر",
+        "namePrimaryLang": "Mahattah Misr",
+        "nameSecondaryLang": "محطة مصر"
+      },
+      {
+        "id": 5696,
+        "code": "5696",
+        "name": "منشية النزهة",
+        "namePrimaryLang": "Mansheyet ElNozhah",
+        "nameSecondaryLang": "منشية النزهة"
+      },
+      {
+        "id": 5671,
+        "code": "5671",
+        "name": "منطقة المطار",
+        "namePrimaryLang": "Manteqah ElMatar",
+        "nameSecondaryLang": "منطقة المطار"
+      },
+      {
+        "id": 5639,
+        "code": "5639",
+        "name": "مرغم",
+        "namePrimaryLang": "Mergham",
+        "nameSecondaryLang": "مرغم"
+      },
+      {
+        "id": 5638,
+        "code": "5638",
+        "name": "مرغم قبلى",
+        "namePrimaryLang": "Mergham Qebly",
+        "nameSecondaryLang": "مرغم قبلى"
+      },
+      {
+        "id": 5757,
+        "code": "5757",
+        "name": "ميامى",
+        "namePrimaryLang": "Miamy",
+        "nameSecondaryLang": "ميامى"
+      },
+      {
+        "id": 5738,
+        "code": "5738",
+        "name": "ميدان الساعة",
+        "namePrimaryLang": "Midan El-Saah",
+        "nameSecondaryLang": "ميدان الساعة"
+      },
+      {
+        "id": 5685,
+        "code": "5685",
+        "name": "مينا البصل",
+        "namePrimaryLang": "Mina El-Basal",
+        "nameSecondaryLang": "مينا البصل"
+      },
+      {
+        "id": 5646,
+        "code": "5646",
+        "name": "طريق الاسكندرية القاهرة الصحراوى",
+        "namePrimaryLang": "Misr Alexandria Desert Road",
+        "nameSecondaryLang": "طريق الاسكندرية القاهرة الصحراوى"
+      },
+      {
+        "id": 5660,
+        "code": "5660",
+        "name": "محرم بك",
+        "namePrimaryLang": "Moharam Bek",
+        "nameSecondaryLang": "محرم بك"
+      },
+      {
+        "id": 5714,
+        "code": "5714",
+        "name": "مصطفى كامل",
+        "namePrimaryLang": "Moustafa Kamel",
+        "nameSecondaryLang": "مصطفى كامل"
+      },
+      {
+        "id": 5643,
+        "code": "5643",
+        "name": "ام زغيو",
+        "namePrimaryLang": "Om Zeghio",
+        "nameSecondaryLang": "ام زغيو"
+      },
+      {
+        "id": 5716,
+        "code": "5716",
+        "name": "راغب",
+        "namePrimaryLang": "Ragheb",
+        "nameSecondaryLang": "راغب"
+      },
+      {
+        "id": 5697,
+        "code": "5697",
+        "name": "رأس التين",
+        "namePrimaryLang": "Ras El-Teen",
+        "nameSecondaryLang": "رأس التين"
+      },
+      {
+        "id": 5712,
+        "code": "5712",
+        "name": "رشدى",
+        "namePrimaryLang": "Roshdy",
+        "nameSecondaryLang": "رشدى"
+      },
+      {
+        "id": 5670,
+        "code": "5670",
+        "name": "سابا باشا",
+        "namePrimaryLang": "Saba Basha",
+        "nameSecondaryLang": "سابا باشا"
+      },
+      {
+        "id": 5731,
+        "code": "5731",
+        "name": "صفر",
+        "namePrimaryLang": "Safar",
+        "nameSecondaryLang": "صفر"
+      },
+      {
+        "id": 5740,
+        "code": "5740",
+        "name": "سان استيفانو",
+        "namePrimaryLang": "San Estefanu",
+        "nameSecondaryLang": "سان استيفانو"
+      },
+      {
+        "id": 5728,
+        "code": "5728",
+        "name": "شدس",
+        "namePrimaryLang": "Shadows",
+        "nameSecondaryLang": "شدس"
+      },
+      {
+        "id": 2,
+        "code": "SidiBishr",
+        "name": "سيدى بشر",
+        "namePrimaryLang": "Sidi Bishr",
+        "nameSecondaryLang": "سيدى بشر"
+      },
+      {
+        "id": 1,
+        "code": "SidiGaber",
+        "name": "سيدى جابر",
+        "namePrimaryLang": "Sidi Gaber",
+        "nameSecondaryLang": "سيدى جابر"
+      },
+      {
+        "id": 5707,
+        "code": "5707",
+        "name": "سيدى جابر المحطة",
+        "namePrimaryLang": "Sidi Gaber Railway Station",
+        "nameSecondaryLang": "سيدى جابر المحطة"
+      },
+      {
+        "id": 5751,
+        "code": "5751",
+        "name": "سيدى بشر",
+        "namePrimaryLang": "Sidy Beshr",
+        "nameSecondaryLang": "سيدى بشر"
+      },
+      {
+        "id": 5752,
+        "code": "5752",
+        "name": "سيدى بشر بحرى",
+        "namePrimaryLang": "Sidy Beshr Bahary",
+        "nameSecondaryLang": "سيدى بشر بحرى"
+      },
+      {
+        "id": 5747,
+        "code": "5747",
+        "name": "سيدى بشر الترام",
+        "namePrimaryLang": "Sidy Beshr El Tram",
+        "nameSecondaryLang": "سيدى بشر الترام"
+      },
+      {
+        "id": 5753,
+        "code": "5753",
+        "name": "سيدى بشر قبلى",
+        "namePrimaryLang": "Sidy Beshr Qebly",
+        "nameSecondaryLang": "سيدى بشر قبلى"
+      },
+      {
+        "id": 5710,
+        "code": "5710",
+        "name": "سيدى جابر",
+        "namePrimaryLang": "Sidy Gaber",
+        "nameSecondaryLang": "سيدى جابر"
+      },
+      {
+        "id": 5706,
+        "code": "5706",
+        "name": "سيدى جابر الشيخ",
+        "namePrimaryLang": "Sidy Gaber ElSheikh",
+        "nameSecondaryLang": "سيدى جابر الشيخ"
+      },
+      {
+        "id": 5701,
+        "code": "5701",
+        "name": "سموحة",
+        "namePrimaryLang": "Smouha",
+        "nameSecondaryLang": "سموحة"
+      },
+      {
+        "id": 5741,
+        "code": "5741",
+        "name": "سبورتنج",
+        "namePrimaryLang": "Sporting",
+        "nameSecondaryLang": "سبورتنج"
+      },
+      {
+        "id": 5708,
+        "code": "5708",
+        "name": "سبورتنج الكبرى",
+        "namePrimaryLang": "Sporting ElKobra",
+        "nameSecondaryLang": "سبورتنج الكبرى"
+      },
+      {
+        "id": 5705,
+        "code": "5705",
+        "name": "سبورتنج الصغرى",
+        "namePrimaryLang": "Sporting ElSoghra",
+        "nameSecondaryLang": "سبورتنج الصغرى"
+      },
+      {
+        "id": 5725,
+        "code": "5725",
+        "name": "ستانلى",
+        "namePrimaryLang": "Stanly",
+        "nameSecondaryLang": "ستانلى"
+      },
+      {
+        "id": 5746,
+        "code": "5746",
+        "name": "السيوف ترام",
+        "namePrimaryLang": "Syouf tram",
+        "nameSecondaryLang": "السيوف ترام"
+      },
+      {
+        "id": 5700,
+        "code": "5700",
+        "name": "ثانى الرمل",
+        "namePrimaryLang": "Tany ElRaml",
+        "nameSecondaryLang": "ثانى الرمل"
+      },
+      {
+        "id": 5742,
+        "code": "5742",
+        "name": "ثروت",
+        "namePrimaryLang": "Tharwat",
+        "nameSecondaryLang": "ثروت"
+      },
+      {
+        "id": 5647,
+        "code": "5647",
+        "name": "فيكتوريا",
+        "namePrimaryLang": "Victoria",
+        "nameSecondaryLang": "فيكتوريا"
+      },
+      {
+        "id": 5632,
+        "code": "5632",
+        "name": "وابور المياه",
+        "namePrimaryLang": "Wabour EL Meyah",
+        "nameSecondaryLang": "وابور المياه"
+      },
+      {
+        "id": 5642,
+        "code": "5642",
+        "name": "وادى القمر",
+        "namePrimaryLang": "Wady EL Qamar",
+        "nameSecondaryLang": "وادى القمر"
+      },
+      {
+        "id": 5717,
+        "code": "5717",
+        "name": "وينجت",
+        "namePrimaryLang": "Winget",
+        "nameSecondaryLang": "وينجت"
+      },
+      {
+        "id": 5637,
+        "code": "5637",
+        "name": "طريق الاسكندرية القاهرة الزراعى",
+        "namePrimaryLang": "alex road",
+        "nameSecondaryLang": "طريق الاسكندرية القاهرة الزراعى"
+      },
+      {
+        "id": 5680,
+        "code": "5680",
+        "name": "باب سدرة",
+        "namePrimaryLang": "bab seder",
+        "nameSecondaryLang": "باب سدرة"
+      },
+      {
+        "id": 5677,
+        "code": "5677",
+        "name": "المفروزة",
+        "namePrimaryLang": "elmaaroza",
+        "nameSecondaryLang": "المفروزة"
+      },
+      {
+        "id": 5762,
+        "code": "5762",
+        "name": "المنتزه",
+        "namePrimaryLang": "elmontazah",
+        "nameSecondaryLang": "المنتزه"
+      },
+      {
+        "id": 5734,
+        "code": "5734",
+        "name": "زيزينيا",
+        "namePrimaryLang": "zezenia ",
+        "nameSecondaryLang": "زيزينيا"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "code": "Asyut",
+    "name": "اسيوط",
+    "namePrimaryLang": "Assuit",
+    "nameSecondaryLang": "اسيوط",
+    "cityDataModels": [
+      {
+        "id": 5455,
+        "code": "5455",
+        "name": "ابنوب",
+        "namePrimaryLang": "Abnoob",
+        "nameSecondaryLang": "ابنوب"
+      },
+      {
+        "id": 5448,
+        "code": "5448",
+        "name": "ابو تيج",
+        "namePrimaryLang": "Abu Teeg",
+        "nameSecondaryLang": "ابو تيج"
+      },
+      {
+        "id": 5449,
+        "code": "5449",
+        "name": "اسيوط",
+        "namePrimaryLang": "Asiut",
+        "nameSecondaryLang": "اسيوط"
+      },
+      {
+        "id": 5447,
+        "code": "5447",
+        "name": "طريق اسيوط الوادى الجديد",
+        "namePrimaryLang": "Asyout El Wadi El Gadid Road",
+        "nameSecondaryLang": "طريق اسيوط الوادى الجديد"
+      },
+      {
+        "id": 5457,
+        "code": "5457",
+        "name": "ديروط",
+        "namePrimaryLang": "Dayroot",
+        "nameSecondaryLang": "ديروط"
+      },
+      {
+        "id": 5443,
+        "code": "5443",
+        "name": "البدارى",
+        "namePrimaryLang": "El-Badary",
+        "nameSecondaryLang": "البدارى"
+      },
+      {
+        "id": 5453,
+        "code": "5453",
+        "name": "الفتح",
+        "namePrimaryLang": "El-Fath",
+        "nameSecondaryLang": "الفتح"
+      },
+      {
+        "id": 5444,
+        "code": "5444",
+        "name": "الغنايم",
+        "namePrimaryLang": "El-Ghanayem",
+        "nameSecondaryLang": "الغنايم"
+      },
+      {
+        "id": 5451,
+        "code": "5451",
+        "name": "السادات",
+        "namePrimaryLang": "El-Sadat",
+        "nameSecondaryLang": "السادات"
+      },
+      {
+        "id": 5456,
+        "code": "5456",
+        "name": "القوصية",
+        "namePrimaryLang": "ElQoosya",
+        "nameSecondaryLang": "القوصية"
+      },
+      {
+        "id": 5450,
+        "code": "5450",
+        "name": "حى غرب",
+        "namePrimaryLang": "Hay Gharb",
+        "nameSecondaryLang": "حى غرب"
+      },
+      {
+        "id": 5452,
+        "code": "5452",
+        "name": "حى شرق",
+        "namePrimaryLang": "Hay Sharq",
+        "nameSecondaryLang": "حى شرق"
+      },
+      {
+        "id": 5454,
+        "code": "5454",
+        "name": "منفلوط",
+        "namePrimaryLang": "Manfalout",
+        "nameSecondaryLang": "منفلوط"
+      },
+      {
+        "id": 5445,
+        "code": "5445",
+        "name": "صدفا",
+        "namePrimaryLang": "Sadfa",
+        "nameSecondaryLang": "صدفا"
+      },
+      {
+        "id": 5446,
+        "code": "5446",
+        "name": "ساحل سليم",
+        "namePrimaryLang": "Sahel Seleem",
+        "nameSecondaryLang": "ساحل سليم"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "code": "Aswan",
+    "name": "اسوان",
+    "namePrimaryLang": "Aswan",
+    "nameSecondaryLang": "اسوان",
+    "cityDataModels": [
+      {
+        "id": 5382,
+        "code": "5382",
+        "name": "ابو الريش",
+        "namePrimaryLang": "Abou El Reesh",
+        "nameSecondaryLang": "ابو الريش"
+      },
+      {
+        "id": 5372,
+        "code": "5372",
+        "name": "ابو سمبل",
+        "namePrimaryLang": "Abu Simbel",
+        "nameSecondaryLang": "ابو سمبل"
+      },
+      {
+        "id": 5385,
+        "code": "5385",
+        "name": "عنيبه",
+        "namePrimaryLang": "Aneebah",
+        "nameSecondaryLang": "عنيبه"
+      },
+      {
+        "id": 5390,
+        "code": "5390",
+        "name": "السباعية غرب",
+        "namePrimaryLang": "As Sebaeyah Gharb",
+        "nameSecondaryLang": "السباعية غرب"
+      },
+      {
+        "id": 5381,
+        "code": "5381",
+        "name": "اسوان",
+        "namePrimaryLang": "Aswan",
+        "nameSecondaryLang": "اسوان"
+      },
+      {
+        "id": 5380,
+        "code": "5380",
+        "name": "اطلس",
+        "namePrimaryLang": "Atlas",
+        "nameSecondaryLang": "اطلس"
+      },
+      {
+        "id": 5373,
+        "code": "5373",
+        "name": "بحيرة ناصر",
+        "namePrimaryLang": "Buhayrat Nâsir",
+        "nameSecondaryLang": "بحيرة ناصر"
+      },
+      {
+        "id": 5383,
+        "code": "5383",
+        "name": "دراو",
+        "namePrimaryLang": "Deraw",
+        "nameSecondaryLang": "دراو"
+      },
+      {
+        "id": 5379,
+        "code": "5379",
+        "name": "الكورنيش",
+        "namePrimaryLang": "EL Corniche",
+        "nameSecondaryLang": "الكورنيش"
+      },
+      {
+        "id": 5388,
+        "code": "5388",
+        "name": "ادفو",
+        "namePrimaryLang": "Edfu",
+        "nameSecondaryLang": "ادفو"
+      },
+      {
+        "id": 5376,
+        "code": "5376",
+        "name": "البصيلية",
+        "namePrimaryLang": "El Bosila",
+        "nameSecondaryLang": "البصيلية"
+      },
+      {
+        "id": 5374,
+        "code": "5374",
+        "name": "السيل غرب",
+        "namePrimaryLang": "El Sayl Garb",
+        "nameSecondaryLang": "السيل غرب"
+      },
+      {
+        "id": 5375,
+        "code": "5375",
+        "name": "السيل شرق",
+        "namePrimaryLang": "El Sayl Sharq",
+        "nameSecondaryLang": "السيل شرق"
+      },
+      {
+        "id": 5389,
+        "code": "5389",
+        "name": "الرديسية قبلى",
+        "namePrimaryLang": "ElRedeisah Qebly",
+        "nameSecondaryLang": "الرديسية قبلى"
+      },
+      {
+        "id": 5378,
+        "code": "5378",
+        "name": "حى الشروق",
+        "namePrimaryLang": "Hay ElShorooq",
+        "nameSecondaryLang": "حى الشروق"
+      },
+      {
+        "id": 5387,
+        "code": "5387",
+        "name": "كلابشة",
+        "namePrimaryLang": "Kalabshah",
+        "nameSecondaryLang": "كلابشة"
+      },
+      {
+        "id": 5384,
+        "code": "5384",
+        "name": "كوم امبو",
+        "namePrimaryLang": "Koum Ombu",
+        "nameSecondaryLang": "كوم امبو"
+      },
+      {
+        "id": 5386,
+        "code": "5386",
+        "name": "نصر النوبة",
+        "namePrimaryLang": "Nasr ElNoubah",
+        "nameSecondaryLang": "نصر النوبة"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "code": "BeniSuef",
+    "name": "بنى سويف",
+    "namePrimaryLang": "Beni Suef",
+    "nameSecondaryLang": "بنى سويف",
+    "cityDataModels": [
+      {
+        "id": 5483,
+        "code": "5483",
+        "name": "الوسطى",
+        "namePrimaryLang": "Al WSTA",
+        "nameSecondaryLang": "الوسطى"
+      },
+      {
+        "id": 5476,
+        "code": "5476",
+        "name": "بنى سويف",
+        "namePrimaryLang": "Bany Sweif",
+        "nameSecondaryLang": "بنى سويف"
+      },
+      {
+        "id": 5480,
+        "code": "5480",
+        "name": "بياض العرب",
+        "namePrimaryLang": "Bayad El-Arab",
+        "nameSecondaryLang": "بياض العرب"
+      },
+      {
+        "id": 5474,
+        "code": "5474",
+        "name": "ببا",
+        "namePrimaryLang": "Beba",
+        "nameSecondaryLang": "ببا"
+      },
+      {
+        "id": 5479,
+        "code": "5479",
+        "name": "الكورنيش",
+        "namePrimaryLang": "EL Corniche",
+        "nameSecondaryLang": "الكورنيش"
+      },
+      {
+        "id": 5478,
+        "code": "5478",
+        "name": "الرياضى",
+        "namePrimaryLang": "EL Riady",
+        "nameSecondaryLang": "الرياضى"
+      },
+      {
+        "id": 5472,
+        "code": "5472",
+        "name": "الفشن",
+        "namePrimaryLang": "El-Fashn",
+        "nameSecondaryLang": "الفشن"
+      },
+      {
+        "id": 5475,
+        "code": "5475",
+        "name": "عزبة ناصر",
+        "namePrimaryLang": "Ezbet Naser",
+        "nameSecondaryLang": "عزبة ناصر"
+      },
+      {
+        "id": 5481,
+        "code": "5481",
+        "name": "مقبل",
+        "namePrimaryLang": "Moqbel",
+        "nameSecondaryLang": "مقبل"
+      },
+      {
+        "id": 5482,
+        "code": "5482",
+        "name": "ناصر",
+        "namePrimaryLang": "Naser",
+        "nameSecondaryLang": "ناصر"
+      },
+      {
+        "id": 5473,
+        "code": "5473",
+        "name": "سمسطا",
+        "namePrimaryLang": "Samasta",
+        "nameSecondaryLang": "سمسطا"
+      },
+      {
+        "id": 5477,
+        "code": "5477",
+        "name": "اهناسيا المدينة",
+        "namePrimaryLang": "ahnasya City",
+        "nameSecondaryLang": "اهناسيا المدينة"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "code": "Cairo",
+    "name": "القاهره",
+    "namePrimaryLang": "Cairo",
+    "nameSecondaryLang": "القاهره",
+    "cityDataModels": [
+      {
+        "id": 5630,
+        "code": "5630",
+        "name": "طريق مصر الاسماعيلية الصحراوى",
+        "namePrimaryLang": " Qahera Ismaily Desert Road-",
+        "nameSecondaryLang": "طريق مصر الاسماعيلية الصحراوى"
+      },
+      {
+        "id": 5534,
+        "code": "5534",
+        "name": "مدينة 15 مايو",
+        "namePrimaryLang": "15 May City ",
+        "nameSecondaryLang": "مدينة 15 مايو"
+      },
+      {
+        "id": 5573,
+        "code": "5573",
+        "name": "عابدين",
+        "namePrimaryLang": "Abdeen",
+        "nameSecondaryLang": "عابدين"
+      },
+      {
+        "id": 5609,
+        "code": "5609",
+        "name": "اغاخان",
+        "namePrimaryLang": "Aghakhan",
+        "nameSecondaryLang": "اغاخان"
+      },
+      {
+        "id": 5616,
+        "code": "5616",
+        "name": "عين شمس",
+        "namePrimaryLang": "Ain Shams",
+        "nameSecondaryLang": "عين شمس"
+      },
+      {
+        "id": 5618,
+        "code": "5618",
+        "name": "عين شمس الغربية",
+        "namePrimaryLang": "Ain Shams El-Gharbeyah",
+        "nameSecondaryLang": "عين شمس الغربية"
+      },
+      {
+        "id": 5620,
+        "code": "5620",
+        "name": "عين شمس الشرقية",
+        "namePrimaryLang": "Ain Shams El-Sharqeyah",
+        "nameSecondaryLang": "عين شمس الشرقية"
+      },
+      {
+        "id": 5574,
+        "code": "5574",
+        "name": "باب اللوق",
+        "namePrimaryLang": "Bab El-Looq",
+        "nameSecondaryLang": "باب اللوق"
+      },
+      {
+        "id": 5583,
+        "code": "5583",
+        "name": "باب الشعرية",
+        "namePrimaryLang": "Bab El-Shareyah",
+        "nameSecondaryLang": "باب الشعرية"
+      },
+      {
+        "id": 5572,
+        "code": "5572",
+        "name": "باب الخلق",
+        "namePrimaryLang": "Bab Elkhaleq",
+        "nameSecondaryLang": "باب الخلق"
+      },
+      {
+        "id": 5619,
+        "code": "5619",
+        "name": "مدينة بدر",
+        "namePrimaryLang": "Badr City",
+        "nameSecondaryLang": "مدينة بدر"
+      },
+      {
+        "id": 5588,
+        "code": "5588",
+        "name": "بولاق",
+        "namePrimaryLang": "Boulaq",
+        "nameSecondaryLang": "بولاق"
+      },
+      {
+        "id": 5546,
+        "code": "5546",
+        "name": "دار السلام",
+        "namePrimaryLang": "Dar El-Salam",
+        "nameSecondaryLang": "دار السلام"
+      },
+      {
+        "id": 5555,
+        "code": "5555",
+        "name": "الفسطاط",
+        "namePrimaryLang": "EL Fostat",
+        "nameSecondaryLang": "الفسطاط"
+      },
+      {
+        "id": 5577,
+        "code": "5577",
+        "name": "الحسين",
+        "namePrimaryLang": "EL Hussein",
+        "nameSecondaryLang": "الحسين"
+      },
+      {
+        "id": 5548,
+        "code": "5548",
+        "name": "الملك الصالح",
+        "namePrimaryLang": "EL Malak EL Saleh",
+        "nameSecondaryLang": "الملك الصالح"
+      },
+      {
+        "id": 5613,
+        "code": "5613",
+        "name": "النزهة الجديدة",
+        "namePrimaryLang": "EL Nozha ElGedeed",
+        "nameSecondaryLang": "النزهة الجديدة"
+      },
+      {
+        "id": 5605,
+        "code": "5605",
+        "name": "السواح",
+        "namePrimaryLang": "EL Sawwah",
+        "nameSecondaryLang": "السواح"
+      },
+      {
+        "id": 5611,
+        "code": "5611",
+        "name": "الاميرية",
+        "namePrimaryLang": "EL-Ameereyah",
+        "nameSecondaryLang": "الاميرية"
+      },
+      {
+        "id": 5554,
+        "code": "5554",
+        "name": "عين الصيرة",
+        "namePrimaryLang": "Ein El-Seerah",
+        "nameSecondaryLang": "عين الصيرة"
+      },
+      {
+        "id": 5628,
+        "code": "5628",
+        "name": "الحرفيين",
+        "namePrimaryLang": "El Hearfeen",
+        "nameSecondaryLang": "الحرفيين"
+      },
+      {
+        "id": 5561,
+        "code": "5561",
+        "name": "قصر العينى",
+        "namePrimaryLang": "El Qaser El Eieny",
+        "nameSecondaryLang": "قصر العينى"
+      },
+      {
+        "id": 5585,
+        "code": "5585",
+        "name": "مدينة الرحاب",
+        "namePrimaryLang": "El Rehab City",
+        "nameSecondaryLang": "مدينة الرحاب"
+      },
+      {
+        "id": 5629,
+        "code": "5629",
+        "name": "مدينة السلام",
+        "namePrimaryLang": "El Salam City",
+        "nameSecondaryLang": "مدينة السلام"
+      },
+      {
+        "id": 5621,
+        "code": "5621",
+        "name": "مدينة الشروق",
+        "namePrimaryLang": "El Shrouek City",
+        "nameSecondaryLang": "مدينة الشروق"
+      },
+      {
+        "id": 5590,
+        "code": "5590",
+        "name": "طريق القاهرة السويس",
+        "namePrimaryLang": "El Suez El Qahera Road",
+        "nameSecondaryLang": "طريق القاهرة السويس"
+      },
+      {
+        "id": 5586,
+        "code": "5586",
+        "name": "الازبكية",
+        "namePrimaryLang": "El-Azbakeyah",
+        "nameSecondaryLang": "الازبكية"
+      },
+      {
+        "id": 5568,
+        "code": "5568",
+        "name": "الازهر",
+        "namePrimaryLang": "El-Azhar",
+        "nameSecondaryLang": "الازهر"
+      },
+      {
+        "id": 5544,
+        "code": "5544",
+        "name": "البساتين",
+        "namePrimaryLang": "El-Basateen",
+        "nameSecondaryLang": "البساتين"
+      },
+      {
+        "id": 5587,
+        "code": "5587",
+        "name": "الظاهر",
+        "namePrimaryLang": "El-Daher",
+        "nameSecondaryLang": "الظاهر"
+      },
+      {
+        "id": 5570,
+        "code": "5570",
+        "name": "الدرب الاحمر",
+        "namePrimaryLang": "El-Darb El-Ahmar",
+        "nameSecondaryLang": "الدرب الاحمر"
+      },
+      {
+        "id": 5575,
+        "code": "5575",
+        "name": "الدراسة",
+        "namePrimaryLang": "El-Darrasah",
+        "nameSecondaryLang": "الدراسة"
+      },
+      {
+        "id": 5589,
+        "code": "5589",
+        "name": "الفجالة",
+        "namePrimaryLang": "El-Fagalah",
+        "nameSecondaryLang": "الفجالة"
+      },
+      {
+        "id": 5580,
+        "code": "5580",
+        "name": "الجمالية",
+        "namePrimaryLang": "El-Gamaleyah",
+        "nameSecondaryLang": "الجمالية"
+      },
+      {
+        "id": 5623,
+        "code": "5623",
+        "name": "الهايكستب",
+        "namePrimaryLang": "El-Haykstop",
+        "nameSecondaryLang": "الهايكستب"
+      },
+      {
+        "id": 5565,
+        "code": "5565",
+        "name": "الحلمية",
+        "namePrimaryLang": "El-Helmeyah",
+        "nameSecondaryLang": "الحلمية"
+      },
+      {
+        "id": 5553,
+        "code": "5553",
+        "name": "الخليفة",
+        "namePrimaryLang": "El-Khalifah",
+        "nameSecondaryLang": "الخليفة"
+      },
+      {
+        "id": 5541,
+        "code": "5541",
+        "name": "المعادى",
+        "namePrimaryLang": "El-Maadi",
+        "nameSecondaryLang": "المعادى"
+      },
+      {
+        "id": 5556,
+        "code": "5556",
+        "name": "المنيل",
+        "namePrimaryLang": "El-Manyal",
+        "nameSecondaryLang": "المنيل"
+      },
+      {
+        "id": 5627,
+        "code": "5627",
+        "name": "المرج",
+        "namePrimaryLang": "El-Marg",
+        "nameSecondaryLang": "المرج"
+      },
+      {
+        "id": 5538,
+        "code": "5538",
+        "name": "المعصرة",
+        "namePrimaryLang": "El-Masarah",
+        "nameSecondaryLang": "المعصرة"
+      },
+      {
+        "id": 5615,
+        "code": "5615",
+        "name": "المطرية",
+        "namePrimaryLang": "El-Matareyah",
+        "nameSecondaryLang": "المطرية"
+      },
+      {
+        "id": 5563,
+        "code": "5563",
+        "name": "المنيرة",
+        "namePrimaryLang": "El-Moneerah",
+        "nameSecondaryLang": "المنيرة"
+      },
+      {
+        "id": 5579,
+        "code": "5579",
+        "name": "الموسكى",
+        "namePrimaryLang": "El-Mosky",
+        "nameSecondaryLang": "الموسكى"
+      },
+      {
+        "id": 5543,
+        "code": "5543",
+        "name": "القطامية",
+        "namePrimaryLang": "El-Qattameyah",
+        "nameSecondaryLang": "القطامية"
+      },
+      {
+        "id": 5551,
+        "code": "5551",
+        "name": "الروضة",
+        "namePrimaryLang": "El-Roadah",
+        "nameSecondaryLang": "الروضة"
+      },
+      {
+        "id": 5584,
+        "code": "5584",
+        "name": "السبتية",
+        "namePrimaryLang": "El-Sabteyah",
+        "nameSecondaryLang": "السبتية"
+      },
+      {
+        "id": 5602,
+        "code": "5602",
+        "name": "الساحل",
+        "namePrimaryLang": "El-Sahel",
+        "nameSecondaryLang": "الساحل"
+      },
+      {
+        "id": 5591,
+        "code": "5591",
+        "name": "السكاكينى",
+        "namePrimaryLang": "El-Sakakeeny",
+        "nameSecondaryLang": "السكاكينى"
+      },
+      {
+        "id": 5559,
+        "code": "5559",
+        "name": "السيدة عائشة",
+        "namePrimaryLang": "El-Sayedah Aisha",
+        "nameSecondaryLang": "السيدة عائشة"
+      },
+      {
+        "id": 5562,
+        "code": "5562",
+        "name": "السيدة زينب",
+        "namePrimaryLang": "El-Sayedah Zeinab",
+        "nameSecondaryLang": "السيدة زينب"
+      },
+      {
+        "id": 5594,
+        "code": "5594",
+        "name": "الشرابية",
+        "namePrimaryLang": "El-Sharabeyah",
+        "nameSecondaryLang": "الشرابية"
+      },
+      {
+        "id": 5532,
+        "code": "5532",
+        "name": "التبين",
+        "namePrimaryLang": "El-Tebeen",
+        "nameSecondaryLang": "التبين"
+      },
+      {
+        "id": 5595,
+        "code": "5595",
+        "name": "الوايلى",
+        "namePrimaryLang": "El-Waily",
+        "nameSecondaryLang": "الوايلى"
+      },
+      {
+        "id": 5582,
+        "code": "5582",
+        "name": "الزمالك",
+        "namePrimaryLang": "El-Zamalek",
+        "nameSecondaryLang": "الزمالك"
+      },
+      {
+        "id": 5607,
+        "code": "5607",
+        "name": "الزاوية الحمراء",
+        "namePrimaryLang": "El-Zawyah El-Hamra",
+        "nameSecondaryLang": "الزاوية الحمراء"
+      },
+      {
+        "id": 5612,
+        "code": "5612",
+        "name": "الزيتون",
+        "namePrimaryLang": "El-Zaytoon",
+        "nameSecondaryLang": "الزيتون"
+      },
+      {
+        "id": 5593,
+        "code": "5593",
+        "name": "عباسية",
+        "namePrimaryLang": "ElAbaseya",
+        "nameSecondaryLang": "عباسية"
+      },
+      {
+        "id": 5581,
+        "code": "5581",
+        "name": "العتبة",
+        "namePrimaryLang": "ElAtabah ",
+        "nameSecondaryLang": "العتبة"
+      },
+      {
+        "id": 5569,
+        "code": "5569",
+        "name": "الجزيرة",
+        "namePrimaryLang": "ElGezeerah",
+        "nameSecondaryLang": "الجزيرة"
+      },
+      {
+        "id": 5564,
+        "code": "5564",
+        "name": "الحلمية الجديدة",
+        "namePrimaryLang": "ElHelmeyah El Gededa",
+        "nameSecondaryLang": "الحلمية الجديدة"
+      },
+      {
+        "id": 5626,
+        "code": "5626",
+        "name": "المرج الجديدة",
+        "namePrimaryLang": "ElMarg ElGedeed",
+        "nameSecondaryLang": "المرج الجديدة"
+      },
+      {
+        "id": 5603,
+        "code": "5603",
+        "name": "القبة الجديدة",
+        "namePrimaryLang": "ElQobah ElGedeed",
+        "nameSecondaryLang": "القبة الجديدة"
+      },
+      {
+        "id": 5549,
+        "code": "5549",
+        "name": "السيدة نفيسة",
+        "namePrimaryLang": "ElSayedah Nafiesa",
+        "nameSecondaryLang": "السيدة نفيسة"
+      },
+      {
+        "id": 5622,
+        "code": "5622",
+        "name": "عزبة النخل",
+        "namePrimaryLang": "Ezbet El-Nakhl",
+        "nameSecondaryLang": "عزبة النخل"
+      },
+      {
+        "id": 5557,
+        "code": "5557",
+        "name": "فم الخليج",
+        "namePrimaryLang": "Fom ElKhaleeg",
+        "nameSecondaryLang": "فم الخليج"
+      },
+      {
+        "id": 5566,
+        "code": "5566",
+        "name": "جاردن سيتى",
+        "namePrimaryLang": "Garden City",
+        "nameSecondaryLang": "جاردن سيتى"
+      },
+      {
+        "id": 5617,
+        "code": "5617",
+        "name": "جسر السويس",
+        "namePrimaryLang": "Gesr EL Swis",
+        "nameSecondaryLang": "جسر السويس"
+      },
+      {
+        "id": 5592,
+        "code": "5592",
+        "name": "غمره",
+        "namePrimaryLang": "Ghamrah",
+        "nameSecondaryLang": "غمره"
+      },
+      {
+        "id": 5601,
+        "code": "5601",
+        "name": "حدائق القبة",
+        "namePrimaryLang": "Hadayeq El-Qobbah",
+        "nameSecondaryLang": "حدائق القبة"
+      },
+      {
+        "id": 5610,
+        "code": "5610",
+        "name": "حدائق الزيتون",
+        "namePrimaryLang": "Hadayeq ElZaytoon ",
+        "nameSecondaryLang": "حدائق الزيتون"
+      },
+      {
+        "id": 5537,
+        "code": "5537",
+        "name": "حدائق حلوان",
+        "namePrimaryLang": "Hadayeq Helwan",
+        "nameSecondaryLang": "حدائق حلوان"
+      },
+      {
+        "id": 5604,
+        "code": "5604",
+        "name": "حمامات القبة",
+        "namePrimaryLang": "Hamamat El ElQobbah",
+        "nameSecondaryLang": "حمامات القبة"
+      },
+      {
+        "id": 5598,
+        "code": "5598",
+        "name": "مصر الجديدة",
+        "namePrimaryLang": "Heliopolis",
+        "nameSecondaryLang": "مصر الجديدة"
+      },
+      {
+        "id": 5614,
+        "code": "5614",
+        "name": "حلمية الزيتون",
+        "namePrimaryLang": "Helmeyet El-Zatoon",
+        "nameSecondaryLang": "حلمية الزيتون"
+      },
+      {
+        "id": 5535,
+        "code": "5535",
+        "name": "حلوان",
+        "namePrimaryLang": "Helwan",
+        "nameSecondaryLang": "حلوان"
+      },
+      {
+        "id": 5533,
+        "code": "5533",
+        "name": "كفر العلو",
+        "namePrimaryLang": "Kafr El-Elw",
+        "nameSecondaryLang": "كفر العلو"
+      },
+      {
+        "id": 5578,
+        "code": "5578",
+        "name": "خان الخليلى",
+        "namePrimaryLang": "Khan El-Khaleely",
+        "nameSecondaryLang": "خان الخليلى"
+      },
+      {
+        "id": 5597,
+        "code": "5597",
+        "name": "كوبرى القبة",
+        "namePrimaryLang": "Kobry El-Qobbah",
+        "nameSecondaryLang": "كوبرى القبة"
+      },
+      {
+        "id": 5539,
+        "code": "5539",
+        "name": "كوتسيكا",
+        "namePrimaryLang": "Kotsika",
+        "nameSecondaryLang": "كوتسيكا"
+      },
+      {
+        "id": 5571,
+        "code": "5571",
+        "name": "لاظوغلى",
+        "namePrimaryLang": "Lazoghly",
+        "nameSecondaryLang": "لاظوغلى"
+      },
+      {
+        "id": 5606,
+        "code": "5606",
+        "name": "مدينتى",
+        "namePrimaryLang": "Madenty",
+        "nameSecondaryLang": "مدينتى"
+      },
+      {
+        "id": 5567,
+        "code": "5567",
+        "name": "منشية ناصر",
+        "namePrimaryLang": "Mansheyet Naser",
+        "nameSecondaryLang": "منشية ناصر"
+      },
+      {
+        "id": 5552,
+        "code": "5552",
+        "name": "منيل الروضة",
+        "namePrimaryLang": "Manyal ElRoadah",
+        "nameSecondaryLang": "منيل الروضة"
+      },
+      {
+        "id": 5547,
+        "code": "5547",
+        "name": "مصر القديمة",
+        "namePrimaryLang": "Masr El-Qadeemah",
+        "nameSecondaryLang": "مصر القديمة"
+      },
+      {
+        "id": 4,
+        "code": "MISRELGEDIDA",
+        "name": "مصر الجديده",
+        "namePrimaryLang": "Misr El Gedida",
+        "nameSecondaryLang": "مصر الجديده"
+      },
+      {
+        "id": 5625,
+        "code": "5625",
+        "name": "مؤسسة الزكاة",
+        "namePrimaryLang": "Moaseseh EL Zakah",
+        "nameSecondaryLang": "مؤسسة الزكاة"
+      },
+      {
+        "id": 5550,
+        "code": "5550",
+        "name": "المقطم",
+        "namePrimaryLang": "Mokattam",
+        "nameSecondaryLang": "المقطم"
+      },
+      {
+        "id": 3,
+        "code": "NASRCITY",
+        "name": "مدينة نصر",
+        "namePrimaryLang": "Nasr City",
+        "nameSecondaryLang": "مدينة نصر"
+      },
+      {
+        "id": 5558,
+        "code": "5558",
+        "name": "مدينة نصر",
+        "namePrimaryLang": "Nasr City",
+        "nameSecondaryLang": "مدينة نصر"
+      },
+      {
+        "id": 5545,
+        "code": "5545",
+        "name": "القاهرة الجديدة",
+        "namePrimaryLang": "New Cairo",
+        "nameSecondaryLang": "القاهرة الجديدة"
+      },
+      {
+        "id": 5560,
+        "code": "5560",
+        "name": "قلعة",
+        "namePrimaryLang": "Qala",
+        "nameSecondaryLang": "قلعة"
+      },
+      {
+        "id": 5624,
+        "code": "5624",
+        "name": "مدينة قباء",
+        "namePrimaryLang": "Qeba City",
+        "nameSecondaryLang": "مدينة قباء"
+      },
+      {
+        "id": 5596,
+        "code": "5596",
+        "name": "رملة بولاق",
+        "namePrimaryLang": "Remlah Bolak",
+        "nameSecondaryLang": "رملة بولاق"
+      },
+      {
+        "id": 5599,
+        "code": "5599",
+        "name": "روض الفرج",
+        "namePrimaryLang": "Roud El-Farag",
+        "nameSecondaryLang": "روض الفرج"
+      },
+      {
+        "id": 5608,
+        "code": "5608",
+        "name": "سراى القبة",
+        "namePrimaryLang": "Sarai El Koba",
+        "nameSecondaryLang": "سراى القبة"
+      },
+      {
+        "id": 5542,
+        "code": "5542",
+        "name": "شق الثعبان",
+        "namePrimaryLang": "Sheq EL Thoaban",
+        "nameSecondaryLang": "شق الثعبان"
+      },
+      {
+        "id": 5600,
+        "code": "5600",
+        "name": "شبرا",
+        "namePrimaryLang": "Shobra",
+        "nameSecondaryLang": "شبرا"
+      },
+      {
+        "id": 5,
+        "code": "SHUBRA",
+        "name": "شبرا",
+        "namePrimaryLang": "Shubra",
+        "nameSecondaryLang": "شبرا"
+      },
+      {
+        "id": 5540,
+        "code": "5540",
+        "name": "طره",
+        "namePrimaryLang": "Torah",
+        "nameSecondaryLang": "طره"
+      },
+      {
+        "id": 5536,
+        "code": "5536",
+        "name": "وادى حوف",
+        "namePrimaryLang": "Wady Houf",
+        "nameSecondaryLang": "وادى حوف"
+      },
+      {
+        "id": 5576,
+        "code": "5576",
+        "name": "وسط البلد",
+        "namePrimaryLang": "Waset El Balad",
+        "nameSecondaryLang": "وسط البلد"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "code": "Damietta",
+    "name": "دمياط",
+    "namePrimaryLang": "Damietta",
+    "nameSecondaryLang": "دمياط",
+    "cityDataModels": [
+      {
+        "id": 5870,
+        "code": "5870",
+        "name": "دمياط",
+        "namePrimaryLang": "Domiat",
+        "nameSecondaryLang": "دمياط"
+      },
+      {
+        "id": 5871,
+        "code": "5871",
+        "name": "دمياط الجديدة",
+        "namePrimaryLang": "Domiat ElGedeedah",
+        "nameSecondaryLang": "دمياط الجديدة"
+      },
+      {
+        "id": 5864,
+        "code": "5864",
+        "name": "السرو",
+        "namePrimaryLang": "El Saro",
+        "nameSecondaryLang": "السرو"
+      },
+      {
+        "id": 5866,
+        "code": "5866",
+        "name": "الروضة",
+        "namePrimaryLang": "El-Roadah",
+        "nameSecondaryLang": "الروضة"
+      },
+      {
+        "id": 5863,
+        "code": "5863",
+        "name": "الزرقا",
+        "namePrimaryLang": "El-Zarqah",
+        "nameSecondaryLang": "الزرقا"
+      },
+      {
+        "id": 5872,
+        "code": "5872",
+        "name": "عزبة البرج",
+        "namePrimaryLang": "Ezbet ElBorg",
+        "nameSecondaryLang": "عزبة البرج"
+      },
+      {
+        "id": 5867,
+        "code": "5867",
+        "name": "فارسكور",
+        "namePrimaryLang": "Farskour",
+        "nameSecondaryLang": "فارسكور"
+      },
+      {
+        "id": 5869,
+        "code": "5869",
+        "name": "كفر البطيخ",
+        "namePrimaryLang": "Kafr ElBatteekh",
+        "nameSecondaryLang": "كفر البطيخ"
+      },
+      {
+        "id": 5868,
+        "code": "5868",
+        "name": "كفر سعد",
+        "namePrimaryLang": "Kafr Sad",
+        "nameSecondaryLang": "كفر سعد"
+      },
+      {
+        "id": 5865,
+        "code": "5865",
+        "name": "ميت ابو غالب",
+        "namePrimaryLang": "Meet Abu Ghaleb",
+        "nameSecondaryLang": "ميت ابو غالب"
+      },
+      {
+        "id": 5873,
+        "code": "5873",
+        "name": "رأس البر",
+        "namePrimaryLang": "Ras El-Bar",
+        "nameSecondaryLang": "رأس البر"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "code": "Dakahlia",
+    "name": "الدقهليه",
+    "namePrimaryLang": "Daqahliya",
+    "nameSecondaryLang": "الدقهليه",
+    "cityDataModels": [
+      {
+        "id": 5831,
+        "code": "5831",
+        "name": "اجا",
+        "namePrimaryLang": "Aga",
+        "nameSecondaryLang": "اجا"
+      },
+      {
+        "id": 5844,
+        "code": "5844",
+        "name": "بلقاس",
+        "namePrimaryLang": "Belqas",
+        "nameSecondaryLang": "بلقاس"
+      },
+      {
+        "id": 5836,
+        "code": "5836",
+        "name": "دكرنس",
+        "namePrimaryLang": "Dokornos",
+        "nameSecondaryLang": "دكرنس"
+      },
+      {
+        "id": 5841,
+        "code": "5841",
+        "name": "الجمالية",
+        "namePrimaryLang": "El-Gamaleyah",
+        "nameSecondaryLang": "الجمالية"
+      },
+      {
+        "id": 5838,
+        "code": "5838",
+        "name": "الكردى",
+        "namePrimaryLang": "El-Kordy",
+        "nameSecondaryLang": "الكردى"
+      },
+      {
+        "id": 5834,
+        "code": "5834",
+        "name": "المنصورة",
+        "namePrimaryLang": "El-Mansourah",
+        "nameSecondaryLang": "المنصورة"
+      },
+      {
+        "id": 5843,
+        "code": "5843",
+        "name": "المنزلة",
+        "namePrimaryLang": "El-Manzalah",
+        "nameSecondaryLang": "المنزلة"
+      },
+      {
+        "id": 5833,
+        "code": "5833",
+        "name": "المطرية",
+        "namePrimaryLang": "El-Matareyah",
+        "nameSecondaryLang": "المطرية"
+      },
+      {
+        "id": 5829,
+        "code": "5829",
+        "name": "السنبلاوين",
+        "namePrimaryLang": "El-Senbelawein",
+        "nameSecondaryLang": "السنبلاوين"
+      },
+      {
+        "id": 5845,
+        "code": "5845",
+        "name": "جمصة",
+        "namePrimaryLang": "Gamasa",
+        "nameSecondaryLang": "جمصة"
+      },
+      {
+        "id": 5828,
+        "code": "5828",
+        "name": "ميت غمر",
+        "namePrimaryLang": "Meet Ghamr",
+        "nameSecondaryLang": "ميت غمر"
+      },
+      {
+        "id": 5840,
+        "code": "5840",
+        "name": "ميت سلسيل",
+        "namePrimaryLang": "Meet Salseel",
+        "nameSecondaryLang": "ميت سلسيل"
+      },
+      {
+        "id": 5839,
+        "code": "5839",
+        "name": "منية النصر",
+        "namePrimaryLang": "Menyet El-Nasr",
+        "nameSecondaryLang": "منية النصر"
+      },
+      {
+        "id": 5832,
+        "code": "5832",
+        "name": "منيه سمنود",
+        "namePrimaryLang": "Menyet Samanood",
+        "nameSecondaryLang": "منيه سمنود"
+      },
+      {
+        "id": 5837,
+        "code": "5837",
+        "name": "نبروه",
+        "namePrimaryLang": "Nabrowah",
+        "nameSecondaryLang": "نبروه"
+      },
+      {
+        "id": 5842,
+        "code": "5842",
+        "name": "شربين",
+        "namePrimaryLang": "Sherbeen",
+        "nameSecondaryLang": "شربين"
+      },
+      {
+        "id": 5835,
+        "code": "5835",
+        "name": "طلخا",
+        "namePrimaryLang": "Talkha",
+        "nameSecondaryLang": "طلخا"
+      },
+      {
+        "id": 5830,
+        "code": "5830",
+        "name": "طماى الامديد",
+        "namePrimaryLang": "Tamy ElAmdeed",
+        "nameSecondaryLang": "طماى الامديد"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "code": "Faiyum",
+    "name": "الفيوم",
+    "namePrimaryLang": "Fayoum",
+    "nameSecondaryLang": "الفيوم",
+    "cityDataModels": [
+      {
+        "id": 5308,
+        "code": "5308",
+        "name": "اطسا",
+        "namePrimaryLang": "Atsa",
+        "nameSecondaryLang": "اطسا"
+      },
+      {
+        "id": 5322,
+        "code": "5322",
+        "name": "طريق مصر الفيوم الصحراوى",
+        "namePrimaryLang": "Cairo Fayoum Desert Rd",
+        "nameSecondaryLang": "طريق مصر الفيوم الصحراوى"
+      },
+      {
+        "id": 5307,
+        "code": "5307",
+        "name": "دلة",
+        "namePrimaryLang": "Dalah",
+        "nameSecondaryLang": "دلة"
+      },
+      {
+        "id": 5313,
+        "code": "5313",
+        "name": "الصوفى",
+        "namePrimaryLang": "EL Sofy",
+        "nameSecondaryLang": "الصوفى"
+      },
+      {
+        "id": 5311,
+        "code": "5311",
+        "name": "ابشواى",
+        "namePrimaryLang": "Ebshoway",
+        "nameSecondaryLang": "ابشواى"
+      },
+      {
+        "id": 5319,
+        "code": "5319",
+        "name": "البحارى",
+        "namePrimaryLang": "El Bahary",
+        "nameSecondaryLang": "البحارى"
+      },
+      {
+        "id": 5316,
+        "code": "5316",
+        "name": "الجامعة",
+        "namePrimaryLang": "El Gamaa",
+        "nameSecondaryLang": "الجامعة"
+      },
+      {
+        "id": 5312,
+        "code": "5312",
+        "name": "السبع سواقى",
+        "namePrimaryLang": "El Saba Sawaqy",
+        "nameSecondaryLang": "السبع سواقى"
+      },
+      {
+        "id": 5309,
+        "code": "5309",
+        "name": "الفيوم",
+        "namePrimaryLang": "El-Fayoum",
+        "nameSecondaryLang": "الفيوم"
+      },
+      {
+        "id": 5310,
+        "code": "5310",
+        "name": "الحادقة",
+        "namePrimaryLang": "El-Hadeqah",
+        "nameSecondaryLang": "الحادقة"
+      },
+      {
+        "id": 5323,
+        "code": "5323",
+        "name": "المسلة",
+        "namePrimaryLang": "ElMasallah",
+        "nameSecondaryLang": "المسلة"
+      },
+      {
+        "id": 5306,
+        "code": "5306",
+        "name": "السيالة",
+        "namePrimaryLang": "ElSayalah",
+        "nameSecondaryLang": "السيالة"
+      },
+      {
+        "id": 5321,
+        "code": "5321",
+        "name": "كوم اوشيم",
+        "namePrimaryLang": "Koum Awshem",
+        "nameSecondaryLang": "كوم اوشيم"
+      },
+      {
+        "id": 5314,
+        "code": "5314",
+        "name": "منشأة لطف الله",
+        "namePrimaryLang": "Monshaat Lotf Allah",
+        "nameSecondaryLang": "منشأة لطف الله"
+      },
+      {
+        "id": 5318,
+        "code": "5318",
+        "name": "سنورس",
+        "namePrimaryLang": "Senorus",
+        "nameSecondaryLang": "سنورس"
+      },
+      {
+        "id": 5320,
+        "code": "5320",
+        "name": "طامية",
+        "namePrimaryLang": "Tamyah",
+        "nameSecondaryLang": "طامية"
+      },
+      {
+        "id": 5317,
+        "code": "5317",
+        "name": "يوسف الصديق",
+        "namePrimaryLang": "Youssief ElSedeeq",
+        "nameSecondaryLang": "يوسف الصديق"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "code": "Gharbia",
+    "name": "الغربيه",
+    "namePrimaryLang": "Gharbiya",
+    "nameSecondaryLang": "الغربيه",
+    "cityDataModels": [
+      {
+        "id": 5850,
+        "code": "5850",
+        "name": "بسيون",
+        "namePrimaryLang": "Basyoun",
+        "nameSecondaryLang": "بسيون"
+      },
+      {
+        "id": 5852,
+        "code": "5852",
+        "name": "المحلة الكبرى",
+        "namePrimaryLang": "El-Mahallah El-Kobra",
+        "nameSecondaryLang": "المحلة الكبرى"
+      },
+      {
+        "id": 5847,
+        "code": "5847",
+        "name": "السنطة",
+        "namePrimaryLang": "El-Santah",
+        "nameSecondaryLang": "السنطة"
+      },
+      {
+        "id": 5849,
+        "code": "5849",
+        "name": "كفر الزيات",
+        "namePrimaryLang": "Kafr El-Zayyat",
+        "nameSecondaryLang": "كفر الزيات"
+      },
+      {
+        "id": 5853,
+        "code": "5853",
+        "name": "قطور",
+        "namePrimaryLang": "Qotoor",
+        "nameSecondaryLang": "قطور"
+      },
+      {
+        "id": 5851,
+        "code": "5851",
+        "name": "سمنود",
+        "namePrimaryLang": "Samanoud",
+        "nameSecondaryLang": "سمنود"
+      },
+      {
+        "id": 5848,
+        "code": "5848",
+        "name": "طنطا",
+        "namePrimaryLang": "Tanta",
+        "nameSecondaryLang": "طنطا"
+      },
+      {
+        "id": 5846,
+        "code": "5846",
+        "name": "زفتا",
+        "namePrimaryLang": "Zefta",
+        "nameSecondaryLang": "زفتا"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "code": "Giza",
+    "name": "االجيزه",
+    "namePrimaryLang": "Giza",
+    "nameSecondaryLang": "االجيزه",
+    "cityDataModels": [
+      {
+        "id": 5490,
+        "code": "5490",
+        "name": "السادس من اكتوبر",
+        "namePrimaryLang": "6 october",
+        "nameSecondaryLang": "السادس من اكتوبر"
+      },
+      {
+        "id": 5491,
+        "code": "5491",
+        "name": "ابو النمرس",
+        "namePrimaryLang": "Abu Nomros",
+        "nameSecondaryLang": "ابو النمرس"
+      },
+      {
+        "id": 5502,
+        "code": "Giza",
+        "name": "ابو رواش",
+        "namePrimaryLang": "Abu Rawash",
+        "nameSecondaryLang": "ابو رواش"
+      },
+      {
+        "id": 5484,
+        "code": "5484",
+        "name": "اطفيح",
+        "namePrimaryLang": "Atfeeh",
+        "nameSecondaryLang": "اطفيح"
+      },
+      {
+        "id": 5499,
+        "code": "5499",
+        "name": "بين السرايات",
+        "namePrimaryLang": "Baen ElSarayat",
+        "nameSecondaryLang": "بين السرايات"
+      },
+      {
+        "id": 5500,
+        "code": "5500",
+        "name": "بولاق الدكرور",
+        "namePrimaryLang": "Boulaq El-Dakroor",
+        "nameSecondaryLang": "بولاق الدكرور"
+      },
+      {
+        "id": 6,
+        "code": "MOHANDESSIN",
+        "name": "المهندسين",
+        "namePrimaryLang": "El Mohandessin",
+        "nameSecondaryLang": "المهندسين"
+      },
+      {
+        "id": 5504,
+        "code": "5504",
+        "name": "العجوزة",
+        "namePrimaryLang": "El-Agouzah",
+        "nameSecondaryLang": "العجوزة"
+      },
+      {
+        "id": 5486,
+        "code": "5486",
+        "name": "العياط",
+        "namePrimaryLang": "El-Ayyat",
+        "nameSecondaryLang": "العياط"
+      },
+      {
+        "id": 5487,
+        "code": "5487",
+        "name": "البدرشين",
+        "namePrimaryLang": "El-Badrashein",
+        "nameSecondaryLang": "البدرشين"
+      },
+      {
+        "id": 5507,
+        "code": "5507",
+        "name": "البراجيل",
+        "namePrimaryLang": "El-Barageel",
+        "nameSecondaryLang": "البراجيل"
+      },
+      {
+        "id": 5501,
+        "code": "5501",
+        "name": "الدقى",
+        "namePrimaryLang": "El-Dokky",
+        "nameSecondaryLang": "الدقى"
+      },
+      {
+        "id": 5493,
+        "code": "5493",
+        "name": "الهرم",
+        "namePrimaryLang": "El-Haram",
+        "nameSecondaryLang": "الهرم"
+      },
+      {
+        "id": 5488,
+        "code": "5488",
+        "name": "الحوامدية",
+        "namePrimaryLang": "El-Hawamdeyah",
+        "nameSecondaryLang": "الحوامدية"
+      },
+      {
+        "id": 5495,
+        "code": "5495",
+        "name": "المنيب",
+        "namePrimaryLang": "El-Moneeb",
+        "nameSecondaryLang": "المنيب"
+      },
+      {
+        "id": 5485,
+        "code": "5485",
+        "name": "الصف",
+        "namePrimaryLang": "El-Saf",
+        "nameSecondaryLang": "الصف"
+      },
+      {
+        "id": 5508,
+        "code": "5508",
+        "name": "الوراق",
+        "namePrimaryLang": "El-Warraq",
+        "nameSecondaryLang": "الوراق"
+      },
+      {
+        "id": 5506,
+        "code": "5506",
+        "name": "الكيت كات",
+        "namePrimaryLang": "ElKetkat",
+        "nameSecondaryLang": "الكيت كات"
+      },
+      {
+        "id": 5503,
+        "code": "5503",
+        "name": "المهندسين",
+        "namePrimaryLang": "ElMohandssen",
+        "nameSecondaryLang": "المهندسين"
+      },
+      {
+        "id": 5505,
+        "code": "5505",
+        "name": "الصحفيين",
+        "namePrimaryLang": "ElSahafeen",
+        "nameSecondaryLang": "الصحفيين"
+      },
+      {
+        "id": 5510,
+        "code": "5510",
+        "name": "امبابه",
+        "namePrimaryLang": "Embabah",
+        "nameSecondaryLang": "امبابه"
+      },
+      {
+        "id": 5494,
+        "code": "5494",
+        "name": "فيصل",
+        "namePrimaryLang": "Feisal",
+        "nameSecondaryLang": "فيصل"
+      },
+      {
+        "id": 5496,
+        "code": "5496",
+        "name": "جزيرة الذهب",
+        "namePrimaryLang": "Gazirat Ad Dahab",
+        "nameSecondaryLang": "جزيرة الذهب"
+      },
+      {
+        "id": 5497,
+        "code": "5497",
+        "name": "الجيزة",
+        "namePrimaryLang": "Giza",
+        "nameSecondaryLang": "الجيزة"
+      },
+      {
+        "id": 5498,
+        "code": "5498",
+        "name": "كرداسة",
+        "namePrimaryLang": "Kerdasah",
+        "nameSecondaryLang": "كرداسة"
+      },
+      {
+        "id": 5511,
+        "code": "5511",
+        "name": "منشية القناطر",
+        "namePrimaryLang": "Mansheyet El-Qanater",
+        "nameSecondaryLang": "منشية القناطر"
+      },
+      {
+        "id": 5509,
+        "code": "5509",
+        "name": "اوسيم",
+        "namePrimaryLang": "Oseem",
+        "nameSecondaryLang": "اوسيم"
+      },
+      {
+        "id": 5492,
+        "code": "5492",
+        "name": "سقارة",
+        "namePrimaryLang": "Saqqara",
+        "nameSecondaryLang": "سقارة"
+      },
+      {
+        "id": 5489,
+        "code": "5489",
+        "name": "طموه",
+        "namePrimaryLang": "Tamwah",
+        "nameSecondaryLang": "طموه"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "code": "Ismailia",
+    "name": "الاسماعيليه",
+    "namePrimaryLang": "Ismailia",
+    "nameSecondaryLang": "الاسماعيليه",
+    "cityDataModels": [
+      {
+        "id": 5286,
+        "code": "5286",
+        "name": "الشيخ زايد",
+        "namePrimaryLang": "13",
+        "nameSecondaryLang": "الشيخ زايد"
+      },
+      {
+        "id": 5290,
+        "code": "5290",
+        "name": "ابو خليفة",
+        "namePrimaryLang": "Abu Khaleefah",
+        "nameSecondaryLang": "ابو خليفة"
+      },
+      {
+        "id": 5265,
+        "code": "5265",
+        "name": "ابو سلطان",
+        "namePrimaryLang": "Abu Sultan",
+        "nameSecondaryLang": "ابو سلطان"
+      },
+      {
+        "id": 5262,
+        "code": "5262",
+        "name": "الثلاثينى",
+        "namePrimaryLang": "El Thalateeny",
+        "nameSecondaryLang": "الثلاثينى"
+      },
+      {
+        "id": 5276,
+        "code": "5276",
+        "name": "المحطة الجديدة",
+        "namePrimaryLang": "El-Mahattah  El-Gedeed",
+        "nameSecondaryLang": "المحطة الجديدة"
+      },
+      {
+        "id": 5267,
+        "code": "5267",
+        "name": "التل الكبير",
+        "namePrimaryLang": "El-Tal El-Kebeer",
+        "nameSecondaryLang": "التل الكبير"
+      },
+      {
+        "id": 5274,
+        "code": "5274",
+        "name": "المنطقة الصناعية",
+        "namePrimaryLang": "ElManteqah ElSanaya",
+        "nameSecondaryLang": "المنطقة الصناعية"
+      },
+      {
+        "id": 5289,
+        "code": "5289",
+        "name": "قنطرة غرب",
+        "namePrimaryLang": "ElQantarah Gharb",
+        "nameSecondaryLang": "قنطرة غرب"
+      },
+      {
+        "id": 5288,
+        "code": "5288",
+        "name": "قنطرة شرق",
+        "namePrimaryLang": "ElQantarah Sharq",
+        "nameSecondaryLang": "قنطرة شرق"
+      },
+      {
+        "id": 5272,
+        "code": "5272",
+        "name": "القصاصين الجديدة",
+        "namePrimaryLang": "ElQassaseen ElGedeed",
+        "nameSecondaryLang": "القصاصين الجديدة"
+      },
+      {
+        "id": 5287,
+        "code": "5287",
+        "name": "الطريق الدائرى",
+        "namePrimaryLang": "ElTorek we ElKabary",
+        "nameSecondaryLang": "الطريق الدائرى"
+      },
+      {
+        "id": 5264,
+        "code": "5264",
+        "name": "فايد",
+        "namePrimaryLang": "Fayed",
+        "nameSecondaryLang": "فايد"
+      },
+      {
+        "id": 5268,
+        "code": "5268",
+        "name": "جبل مريم",
+        "namePrimaryLang": "Gabal Mariam",
+        "nameSecondaryLang": "جبل مريم"
+      },
+      {
+        "id": 5281,
+        "code": "5281",
+        "name": "حى الاعلام",
+        "namePrimaryLang": "Hay ElAlam",
+        "nameSecondaryLang": "حى الاعلام"
+      },
+      {
+        "id": 5275,
+        "code": "5275",
+        "name": "حى المدينة",
+        "namePrimaryLang": "Hay ElMadeenah",
+        "nameSecondaryLang": "حى المدينة"
+      },
+      {
+        "id": 5277,
+        "code": "5277",
+        "name": "حى الصفا",
+        "namePrimaryLang": "Hay ElSafa",
+        "nameSecondaryLang": "حى الصفا"
+      },
+      {
+        "id": 5284,
+        "code": "5284",
+        "name": "حى السلام",
+        "namePrimaryLang": "Hay ElSalam",
+        "nameSecondaryLang": "حى السلام"
+      },
+      {
+        "id": 5285,
+        "code": "5285",
+        "name": "حى الزهور",
+        "namePrimaryLang": "Hay ElZohoor",
+        "nameSecondaryLang": "حى الزهور"
+      },
+      {
+        "id": 5282,
+        "code": "5282",
+        "name": "حى ثالث",
+        "namePrimaryLang": "Hay Talet",
+        "nameSecondaryLang": "حى ثالث"
+      },
+      {
+        "id": 5278,
+        "code": "5278",
+        "name": "منشية الشهداء",
+        "namePrimaryLang": "Mansheyet ElShohada",
+        "nameSecondaryLang": "منشية الشهداء"
+      },
+      {
+        "id": 5283,
+        "code": "5283",
+        "name": "منطقة التمليك",
+        "namePrimaryLang": "Manteqah ElTamlek",
+        "nameSecondaryLang": "منطقة التمليك"
+      },
+      {
+        "id": 5263,
+        "code": "5263",
+        "name": "مستقبل",
+        "namePrimaryLang": "Mostqabel",
+        "nameSecondaryLang": "مستقبل"
+      },
+      {
+        "id": 5271,
+        "code": "5271",
+        "name": "نفيشة",
+        "namePrimaryLang": "Nefeeshah",
+        "nameSecondaryLang": "نفيشة"
+      },
+      {
+        "id": 5269,
+        "code": "5269",
+        "name": "القصاصين القديمة",
+        "namePrimaryLang": "Old El-Qassaseen",
+        "nameSecondaryLang": "القصاصين القديمة"
+      },
+      {
+        "id": 5270,
+        "code": "5270",
+        "name": "طريق اسماعيلية مصر الصحراوى",
+        "namePrimaryLang": "Road Ismaily Qahera Desert x",
+        "nameSecondaryLang": "طريق اسماعيلية مصر الصحراوى"
+      },
+      {
+        "id": 5266,
+        "code": "5266",
+        "name": "سرابيوم",
+        "namePrimaryLang": "Sarabyoum",
+        "nameSecondaryLang": "سرابيوم"
+      },
+      {
+        "id": 5279,
+        "code": "5279",
+        "name": "وسط البلد",
+        "namePrimaryLang": "Waset El Balad",
+        "nameSecondaryLang": "وسط البلد"
+      },
+      {
+        "id": 5280,
+        "code": "5280",
+        "name": "ابو صوير المحطة",
+        "namePrimaryLang": "abu sura",
+        "nameSecondaryLang": "ابو صوير المحطة"
+      },
+      {
+        "id": 5273,
+        "code": "5273",
+        "name": "ابو صوير البلاد",
+        "namePrimaryLang": "abu sura elbalad",
+        "nameSecondaryLang": "ابو صوير البلاد"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "code": "KafrElSheikh",
+    "name": "كفر الشيخ",
+    "namePrimaryLang": "Kafr El Sheikh",
+    "nameSecondaryLang": "كفر الشيخ",
+    "cityDataModels": [
+      {
+        "id": 5371,
+        "code": "5371",
+        "name": "بلطيم",
+        "namePrimaryLang": "Balteem",
+        "nameSecondaryLang": "بلطيم"
+      },
+      {
+        "id": 5363,
+        "code": "5363",
+        "name": "بيلا",
+        "namePrimaryLang": "Beela",
+        "nameSecondaryLang": "بيلا"
+      },
+      {
+        "id": 5362,
+        "code": "5362",
+        "name": "دسوق",
+        "namePrimaryLang": "Desooq",
+        "nameSecondaryLang": "دسوق"
+      },
+      {
+        "id": 5370,
+        "code": "5370",
+        "name": "الحامول",
+        "namePrimaryLang": "El-Hamool",
+        "nameSecondaryLang": "الحامول"
+      },
+      {
+        "id": 5366,
+        "code": "5366",
+        "name": "الرياض",
+        "namePrimaryLang": "El-Reyad",
+        "nameSecondaryLang": "الرياض"
+      },
+      {
+        "id": 5365,
+        "code": "5365",
+        "name": "فوه",
+        "namePrimaryLang": "Fwah",
+        "nameSecondaryLang": "فوه"
+      },
+      {
+        "id": 5356,
+        "code": "5356",
+        "name": "حى شرق",
+        "namePrimaryLang": "Hay Sharq",
+        "nameSecondaryLang": "حى شرق"
+      },
+      {
+        "id": 5358,
+        "code": "5358",
+        "name": "قلين",
+        "namePrimaryLang": "Keleen",
+        "nameSecondaryLang": "قلين"
+      },
+      {
+        "id": 5357,
+        "code": "5357",
+        "name": "مساكن الحلقة",
+        "namePrimaryLang": "Masaken Halaqa",
+        "nameSecondaryLang": "مساكن الحلقة"
+      },
+      {
+        "id": 5369,
+        "code": "5369",
+        "name": "مطوبس",
+        "namePrimaryLang": "Motobas",
+        "nameSecondaryLang": "مطوبس"
+      },
+      {
+        "id": 5368,
+        "code": "5368",
+        "name": "رشيد",
+        "namePrimaryLang": "Rasheed",
+        "nameSecondaryLang": "رشيد"
+      },
+      {
+        "id": 5359,
+        "code": "5359",
+        "name": "سخا",
+        "namePrimaryLang": "Sakha",
+        "nameSecondaryLang": "سخا"
+      },
+      {
+        "id": 5364,
+        "code": "5364",
+        "name": "سيدى غازى",
+        "namePrimaryLang": "Sidy Ghazy",
+        "nameSecondaryLang": "سيدى غازى"
+      },
+      {
+        "id": 5367,
+        "code": "5367",
+        "name": "سيدى سالم",
+        "namePrimaryLang": "Sidy Salem",
+        "nameSecondaryLang": "سيدى سالم"
+      },
+      {
+        "id": 5360,
+        "code": "5360",
+        "name": "تقسيم 2",
+        "namePrimaryLang": "Taqsem ",
+        "nameSecondaryLang": "تقسيم 2"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "code": "Luxor",
+    "name": "الاقصر",
+    "namePrimaryLang": "Luxor",
+    "nameSecondaryLang": "الاقصر",
+    "cityDataModels": [
+      {
+        "id": 5415,
+        "code": "5415",
+        "name": "الاقصر",
+        "namePrimaryLang": "El-Oksor",
+        "nameSecondaryLang": "الاقصر"
+      },
+      {
+        "id": 5414,
+        "code": "5414",
+        "name": "اسنا",
+        "namePrimaryLang": "Esna",
+        "nameSecondaryLang": "اسنا"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "code": "MarsaAlam",
+    "name": "مرسى علم",
+    "namePrimaryLang": "Marsa Allam",
+    "nameSecondaryLang": "مرسى علم",
+    "cityDataModels": [
+      {
+        "id": 5397,
+        "code": "5397",
+        "name": "خليج كورايا",
+        "namePrimaryLang": "Khaleg Koraya",
+        "nameSecondaryLang": "خليج كورايا"
+      },
+      {
+        "id": 5396,
+        "code": "5396",
+        "name": "وسط البلد",
+        "namePrimaryLang": "Waset El Balad",
+        "nameSecondaryLang": "وسط البلد"
+      },
+      {
+        "id": 5395,
+        "code": "5395",
+        "name": "وادى جمال",
+        "namePrimaryLang": "wady gemal",
+        "nameSecondaryLang": "وادى جمال"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "code": "Matruh",
+    "name": "مرسى مطروح",
+    "namePrimaryLang": "Matruh",
+    "nameSecondaryLang": "مرسى مطروح",
+    "cityDataModels": [
+      {
+        "id": 5861,
+        "code": "5861",
+        "name": "عجيبة",
+        "namePrimaryLang": "Ageba",
+        "nameSecondaryLang": "عجيبة"
+      },
+      {
+        "id": 5858,
+        "code": "5858",
+        "name": "علم الروم",
+        "namePrimaryLang": "Alam El Room",
+        "nameSecondaryLang": "علم الروم"
+      },
+      {
+        "id": 5860,
+        "code": "5860",
+        "name": "الابيض",
+        "namePrimaryLang": "El Abiad",
+        "nameSecondaryLang": "الابيض"
+      },
+      {
+        "id": 5859,
+        "code": "5859",
+        "name": "رأس الخيمة",
+        "namePrimaryLang": "Ras El Khema",
+        "nameSecondaryLang": "رأس الخيمة"
+      },
+      {
+        "id": 5857,
+        "code": "5857",
+        "name": "رأس الحكمة",
+        "namePrimaryLang": "Ras ElHekmah",
+        "nameSecondaryLang": "رأس الحكمة"
+      },
+      {
+        "id": 5862,
+        "code": "5862",
+        "name": "سيدى برانى",
+        "namePrimaryLang": "Sidy Barrany",
+        "nameSecondaryLang": "سيدى برانى"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "code": "Minya",
+    "name": "المنيا",
+    "namePrimaryLang": "Miniya",
+    "nameSecondaryLang": "المنيا",
+    "cityDataModels": [
+      {
+        "id": 5460,
+        "code": "5460",
+        "name": "ابو قرقاص",
+        "namePrimaryLang": "Abu Qorqas",
+        "nameSecondaryLang": "ابو قرقاص"
+      },
+      {
+        "id": 5461,
+        "code": "5461",
+        "name": "ارض سلطان",
+        "namePrimaryLang": "Ard Sultan",
+        "nameSecondaryLang": "ارض سلطان"
+      },
+      {
+        "id": 5463,
+        "code": "5463",
+        "name": "ارض شلبى",
+        "namePrimaryLang": "Ared Shalaby",
+        "nameSecondaryLang": "ارض شلبى"
+      },
+      {
+        "id": 5469,
+        "code": "5469",
+        "name": "بنى مزار",
+        "namePrimaryLang": "Bany Mazar",
+        "nameSecondaryLang": "بنى مزار"
+      },
+      {
+        "id": 5458,
+        "code": "5458",
+        "name": "دير مواس",
+        "namePrimaryLang": "Deir Mowas",
+        "nameSecondaryLang": "دير مواس"
+      },
+      {
+        "id": 5468,
+        "code": "5468",
+        "name": "الكورنيش",
+        "namePrimaryLang": "EL Corniche",
+        "nameSecondaryLang": "الكورنيش"
+      },
+      {
+        "id": 5471,
+        "code": "5471",
+        "name": "العدوة",
+        "namePrimaryLang": "El-Adwah",
+        "nameSecondaryLang": "العدوة"
+      },
+      {
+        "id": 5464,
+        "code": "5464",
+        "name": "المنيا",
+        "namePrimaryLang": "El-Menya",
+        "nameSecondaryLang": "المنيا"
+      },
+      {
+        "id": 5462,
+        "code": "5462",
+        "name": "المنيا الجديدة",
+        "namePrimaryLang": "El-Menya El-Gedidah",
+        "nameSecondaryLang": "المنيا الجديدة"
+      },
+      {
+        "id": 5467,
+        "code": "5467",
+        "name": "المحطة",
+        "namePrimaryLang": "ElMahattah",
+        "nameSecondaryLang": "المحطة"
+      },
+      {
+        "id": 5470,
+        "code": "5470",
+        "name": "مغاغة",
+        "namePrimaryLang": "Maghaghah",
+        "nameSecondaryLang": "مغاغة"
+      },
+      {
+        "id": 5459,
+        "code": "5459",
+        "name": "ملوى",
+        "namePrimaryLang": "Mallawy",
+        "nameSecondaryLang": "ملوى"
+      },
+      {
+        "id": 5466,
+        "code": "5466",
+        "name": "مطاى",
+        "namePrimaryLang": "Matay",
+        "nameSecondaryLang": "مطاى"
+      },
+      {
+        "id": 5465,
+        "code": "5465",
+        "name": "سمالوط",
+        "namePrimaryLang": "Samaloot",
+        "nameSecondaryLang": "سمالوط"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "code": "Monufia",
+    "name": "المنوفيه",
+    "namePrimaryLang": "MinouFiya",
+    "nameSecondaryLang": "المنوفيه",
+    "cityDataModels": [
+      {
+        "id": 5801,
+        "code": "5801",
+        "name": "اشمون",
+        "namePrimaryLang": "Ashmoon",
+        "nameSecondaryLang": "اشمون"
+      },
+      {
+        "id": 5810,
+        "code": "5810",
+        "name": "بركة السبع",
+        "namePrimaryLang": "Berket El-Sab",
+        "nameSecondaryLang": "بركة السبع"
+      },
+      {
+        "id": 5803,
+        "code": "5803",
+        "name": "الباجور",
+        "namePrimaryLang": "El-Bagoor",
+        "nameSecondaryLang": "الباجور"
+      },
+      {
+        "id": 5802,
+        "code": "5802",
+        "name": "مدينة السادات",
+        "namePrimaryLang": "El-Sadat City",
+        "nameSecondaryLang": "مدينة السادات"
+      },
+      {
+        "id": 5809,
+        "code": "5809",
+        "name": "الشهداء",
+        "namePrimaryLang": "El-Shohada",
+        "nameSecondaryLang": "الشهداء"
+      },
+      {
+        "id": 5805,
+        "code": "5805",
+        "name": "منوف",
+        "namePrimaryLang": "Menoof",
+        "nameSecondaryLang": "منوف"
+      },
+      {
+        "id": 5806,
+        "code": "5806",
+        "name": "قويسنا",
+        "namePrimaryLang": "Qoweisna",
+        "nameSecondaryLang": "قويسنا"
+      },
+      {
+        "id": 5808,
+        "code": "5808",
+        "name": "شبين الكوم",
+        "namePrimaryLang": "Shebeen El-Koum",
+        "nameSecondaryLang": "شبين الكوم"
+      },
+      {
+        "id": 5804,
+        "code": "5804",
+        "name": "سرس الليان",
+        "namePrimaryLang": "Sirs Al Layyanah",
+        "nameSecondaryLang": "سرس الليان"
+      },
+      {
+        "id": 5811,
+        "code": "5811",
+        "name": "تلا",
+        "namePrimaryLang": "Tala",
+        "nameSecondaryLang": "تلا"
+      },
+      {
+        "id": 5807,
+        "code": "5807",
+        "name": "مديرية التحرير",
+        "namePrimaryLang": "moderte tahrer",
+        "nameSecondaryLang": "مديرية التحرير"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "code": "NewValley",
+    "name": "الوادى الجديد",
+    "namePrimaryLang": "New Valley",
+    "nameSecondaryLang": "الوادى الجديد",
+    "cityDataModels": [
+      {
+        "id": 5394,
+        "code": "5394",
+        "name": "الفرافرة",
+        "namePrimaryLang": "El-Farafrah",
+        "nameSecondaryLang": "الفرافرة"
+      },
+      {
+        "id": 5391,
+        "code": "5391",
+        "name": "الواحات الداخلة",
+        "namePrimaryLang": "El-Wahat El-Dakhlah",
+        "nameSecondaryLang": "الواحات الداخلة"
+      },
+      {
+        "id": 5392,
+        "code": "5392",
+        "name": "الخارجة",
+        "namePrimaryLang": "Kharga",
+        "nameSecondaryLang": "الخارجة"
+      },
+      {
+        "id": 5393,
+        "code": "5393",
+        "name": "باريس",
+        "namePrimaryLang": "Paris",
+        "nameSecondaryLang": "باريس"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "code": "NorthCoast",
+    "name": "الساحل الشمالى",
+    "namePrimaryLang": "North Coast",
+    "nameSecondaryLang": "الساحل الشمالى",
+    "cityDataModels": [
+      {
+        "id": 5854,
+        "code": "5854",
+        "name": "اسكندرية الي الضبعة",
+        "namePrimaryLang": "Alex eldabaa",
+        "nameSecondaryLang": "اسكندرية الي الضبعة"
+      },
+      {
+        "id": 5855,
+        "code": "5855",
+        "name": "العلمين",
+        "namePrimaryLang": "El-Alamein",
+        "nameSecondaryLang": "العلمين"
+      },
+      {
+        "id": 5856,
+        "code": "5856",
+        "name": "مطروح الضبعة",
+        "namePrimaryLang": "matrouh eldabaa",
+        "nameSecondaryLang": "مطروح الضبعة"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "code": "NorthSinai",
+    "name": "الساحل الشمالى",
+    "namePrimaryLang": "North Sinai",
+    "nameSecondaryLang": "الساحل الشمالى",
+    "cityDataModels": [
+      {
+        "id": 5526,
+        "code": "5526",
+        "name": "بئر العبد",
+        "namePrimaryLang": "Beer El-Abd",
+        "nameSecondaryLang": "بئر العبد"
+      },
+      {
+        "id": 5530,
+        "code": "5530",
+        "name": "العريش",
+        "namePrimaryLang": "EL Arish",
+        "nameSecondaryLang": "العريش"
+      },
+      {
+        "id": 5527,
+        "code": "5527",
+        "name": "النخل",
+        "namePrimaryLang": "El Nakhel",
+        "nameSecondaryLang": "النخل"
+      },
+      {
+        "id": 5528,
+        "code": "5528",
+        "name": "الحسنة",
+        "namePrimaryLang": "El-Hasanah",
+        "nameSecondaryLang": "الحسنة"
+      },
+      {
+        "id": 5529,
+        "code": "5529",
+        "name": "الشيخ زويد",
+        "namePrimaryLang": "El-Sheikh Zoweid",
+        "nameSecondaryLang": "الشيخ زويد"
+      },
+      {
+        "id": 5531,
+        "code": "5531",
+        "name": "رفح",
+        "namePrimaryLang": "Rafah",
+        "nameSecondaryLang": "رفح"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "code": "PortSaid",
+    "name": "بورسعيد",
+    "namePrimaryLang": "Port Said",
+    "nameSecondaryLang": "بورسعيد",
+    "cityDataModels": [
+      {
+        "id": 5299,
+        "code": "5299",
+        "name": "العاشر من رمضان",
+        "namePrimaryLang": "EL Asher Men Remadan",
+        "nameSecondaryLang": "العاشر من رمضان"
+      },
+      {
+        "id": 5301,
+        "code": "5301",
+        "name": "الجمهورية",
+        "namePrimaryLang": "EL Gomhoria",
+        "nameSecondaryLang": "الجمهورية"
+      },
+      {
+        "id": 5305,
+        "code": "5305",
+        "name": "المناصرة",
+        "namePrimaryLang": "El-Manasrah",
+        "nameSecondaryLang": "المناصرة"
+      },
+      {
+        "id": 5294,
+        "code": "5294",
+        "name": "المنطقة الحرة",
+        "namePrimaryLang": "ElManteqah ElHora",
+        "nameSecondaryLang": "المنطقة الحرة"
+      },
+      {
+        "id": 5292,
+        "code": "5292",
+        "name": "المنطقة الصناعية",
+        "namePrimaryLang": "ElManteqah ElSanaya",
+        "nameSecondaryLang": "المنطقة الصناعية"
+      },
+      {
+        "id": 5295,
+        "code": "5295",
+        "name": "بور فؤاد",
+        "namePrimaryLang": "Fouad Port",
+        "nameSecondaryLang": "بور فؤاد"
+      },
+      {
+        "id": 5298,
+        "code": "5298",
+        "name": "حى المناخ",
+        "namePrimaryLang": "Hay AlManakh",
+        "nameSecondaryLang": "حى المناخ"
+      },
+      {
+        "id": 5297,
+        "code": "5297",
+        "name": "حى الكويت",
+        "namePrimaryLang": "Hay El Kwiet",
+        "nameSecondaryLang": "حى الكويت"
+      },
+      {
+        "id": 5303,
+        "code": "5303",
+        "name": "حى الشرق",
+        "namePrimaryLang": "Hay El Sharq",
+        "nameSecondaryLang": "حى الشرق"
+      },
+      {
+        "id": 5296,
+        "code": "5296",
+        "name": "حى الضواحى",
+        "namePrimaryLang": "Hay ElDawahy",
+        "nameSecondaryLang": "حى الضواحى"
+      },
+      {
+        "id": 5304,
+        "code": "5304",
+        "name": "حى الافرنج",
+        "namePrimaryLang": "Hay ElEfrang",
+        "nameSecondaryLang": "حى الافرنج"
+      },
+      {
+        "id": 5300,
+        "code": "5300",
+        "name": "حى الزهور",
+        "namePrimaryLang": "Hay ElZohoor",
+        "nameSecondaryLang": "حى الزهور"
+      },
+      {
+        "id": 7,
+        "code": "PORTFOUAD",
+        "name": "بور فؤاد",
+        "namePrimaryLang": "Port Fouad",
+        "nameSecondaryLang": "بور فؤاد"
+      },
+      {
+        "id": 5293,
+        "code": "5293",
+        "name": "شرق التفريعة",
+        "namePrimaryLang": "Sharq ElT afrea",
+        "nameSecondaryLang": "شرق التفريعة"
+      },
+      {
+        "id": 5302,
+        "code": "5302",
+        "name": "جنوب بورسعيد",
+        "namePrimaryLang": "South Port Said",
+        "nameSecondaryLang": "جنوب بورسعيد"
+      },
+      {
+        "id": 5291,
+        "code": "5291",
+        "name": "الرسوة",
+        "namePrimaryLang": "elrswaa",
+        "nameSecondaryLang": "الرسوة"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "code": "Qalyubia",
+    "name": "القليوبيه",
+    "namePrimaryLang": "Qaliyobiya",
+    "nameSecondaryLang": "القليوبيه",
+    "cityDataModels": [
+      {
+        "id": 5779,
+        "code": "5779",
+        "name": "ابو زعبل",
+        "namePrimaryLang": "Abu Zabal",
+        "nameSecondaryLang": "ابو زعبل"
+      },
+      {
+        "id": 5768,
+        "code": "5768",
+        "name": "بهتيم",
+        "namePrimaryLang": "Bahteem",
+        "nameSecondaryLang": "بهتيم"
+      },
+      {
+        "id": 5783,
+        "code": "5783",
+        "name": "بنها",
+        "namePrimaryLang": "Banha",
+        "nameSecondaryLang": "بنها"
+      },
+      {
+        "id": 5774,
+        "code": "5774",
+        "name": "باسوس",
+        "namePrimaryLang": "Basoos",
+        "nameSecondaryLang": "باسوس"
+      },
+      {
+        "id": 5769,
+        "code": "5769",
+        "name": "بيجام",
+        "namePrimaryLang": "Bigam",
+        "nameSecondaryLang": "بيجام"
+      },
+      {
+        "id": 5777,
+        "code": "5777",
+        "name": "الخانكة",
+        "namePrimaryLang": "El-Khankah",
+        "nameSecondaryLang": "الخانكة"
+      },
+      {
+        "id": 5771,
+        "code": "5771",
+        "name": "الخصوص",
+        "namePrimaryLang": "El-Khosoos",
+        "nameSecondaryLang": "الخصوص"
+      },
+      {
+        "id": 5776,
+        "code": "5776",
+        "name": "مدينة العبور",
+        "namePrimaryLang": "El-Oboor City",
+        "nameSecondaryLang": "مدينة العبور"
+      },
+      {
+        "id": 5778,
+        "code": "5778",
+        "name": "القلج",
+        "namePrimaryLang": "El-Qalg",
+        "nameSecondaryLang": "القلج"
+      },
+      {
+        "id": 5775,
+        "code": "5775",
+        "name": "القناطر الخيرية",
+        "namePrimaryLang": "El-Qanater El-Khaireyah",
+        "nameSecondaryLang": "القناطر الخيرية"
+      },
+      {
+        "id": 5784,
+        "code": "5784",
+        "name": "كفر شكر",
+        "namePrimaryLang": "Kafr Shokr",
+        "nameSecondaryLang": "كفر شكر"
+      },
+      {
+        "id": 5770,
+        "code": "5770",
+        "name": "مسطرد",
+        "namePrimaryLang": "Mostorod",
+        "nameSecondaryLang": "مسطرد"
+      },
+      {
+        "id": 5780,
+        "code": "5780",
+        "name": "قها",
+        "namePrimaryLang": "Qaha",
+        "nameSecondaryLang": "قها"
+      },
+      {
+        "id": 5772,
+        "code": "5772",
+        "name": "قليوب",
+        "namePrimaryLang": "Qalyoub",
+        "nameSecondaryLang": "قليوب"
+      },
+      {
+        "id": 5781,
+        "code": "5781",
+        "name": "شبين القناطر",
+        "namePrimaryLang": "Shebeen El-Qanater",
+        "nameSecondaryLang": "شبين القناطر"
+      },
+      {
+        "id": 5767,
+        "code": "5767",
+        "name": "شبرا الخيمة",
+        "namePrimaryLang": "Shobra ElKheimah",
+        "nameSecondaryLang": "شبرا الخيمة"
+      },
+      {
+        "id": 8,
+        "code": "SHUBRAELKHEIMA",
+        "name": "شبرا الخيمه",
+        "namePrimaryLang": "Shubra EL Kheima",
+        "nameSecondaryLang": "شبرا الخيمه"
+      },
+      {
+        "id": 5782,
+        "code": "5782",
+        "name": "طوخ",
+        "namePrimaryLang": "Tookh",
+        "nameSecondaryLang": "طوخ"
+      },
+      {
+        "id": 5773,
+        "code": "5773",
+        "name": "طريق القاهرة الاسكندرية الزراعى",
+        "namePrimaryLang": "alex road",
+        "nameSecondaryLang": "طريق القاهرة الاسكندرية الزراعى"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "code": "Qena",
+    "name": "قنا",
+    "namePrimaryLang": "Qena",
+    "nameSecondaryLang": "قنا",
+    "cityDataModels": [
+      {
+        "id": 5408,
+        "code": "5408",
+        "name": "ابو طشت",
+        "namePrimaryLang": "Abu Tesht",
+        "nameSecondaryLang": "ابو طشت"
+      },
+      {
+        "id": 5400,
+        "code": "5400",
+        "name": "ارمنت",
+        "namePrimaryLang": "Armant",
+        "nameSecondaryLang": "ارمنت"
+      },
+      {
+        "id": 5413,
+        "code": "5413",
+        "name": "بندر قنا",
+        "namePrimaryLang": "Bandar Qana",
+        "nameSecondaryLang": "بندر قنا"
+      },
+      {
+        "id": 5407,
+        "code": "5407",
+        "name": "دشنا",
+        "namePrimaryLang": "Deshna",
+        "nameSecondaryLang": "دشنا"
+      },
+      {
+        "id": 5406,
+        "code": "5406",
+        "name": "الوقف",
+        "namePrimaryLang": "El-Waqf",
+        "nameSecondaryLang": "الوقف"
+      },
+      {
+        "id": 5411,
+        "code": "5411",
+        "name": "المعنا",
+        "namePrimaryLang": "ElM3na",
+        "nameSecondaryLang": "المعنا"
+      },
+      {
+        "id": 5398,
+        "code": "5398",
+        "name": "اسنا",
+        "namePrimaryLang": "Esna",
+        "nameSecondaryLang": "اسنا"
+      },
+      {
+        "id": 5405,
+        "code": "5405",
+        "name": "فرشوط",
+        "namePrimaryLang": "Farshoot",
+        "nameSecondaryLang": "فرشوط"
+      },
+      {
+        "id": 5409,
+        "code": "5409",
+        "name": "مركز قنا",
+        "namePrimaryLang": "Markez Qina",
+        "nameSecondaryLang": "مركز قنا"
+      },
+      {
+        "id": 5399,
+        "code": "5399",
+        "name": "طريق مصر اسوان",
+        "namePrimaryLang": "Misr Aswan Road",
+        "nameSecondaryLang": "طريق مصر اسوان"
+      },
+      {
+        "id": 5404,
+        "code": "5404",
+        "name": "نجع حمادى",
+        "namePrimaryLang": "Nag Hammady",
+        "nameSecondaryLang": "نجع حمادى"
+      },
+      {
+        "id": 5402,
+        "code": "5402",
+        "name": "نقادة",
+        "namePrimaryLang": "Naqadah",
+        "nameSecondaryLang": "نقادة"
+      },
+      {
+        "id": 5403,
+        "code": "5403",
+        "name": "قفط",
+        "namePrimaryLang": "Qaft",
+        "nameSecondaryLang": "قفط"
+      },
+      {
+        "id": 5412,
+        "code": "5412",
+        "name": "طريق قنا سفاجا",
+        "namePrimaryLang": "Qena Safaga Road",
+        "nameSecondaryLang": "طريق قنا سفاجا"
+      },
+      {
+        "id": 5401,
+        "code": "5401",
+        "name": "قوص",
+        "namePrimaryLang": "Qoos",
+        "nameSecondaryLang": "قوص"
+      },
+      {
+        "id": 5410,
+        "code": "5410",
+        "name": "وسط البلد",
+        "namePrimaryLang": "Waset El Balad",
+        "nameSecondaryLang": "وسط البلد"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "code": "RedSea",
+    "name": "البحر الاحمر",
+    "namePrimaryLang": "Red Sea",
+    "nameSecondaryLang": "البحر الاحمر",
+    "cityDataModels": [
+      {
+        "id": 5420,
+        "code": "5420",
+        "name": "الجونة",
+        "namePrimaryLang": "El Gona",
+        "nameSecondaryLang": "الجونة"
+      },
+      {
+        "id": 5424,
+        "code": "5424",
+        "name": "طريق القرى",
+        "namePrimaryLang": "El Qura Road",
+        "nameSecondaryLang": "طريق القرى"
+      },
+      {
+        "id": 5418,
+        "code": "5418",
+        "name": "القصير",
+        "namePrimaryLang": "El-Qoseir",
+        "nameSecondaryLang": "القصير"
+      },
+      {
+        "id": 5419,
+        "code": "5419",
+        "name": "جزيرة سفاجا",
+        "namePrimaryLang": "Gezeeret Safaga",
+        "nameSecondaryLang": "جزيرة سفاجا"
+      },
+      {
+        "id": 5421,
+        "code": "5421",
+        "name": "الغردقة",
+        "namePrimaryLang": "Hurghada",
+        "nameSecondaryLang": "الغردقة"
+      },
+      {
+        "id": 5422,
+        "code": "5422",
+        "name": "سفاجا",
+        "namePrimaryLang": "Safaga",
+        "nameSecondaryLang": "سفاجا"
+      },
+      {
+        "id": 5423,
+        "code": "5423",
+        "name": "سهل حشيش",
+        "namePrimaryLang": "Sahl Hasheesh",
+        "nameSecondaryLang": "سهل حشيش"
+      },
+      {
+        "id": 5416,
+        "code": "5416",
+        "name": "جنوب قصير",
+        "namePrimaryLang": "ganub kouser",
+        "nameSecondaryLang": "جنوب قصير"
+      },
+      {
+        "id": 5425,
+        "code": "5425",
+        "name": "كفر الجونة",
+        "namePrimaryLang": "kafr guna",
+        "nameSecondaryLang": "كفر الجونة"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "code": "Sharqia",
+    "name": "الشرقيه",
+    "namePrimaryLang": "Sharqiya",
+    "nameSecondaryLang": "الشرقيه",
+    "cityDataModels": [
+      {
+        "id": 5789,
+        "code": "5789",
+        "name": "ابو حماد",
+        "namePrimaryLang": "Abu Hammad",
+        "nameSecondaryLang": "ابو حماد"
+      },
+      {
+        "id": 5795,
+        "code": "5795",
+        "name": "ابو كبير",
+        "namePrimaryLang": "Abu Kebeer",
+        "nameSecondaryLang": "ابو كبير"
+      },
+      {
+        "id": 5800,
+        "code": "5800",
+        "name": "اولاد صقر",
+        "namePrimaryLang": "Awlad Saqr",
+        "nameSecondaryLang": "اولاد صقر"
+      },
+      {
+        "id": 5787,
+        "code": "5787",
+        "name": "بلبيس",
+        "namePrimaryLang": "Belbeis",
+        "nameSecondaryLang": "بلبيس"
+      },
+      {
+        "id": 5797,
+        "code": "5797",
+        "name": "ديرب نجم",
+        "namePrimaryLang": "Deirab Negm",
+        "nameSecondaryLang": "ديرب نجم"
+      },
+      {
+        "id": 5785,
+        "code": "5785",
+        "name": "العاشر من رمضان",
+        "namePrimaryLang": "EL Asher Men Remadan",
+        "nameSecondaryLang": "العاشر من رمضان"
+      },
+      {
+        "id": 5799,
+        "code": "5799",
+        "name": "الحسينية",
+        "namePrimaryLang": "El-Hoseineyah",
+        "nameSecondaryLang": "الحسينية"
+      },
+      {
+        "id": 5794,
+        "code": "5794",
+        "name": "الابراهيمية",
+        "namePrimaryLang": "El-Ibrahimeyah",
+        "nameSecondaryLang": "الابراهيمية"
+      },
+      {
+        "id": 5792,
+        "code": "5792",
+        "name": "القنايات",
+        "namePrimaryLang": "El-Qanayat",
+        "nameSecondaryLang": "القنايات"
+      },
+      {
+        "id": 5791,
+        "code": "5791",
+        "name": "القرين",
+        "namePrimaryLang": "El-Qareen",
+        "nameSecondaryLang": "القرين"
+      },
+      {
+        "id": 5790,
+        "code": "5790",
+        "name": "الزقازيق",
+        "namePrimaryLang": "El-Zaqazeeq",
+        "nameSecondaryLang": "الزقازيق"
+      },
+      {
+        "id": 5796,
+        "code": "5796",
+        "name": "فاقوس",
+        "namePrimaryLang": "Faqoos",
+        "nameSecondaryLang": "فاقوس"
+      },
+      {
+        "id": 5793,
+        "code": "5793",
+        "name": "ههيا",
+        "namePrimaryLang": "Hahya",
+        "nameSecondaryLang": "ههيا"
+      },
+      {
+        "id": 5798,
+        "code": "5798",
+        "name": "كفر صقر",
+        "namePrimaryLang": "Kafr Saqr",
+        "nameSecondaryLang": "كفر صقر"
+      },
+      {
+        "id": 5786,
+        "code": "5786",
+        "name": "مشتول السوق",
+        "namePrimaryLang": "Mashtool El-Sooq",
+        "nameSecondaryLang": "مشتول السوق"
+      },
+      {
+        "id": 5788,
+        "code": "5788",
+        "name": "منيا القمح",
+        "namePrimaryLang": "Menya El-Qamh",
+        "nameSecondaryLang": "منيا القمح"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "code": "Sohag",
+    "name": "سوهاج",
+    "namePrimaryLang": "Sohag",
+    "nameSecondaryLang": "سوهاج",
+    "cityDataModels": [
+      {
+        "id": 5432,
+        "code": "5432",
+        "name": "اخميم",
+        "namePrimaryLang": "Akhmeem",
+        "nameSecondaryLang": "اخميم"
+      },
+      {
+        "id": 5437,
+        "code": "5437",
+        "name": "الكوثر",
+        "namePrimaryLang": "Al Kaoether",
+        "nameSecondaryLang": "الكوثر"
+      },
+      {
+        "id": 5441,
+        "code": "5441",
+        "name": "بنى هلال",
+        "namePrimaryLang": "Bany Helal",
+        "nameSecondaryLang": "بنى هلال"
+      },
+      {
+        "id": 5426,
+        "code": "5426",
+        "name": "دار السلام",
+        "namePrimaryLang": "Dar El-Salam",
+        "nameSecondaryLang": "دار السلام"
+      },
+      {
+        "id": 5429,
+        "code": "5429",
+        "name": "المنشاه",
+        "namePrimaryLang": "El Monshaa",
+        "nameSecondaryLang": "المنشاه"
+      },
+      {
+        "id": 5430,
+        "code": "5430",
+        "name": "العسيرات",
+        "namePrimaryLang": "El-Aseerat",
+        "nameSecondaryLang": "العسيرات"
+      },
+      {
+        "id": 5427,
+        "code": "5427",
+        "name": "البلينا",
+        "namePrimaryLang": "El-Beleena",
+        "nameSecondaryLang": "البلينا"
+      },
+      {
+        "id": 5436,
+        "code": "5436",
+        "name": "المراغة",
+        "namePrimaryLang": "El-Maraghah",
+        "nameSecondaryLang": "المراغة"
+      },
+      {
+        "id": 5428,
+        "code": "5428",
+        "name": "جرجا",
+        "namePrimaryLang": "Gerga",
+        "nameSecondaryLang": "جرجا"
+      },
+      {
+        "id": 5439,
+        "code": "5439",
+        "name": "جهينة",
+        "namePrimaryLang": "Gohayna",
+        "nameSecondaryLang": "جهينة"
+      },
+      {
+        "id": 5434,
+        "code": "5434",
+        "name": "حى غرب",
+        "namePrimaryLang": "Hay Gharb",
+        "nameSecondaryLang": "حى غرب"
+      },
+      {
+        "id": 5435,
+        "code": "5435",
+        "name": "حى شرق",
+        "namePrimaryLang": "Hay Sharq",
+        "nameSecondaryLang": "حى شرق"
+      },
+      {
+        "id": 5433,
+        "code": "5433",
+        "name": "نجع اولاد نصير",
+        "namePrimaryLang": "Naje Awlad Naseer ",
+        "nameSecondaryLang": "نجع اولاد نصير"
+      },
+      {
+        "id": 5438,
+        "code": "5438",
+        "name": "ساقلتة",
+        "namePrimaryLang": "Saqaltah",
+        "nameSecondaryLang": "ساقلتة"
+      },
+      {
+        "id": 5431,
+        "code": "5431",
+        "name": "سوهاج",
+        "namePrimaryLang": "Sohag",
+        "nameSecondaryLang": "سوهاج"
+      },
+      {
+        "id": 5440,
+        "code": "5440",
+        "name": "طهطا",
+        "namePrimaryLang": "Tahta",
+        "nameSecondaryLang": "طهطا"
+      },
+      {
+        "id": 5442,
+        "code": "5442",
+        "name": "طما",
+        "namePrimaryLang": "Tama",
+        "nameSecondaryLang": "طما"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "code": "SouthSinai",
+    "name": "جنوب سيناء",
+    "namePrimaryLang": "South Sinai",
+    "nameSecondaryLang": "جنوب سيناء",
+    "cityDataModels": [
+      {
+        "id": 5345,
+        "code": "5345",
+        "name": "دهب",
+        "namePrimaryLang": "Dahab",
+        "nameSecondaryLang": "دهب"
+      },
+      {
+        "id": 5332,
+        "code": "5332",
+        "name": "الرويسات",
+        "namePrimaryLang": "El Rwaysat",
+        "nameSecondaryLang": "الرويسات"
+      },
+      {
+        "id": 5344,
+        "code": "5344",
+        "name": "الطور",
+        "namePrimaryLang": "El-Tour",
+        "nameSecondaryLang": "الطور"
+      },
+      {
+        "id": 5349,
+        "code": "5349",
+        "name": "الميناء",
+        "namePrimaryLang": "ElMena",
+        "nameSecondaryLang": "الميناء"
+      },
+      {
+        "id": 5329,
+        "code": "5329",
+        "name": "السوق القديم",
+        "namePrimaryLang": "ElSouk ElKadeem",
+        "nameSecondaryLang": "السوق القديم"
+      },
+      {
+        "id": 5335,
+        "code": "5335",
+        "name": "جاردن باى",
+        "namePrimaryLang": "Garden Bay",
+        "nameSecondaryLang": "جاردن باى"
+      },
+      {
+        "id": 5328,
+        "code": "5328",
+        "name": "هضبة ام السيد",
+        "namePrimaryLang": "Hadbet Om El Saeed",
+        "nameSecondaryLang": "هضبة ام السيد"
+      },
+      {
+        "id": 5330,
+        "code": "5330",
+        "name": "حى النور",
+        "namePrimaryLang": "Hay ElNoor",
+        "nameSecondaryLang": "حى النور"
+      },
+      {
+        "id": 5331,
+        "code": "5331",
+        "name": "خليج تاور",
+        "namePrimaryLang": "Khaleg Tower",
+        "nameSecondaryLang": "خليج تاور"
+      },
+      {
+        "id": 5346,
+        "code": "5346",
+        "name": "لاجونا",
+        "namePrimaryLang": "Laguna",
+        "nameSecondaryLang": "لاجونا"
+      },
+      {
+        "id": 5324,
+        "code": "5324",
+        "name": "المسبط",
+        "namePrimaryLang": "Masbat, al-",
+        "nameSecondaryLang": "المسبط"
+      },
+      {
+        "id": 5350,
+        "code": "5350",
+        "name": "مازينا",
+        "namePrimaryLang": "Mazina",
+        "nameSecondaryLang": "مازينا"
+      },
+      {
+        "id": 5353,
+        "code": "5353",
+        "name": "مرتفعات طابا",
+        "namePrimaryLang": "Mortf3at Taba",
+        "nameSecondaryLang": "مرتفعات طابا"
+      },
+      {
+        "id": 5343,
+        "code": "5343",
+        "name": "خليج نبق",
+        "namePrimaryLang": "Nabq Bay",
+        "nameSecondaryLang": "خليج نبق"
+      },
+      {
+        "id": 5333,
+        "code": "5333",
+        "name": "خليج نعمة",
+        "namePrimaryLang": "Neema bay",
+        "nameSecondaryLang": "خليج نعمة"
+      },
+      {
+        "id": 5354,
+        "code": "5354",
+        "name": "طريق نويبع طابا",
+        "namePrimaryLang": "Noeba Taba Road",
+        "nameSecondaryLang": "طريق نويبع طابا"
+      },
+      {
+        "id": 5341,
+        "code": "5341",
+        "name": "رأس نصرانى",
+        "namePrimaryLang": "Ras Nosrany",
+        "nameSecondaryLang": "رأس نصرانى"
+      },
+      {
+        "id": 5355,
+        "code": "5355",
+        "name": "راس سدر",
+        "namePrimaryLang": "Ras Sedr",
+        "nameSecondaryLang": "راس سدر"
+      },
+      {
+        "id": 5347,
+        "code": "5347",
+        "name": "سانت كاترين",
+        "namePrimaryLang": "Saint Cathrine",
+        "nameSecondaryLang": "سانت كاترين"
+      },
+      {
+        "id": 5339,
+        "code": "5339",
+        "name": "شاركس باى",
+        "namePrimaryLang": "Sharkas Bay",
+        "nameSecondaryLang": "شاركس باى"
+      },
+      {
+        "id": 5342,
+        "code": "5342",
+        "name": "شرم الشيخ",
+        "namePrimaryLang": "Sharm El-Sheikh",
+        "nameSecondaryLang": "شرم الشيخ"
+      },
+      {
+        "id": 5327,
+        "code": "5327",
+        "name": "شرم المياه",
+        "namePrimaryLang": "Sharm ElMeyah",
+        "nameSecondaryLang": "شرم المياه"
+      },
+      {
+        "id": 5334,
+        "code": "5334",
+        "name": "جنوب سيناء",
+        "namePrimaryLang": "South of Sinai",
+        "nameSecondaryLang": "جنوب سيناء"
+      },
+      {
+        "id": 5352,
+        "code": "5352",
+        "name": "ترابين",
+        "namePrimaryLang": "Tarabeen",
+        "nameSecondaryLang": "ترابين"
+      },
+      {
+        "id": 5348,
+        "code": "5348",
+        "name": "وسط البلد",
+        "namePrimaryLang": "Waset El Balad",
+        "nameSecondaryLang": "وسط البلد"
+      },
+      {
+        "id": 5336,
+        "code": "5336",
+        "name": "خليج باشا",
+        "namePrimaryLang": "khaleg basha",
+        "nameSecondaryLang": "خليج باشا"
+      },
+      {
+        "id": 5340,
+        "code": "5340",
+        "name": "خليج الفارس الابيض",
+        "namePrimaryLang": "khaleg elfares elabyad",
+        "nameSecondaryLang": "خليج الفارس الابيض"
+      },
+      {
+        "id": 5337,
+        "code": "5337",
+        "name": "مرسى الدخيلة",
+        "namePrimaryLang": "marsa eldekhela",
+        "nameSecondaryLang": "مرسى الدخيلة"
+      },
+      {
+        "id": 5351,
+        "code": "5351",
+        "name": "طريق المزرعة",
+        "namePrimaryLang": "mazraa road",
+        "nameSecondaryLang": "طريق المزرعة"
+      },
+      {
+        "id": 5338,
+        "code": "5338",
+        "name": "ام مريخة",
+        "namePrimaryLang": "om murekha",
+        "nameSecondaryLang": "ام مريخة"
+      },
+      {
+        "id": 5326,
+        "code": "5326",
+        "name": "رأس محمد",
+        "namePrimaryLang": "ras muhamed",
+        "nameSecondaryLang": "رأس محمد"
+      },
+      {
+        "id": 5325,
+        "code": "5325",
+        "name": "زرنوق",
+        "namePrimaryLang": "zarnouq",
+        "nameSecondaryLang": "زرنوق"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "code": "Suez",
+    "name": "السويس",
+    "namePrimaryLang": "Suez",
+    "nameSecondaryLang": "السويس",
+    "cityDataModels": [
+      {
+        "id": 5522,
+        "code": "5522",
+        "name": "مدينة 24 اكتوبر",
+        "namePrimaryLang": " 24 October City",
+        "nameSecondaryLang": "مدينة 24 اكتوبر"
+      },
+      {
+        "id": 5514,
+        "code": "5514",
+        "name": "ميناء ادبية",
+        "namePrimaryLang": "Adbya Port",
+        "nameSecondaryLang": "ميناء ادبية"
+      },
+      {
+        "id": 5512,
+        "code": "5512",
+        "name": "عتاقة",
+        "namePrimaryLang": "Ataqah",
+        "nameSecondaryLang": "عتاقة"
+      },
+      {
+        "id": 5521,
+        "code": "5521",
+        "name": "الفرز",
+        "namePrimaryLang": "EL Farz",
+        "nameSecondaryLang": "الفرز"
+      },
+      {
+        "id": 5518,
+        "code": "5518",
+        "name": "الجناين",
+        "namePrimaryLang": "El-Ganayen",
+        "nameSecondaryLang": "الجناين"
+      },
+      {
+        "id": 5517,
+        "code": "5517",
+        "name": "الغريب",
+        "namePrimaryLang": "El-Ghareeb",
+        "nameSecondaryLang": "الغريب"
+      },
+      {
+        "id": 5519,
+        "code": "5519",
+        "name": "النمسا",
+        "namePrimaryLang": "El-Nemsa",
+        "nameSecondaryLang": "النمسا"
+      },
+      {
+        "id": 5516,
+        "code": "5516",
+        "name": "الملاحة",
+        "namePrimaryLang": "ElMallaha",
+        "nameSecondaryLang": "الملاحة"
+      },
+      {
+        "id": 5515,
+        "code": "5515",
+        "name": "الزيتيات",
+        "namePrimaryLang": "ElZayteyat",
+        "nameSecondaryLang": "الزيتيات"
+      },
+      {
+        "id": 5525,
+        "code": "5525",
+        "name": "فيصل",
+        "namePrimaryLang": "Feisal",
+        "nameSecondaryLang": "فيصل"
+      },
+      {
+        "id": 5520,
+        "code": "5520",
+        "name": "حى السويس",
+        "namePrimaryLang": "Hay El Suez",
+        "nameSecondaryLang": "حى السويس"
+      },
+      {
+        "id": 5523,
+        "code": "5523",
+        "name": "حى الاربعين",
+        "namePrimaryLang": "Hay ElArabaeen",
+        "nameSecondaryLang": "حى الاربعين"
+      },
+      {
+        "id": 5513,
+        "code": "5513",
+        "name": "بور توفيق",
+        "namePrimaryLang": "Port Tawfiq",
+        "nameSecondaryLang": "بور توفيق"
+      },
+      {
+        "id": 5524,
+        "code": "5524",
+        "name": "كبريت مفارق",
+        "namePrimaryLang": "kabreet Mafarq",
+        "nameSecondaryLang": "كبريت مفارق"
+      }
+    ]
+  }
+]
