@@ -6,16 +6,15 @@ import SideBar from './SideBar';
 import Loading from '../../../src/Loading';
 import { useGlobalContext } from './context';
 import Empty from './Empty';
-import useFetch from './useFetch';
+import useFetch from '../../../src/hooks/useFetch';
 
 
 const Products = (props) => {
-	// const URL = import.meta.env.VITE_REACT_API_URL;
-
 
 	const { categoryId } = useParams();
 	const url = `/restaurant/products/category/${categoryId}`;
 	const { isLoading, data: products } = useFetch(url, []);
+	console.log(products);
 
 
 	const { isFirstModalOpen, openFirstModal, closeFirstModal } = useGlobalContext();
@@ -43,7 +42,7 @@ const Products = (props) => {
 
 	}
 
-	if (products === null) {
+	if (!products) {
 		return <Empty pageName={"products"} />;
 	}
 

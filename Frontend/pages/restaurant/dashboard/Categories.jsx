@@ -6,7 +6,8 @@ import SideBar from './SideBar';
 import Loading from '../../../src/Loading';
 import { Link } from 'react-router-dom';
 import Empty from './Empty';
-import useFetch from './useFetch';
+import useFetch from '../../../src/hooks/useFetch';
+// import useAddItem from '../../../src/hooks/useAddItem';
 
 const url = `/restaurant/category/all`;
 
@@ -32,6 +33,7 @@ const Categories = () => {
 	const newCategory = {
 		name: categoryName,
 	};
+	// const {updatedTrigger} = useAddItem(`/restaurant/category`, newCategory);
 
 	const addCategory = async () => {
 		try {
@@ -164,7 +166,7 @@ const Categories = () => {
 							categories.map((category) => {
 								return <li key={category.categoryId} className="li interactive-item">
 									<Link to={{
-										pathname: `/restaurant/products/${category.categoryId}`,
+										pathname: `/restaurant/products/category/${category.categoryId}`,
 										state: { id: category.categoryId },
 									}}
 									>

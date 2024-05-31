@@ -4,7 +4,7 @@ import { useGlobalContext } from './context';
 import Loading from '../../../src/Loading';
 import { useState } from 'react';
 import Empty from './Empty';
-import useFetch from './useFetch';
+import useFetch from '../../../src/hooks/useFetch';
 
 const url = `/restaurant/extras/all`;
 
