@@ -272,19 +272,22 @@ const createRestaurant = async (req, res, next) => {
       return areas;
     }))
 
-    console.log(deliveryAreas);
+    // Initialize an empty object to hold the organized data
+    const organizedData = {};
 
+    // Loop through the array to organize data by city
+    deliveryAreas.flat().forEach(({ city, area }) => {
+    if (!organizedData[city]) {
+      organizedData[city] = [];
+    }
+    organizedData[city].push(area);
+    });
 
-
-    // const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
-    //   const { city, area } = deliveryArea;
-    //   const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-    //     city,
-    //     area,
-    //     restaurantId: newRestaurant.restaurantId,
-    //   });
-    //   return createdDeliveryArea
-    // }));
+    // Convert the object to an array if needed
+    const organizedArray = Object.keys(organizedData).map(city => ({
+    city,
+    areas: organizedData[city]
+    }));
 
     // Generate worker data based on restaurant information
     const workerName = `${name}_${newRestaurant.restaurantId}`;
@@ -302,7 +305,7 @@ const createRestaurant = async (req, res, next) => {
     });
     return res
       .status(201)
-      .json({ restaurant: newRestaurant, worker: newWorker, deliveryAreas: deliveryAreas});
+      .json({ restaurant: newRestaurant, worker: newWorker, deliveryAreas: organizedArray});
   } catch (error) {
     console.error('Error creating restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -323,6 +326,7 @@ const getAllRestaurants = async (req, res, next) => {
   }
 };
 
+// personal use
 const getRestaurantDeliveryAreas = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
   const restaurantId = req.user.hasRestaurant;
@@ -375,7 +379,6 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
 //   }
 // };
 
-// change it to use include instead of another query for worker
 // Controller function to get restaurant information by ID
 const getRestaurant = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
