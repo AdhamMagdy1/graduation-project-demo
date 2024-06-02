@@ -106,7 +106,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
 
 
     def food_Tokenizer(self, tokens):
-        tokens = [' '.join(token) for token in everygrams(tokens, 1, 2)]
+        tokens = [' '.join(token) for token in everygrams(tokens, 1, 3)]
         return tokens
     
     def get_embeddings(self, X):

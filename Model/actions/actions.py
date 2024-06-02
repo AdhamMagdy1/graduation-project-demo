@@ -31,13 +31,17 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 import re
 import numpy as np
+import pandas as pd
 from difflib import SequenceMatcher
 from bpemb import BPEmb                                          
 import tensorflow as tf
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
 #from rasa.shared.core.events import SlotSet
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet,AllSlotsReset
 from rasa_sdk import Action
 from rasa_sdk.interfaces import Action
+
 
 class ValidateRestaurantForm(FormValidationAction):
     def __init__(self) -> None:
@@ -54,8 +58,8 @@ class ValidateRestaurantForm(FormValidationAction):
     def get_menu_db(self) -> List[Text]:
         """Database of supported foods"""
         #["مكرونة بشاميل","فتة شاورما","شاورما فراخ","فراخ مشوية","سمك مشوي","فول","فلافل","فراخ محمرة","لحمة مشوية","سلطة فواكه"]
-        foods  = list(self.get_extra().keys())
-        extras = sum(list(self.get_extra().values()),[])
+        foods  = list(self.get_food_sizes().keys())
+        extras = self.get_extra()
         return foods + extras
     def get_metadata(self, tracker, code = "420"):
         restaurant_id =  tracker.latest_message['metadata']["restaurant_id"]
@@ -68,21 +72,21 @@ class ValidateRestaurantForm(FormValidationAction):
             self.container_flags[id] = [False,False,False]
             print("hello from signal ")
     def get_food_sizes(self):
-        return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":["عادي"],"شاورما":["كبير"]}
+        return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":["عادي"],"ساندوتش شاورما لحمة":["كبير"], "ساندوتش شاورما فراخ":["كبير"]}
     def get_extra(self):
         """Database of supported foods with extra"""
-        return {"فراخ محمرة": ["رز معمر","بصل"], "مكرونة بشاميل": ["مخلل","طحينة"],"شاورما":["تومية"]}
-   
+        return ["رز معمر","بصل","مخلل","طحينة","تومية"]
+       
     
 
 
 
     def check_mappings(self, food, extra, mappings, tracker, dispatcher):
-        if extra not in self.get_extra()[food] and extra != "":
-            dispatcher.utter_message(text=f"{extra} مش بيتقدم مع {food} ك اكسترا ",\
-                                     json_message=self.get_metadata(tracker= tracker))
-            mappings[food] = []
-            return mappings
+        #if extra not in self.get_extra()[food] and extra != "":
+        #    dispatcher.utter_message(text=f"{extra} مش بيتقدم مع {food} ك اكسترا ",\
+        #                             json_message=self.get_metadata(tracker= tracker))
+        #    mappings[food] = []
+        #    return mappings
         if food not in mappings:           
             mappings[food] = [extra]
         else:
@@ -94,7 +98,7 @@ class ValidateRestaurantForm(FormValidationAction):
         slots         = list(slots)
         print("slots values",slots)
         food_indexies = []
-        extras        = sum(list(self.get_extra().values()),[])
+        extras        = self.get_extra()
         mappings      = dict()
         for i in range(len(slots)):
             if slots[i] not in extras:
@@ -137,14 +141,14 @@ class ValidateRestaurantForm(FormValidationAction):
         output:
         None
         """
-        foods = {}
-        extras = sum(list(self.get_extra().values()),[])
-        sep = 1
+        foods  = {}
+        extras = self.get_extra()
+        sep    = 1
         
         for token in tokens:
             for word in words:
                 r2 = SequenceMatcher(None, word, token).ratio()
-                r = r2
+                r  = r2
                 #print(f"{word},{token}"+"with certainaty = "+str(r))
                 if (r >= 0.6 or re.search(f"{token}",word) is not None):
                     if word not in foods:
@@ -195,9 +199,9 @@ class ValidateRestaurantForm(FormValidationAction):
         print("hello from food validation")
         self.create_signal(tracker.sender_id)
         entities = tracker.latest_message['entities']
-        foods = [ent['value'] for ent in entities if ent['entity'] == 'food']
-        result = self.get_food_slots(dispatcher, tracker, foods)
-        result = result if result is not None else dict()
+        foods    = [ent['value'] for ent in entities if ent['entity'] == 'food']
+        result   = self.get_food_slots(dispatcher, tracker, foods)
+        result   = result if result is not None else dict()
         print("result :",result)
         if tracker.sender_id in self.container:
             #print(self.container[tracker.sender_id])
@@ -457,6 +461,51 @@ class SendFeedback(Action):
         dispatcher.utter_message(response="utter_feedback",json_message=metadata)
         return []
     
+
+class Recommend(Action):
+    def name(self):
+        return 'send_recommendation'
+    
+    def get_food_ingredients(self):
+        """return  siltan ayob's food and description """
+        df = pd.read_csv(r"E:\Eslam\Semester 8\Project\ayob_menu.csv")
+        return df
+    
+    def get_recommendations(self,ingredients,order, num_recommend = 5):
+        tfidf        = TfidfVectorizer(stop_words='english')
+        tfidf_matrix = tfidf.fit_transform(ingredients['description'])
+        cosine_sim   = linear_kernel(tfidf_matrix, tfidf_matrix)
+        indices      = pd.Series(ingredients.index, index=ingredients['menu_item']).drop_duplicates()
+        try:
+            idx          = indices[order]
+            sim_scores   = list(enumerate(cosine_sim[idx]))
+            sim_scores   = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+            top_similar  = sim_scores[1:num_recommend+1]
+            meal_indices = [i[0] for i in top_similar]
+            return ingredients['menu_item'].iloc[meal_indices].tolist()
+        except:
+            return []
+    def run(self, dispatcher, tracker, domain):
+        foods             = tracker.get_slot("food")
+        foods             = eval(foods)
+        df                = self.get_food_ingredients()
+        recommendations   = self.get_recommendations(df,list(foods.keys())[0])
+        recommendations   = " بقولك ايه قبل ما تقفل شوف الاكل ده ممكن حاجة تعجبك "+" أو ".join(recommendations) if len(recommendations)!=0 else "وجبة سعيدة" 
+        restaurant_id = tracker.latest_message['metadata']["restaurant_id"]
+        customer_id   =  tracker.latest_message['metadata']["customer_id"]
+        socket_id     = tracker.latest_message['metadata']["socket_id"]
+        address_id    =  tracker.latest_message['metadata']["address_id"]
+        metadata      =  {"socket_id":socket_id,\
+                          "restaurant_id":restaurant_id,\
+                          "customer_id":customer_id,\
+                          "code":"420",\
+                          "address_id":address_id,
+                          }
+        
+        dispatcher.utter_message(text=recommendations,json_message=metadata)
+        return [AllSlotsReset()]
+    
+
 
 
 class SizeFill(Action):

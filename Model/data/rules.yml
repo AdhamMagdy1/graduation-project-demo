@@ -17,10 +17,13 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: utter_submit
-  - action: utter_ask_feedback
+  - action: send_recommendation
+  
 
 - rule: Receive_feedback
   steps:
   - intent: feedback
-  - action : utter_feedback
+  - action : send_feedback
   - active_loop: null
+
+
