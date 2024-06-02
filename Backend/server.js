@@ -5,6 +5,8 @@ const { createServer } = require('node:http');
 const { Server } = require('socket.io');
 const customerRoutes = require('./routes/customerRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
+const analysisRoutes = require('./routes/analysisRoutes');
+
 const ping = require('./routes/pingRoute');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -68,6 +70,9 @@ runSocket(io, chat);
 app.use('/customer', customerRoutes);
 // Use the customer routes
 app.use('/restaurant', restaurantRoutes);
+app.use('/restaurant', analysisRoutes);
+
+
 
 // Use the ping routes
 app.use(ping);
