@@ -568,21 +568,24 @@ CustomerPhoneNumber.belongsTo(Customer, {
 
 // Owner Hooks
 Owner.beforeSave(async (owner, option) => {
-  const hashedPassword = await bcrypt.hash(owner.password, 10);
-  owner.password = hashedPassword;
+  if (owner.changed('password')) {
+    const hashedPassword = await bcrypt.hash(owner.password, 10);
+    owner.password = hashedPassword;
+  }
 });
 
 // // Restaurant Hooks
 Restaurant.afterCreate(async (restaurant, option) => {
   const link = `/restaurant${restaurant.restaurantId}`;
   restaurant.link = link;
-  await restaurant.save();
 });
 
 // RestaurantWorker Hooks
 RestaurantWorker.beforeSave(async (worker, option) => {
-  const hashedPassword = await bcrypt.hash(worker.password, 10);
-  worker.password = hashedPassword;
+  if (worker.changed('password')) {
+    const hashedPassword = await bcrypt.hash(worker.password, 10);
+    worker.password = hashedPassword;
+  }
 });
 
 module.exports = {
