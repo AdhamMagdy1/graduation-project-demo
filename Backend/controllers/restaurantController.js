@@ -324,13 +324,11 @@ const getAllRestaurants = async (req, res, next) => {
   }
 };
 
-// personal use
+// controller to get restaurant delivery areas
 const getRestaurantDeliveryAreas = async (req, res, next) => {
-  const ownerId = req.user.ownerId; // Extract owner ID from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
   try {
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    // const restaurantId = restaurant.restaurantId;
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
@@ -338,14 +336,30 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
     if (deliveryAreas.length === 0) {
       return next(new AppError('Delivery areas not found', 404));
     }
-    return res.status(200).json(deliveryAreas);
+    // Initialize an empty object to hold the organized data
+    const organizedData = {};
+
+    // Loop through the array to organize data by city
+    deliveryAreas.flat().forEach(({ city, area }) => {
+    if (!organizedData[city]) {
+      organizedData[city] = [];
+    }
+    organizedData[city].push(area);
+    });
+
+    // Convert the object to an array if needed
+    const organizedArray = Object.keys(organizedData).map(city => ({
+    city,
+    areas: organizedData[city]
+    }));
+    return res.status(200).json({ deliveryAreas: organizedArray });
   } catch (error) {
     console.error('Error getting delivery areas:', error);
     return next(new AppError('Internal server error', 500));
   }
 };
 
-// make it edit controller by using create query after deleteing one
+// Controller to edit restaurant delivery areas
 const editRestaurantDeliveryAreas = async (req, res, next) => {
   // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
@@ -393,7 +407,7 @@ const editRestaurantDeliveryAreas = async (req, res, next) => {
   }
 };
 
-// Controller function to get restaurant information by ID
+// Controller function to get restaurant information
 const getRestaurant = async (req, res, next) => {
   // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
@@ -401,25 +415,8 @@ const getRestaurant = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const restaurant = await Restaurant.findByPk(restaurantId, {attributes: { exclude: ['logo'] }, include: [ RestaurantWorker, RestaurantDeliveryAreas ] });
-    const deliveryAreas = restaurant.RestaurantDeliveryAreas;
-    // Initialize an empty object to hold the organized data
-    const organizedData = {};
-
-    // Loop through the array to organize data by city
-    deliveryAreas.flat().forEach(({ city, area }) => {
-    if (!organizedData[city]) {
-      organizedData[city] = [];
-    }
-    organizedData[city].push(area);
-    });
-
-    // Convert the object to an array if needed
-    const organizedArray = Object.keys(organizedData).map(city => ({
-    city,
-    areas: organizedData[city]
-    }));
-    return res.status(200).json({ restaurant, deliveryAreas: organizedArray });
+    const restaurant = await Restaurant.findByPk(restaurantId, {attributes: { exclude: ['logo'] }, include: [ RestaurantWorker ] });
+    return res.status(200).json({ restaurant });
   } catch (error) {
     console.error('Error getting restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -443,25 +440,21 @@ const getAllWorkers = async (req, res, next) => {
 
 // Controller to update worker information
 const updateWorker = async (req, res, next) => {
-  const ownerId = req.user.ownerId; // Extract owner ID from token
-  const { name, email } = req.body;
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
-
+  const { name, email } = req.body;
   try {
-    // Find the worker by ID
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    // const restaurantId = restaurant.restaurantId;
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const worker = await RestaurantWorker.findOne({ where: { restaurantId } });
+    const worker = await RestaurantWorker.findOne({ where: { restaurantId }, attributes: { exclude: ['password'] }});
     if (!worker) {
       return next(new AppError('Worker not found', 404));
     }
 
     // Update worker information
-    worker.name = name;
-    worker.email = email;
+    worker.name = name || worker.name;
+    worker.email = email || worker.email;
 
     // Save the updated worker
     await worker.save();
@@ -475,10 +468,9 @@ const updateWorker = async (req, res, next) => {
 
 const workerUpdatePassword = async (req, res, next) => {
   const { currentPassword, newPassword } = req.body;
-  const ownerId = req.user.ownerId; // Extract owner ID from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
   try {
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
@@ -501,7 +493,7 @@ const workerUpdatePassword = async (req, res, next) => {
 
 // Controller function to edit restaurant information by ID
 const editRestaurant = async (req, res, next) => {
-// Extract restaurantId from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
   const { name, description, themeColor } = req.body;
   try {
@@ -944,6 +936,5 @@ module.exports = {
   ownerUpdatePassword,
   forgotPassword,
   resetPassword,
-  // no routes for this
   workerUpdatePassword,
 };

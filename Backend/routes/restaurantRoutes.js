@@ -42,6 +42,7 @@ const {
   forgotPassword,
   resetPassword,
   ownerUpdatePassword,
+  workerUpdatePassword,
 } = require("../controllers/restaurantController");
 const { Owner } = require("../models/allModels");
 const {
@@ -104,6 +105,12 @@ router.get(
   authenticateUser(Owner),
   autherizeUser("Owner"),
   getAllWorkers
+);
+router.patch(
+  "/worker/password",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  workerUpdatePassword
 );
 router.put(
   "/worker",
