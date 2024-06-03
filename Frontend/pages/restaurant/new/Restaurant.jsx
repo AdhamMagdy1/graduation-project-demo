@@ -2,9 +2,13 @@ import { useState } from 'react';
 import extractedData from './extractedData.json';
 import { nanoid } from 'nanoid';
 import Select from 'react-select';
+import useAddItem from '../../../src/hooks/useAddItem';
+import { useNavigate } from 'react-router-dom';
 
 
 const Restaurant = () => {
+
+	const navigate = useNavigate();
 
 	const inputArr = [
 		{
@@ -23,6 +27,10 @@ const Restaurant = () => {
 	const [color, setColor] = useState('');
 
 
+
+
+
+	//create a new restaurant
 	const newRestaurant = {
 		name,
 		description: desc,
@@ -30,10 +38,24 @@ const Restaurant = () => {
 		deliverAreas: arr.map(({ selectedCity, selectedAreas }) => ({ city: selectedCity, area: selectedAreas })),
 		logo,
 	};
+	const { addItem } = useAddItem(`/restaurant/setup`, newRestaurant);
+	const resetCategory = () => {
+		setName("");
+		setDesc("");
+		setLogo("");
+		setColor("");
+		setArr([]);
+	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(newRestaurant);
+		const resp = await addItem(newRestaurant);
+		if (resp) {
+			resetCategory();
+			navigate('/restaurant/menus');
+		} else {
+			console.log('Sorry, something went wrong');
+		}
 	};
 
 	const changeCity = (id) => (e) => {
