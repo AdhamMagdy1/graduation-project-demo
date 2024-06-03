@@ -32,7 +32,6 @@ const getModelRes = async (mainNamespace, communicatedMessage) => {
         result += data.text;
       }
     }
-    console.log(result);
     return result; // Return the concatenated result string
   } catch (error) {
     console.error('Error:', error);
@@ -57,9 +56,9 @@ const customAction = async (mainNamespace, customObject) => {
       size: customObject.food_size,
     };
     const order = await Order.create({
-      deliveyCost: "20",
+      deliveyCost: 20,
       orderDetails,
-      addressId: "1",
+      addressId: 1,
       restaurantId: restaurant_id,
       customerId: customer_id,
     });

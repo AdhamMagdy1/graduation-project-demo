@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, TIME } = require('sequelize');
 const { sequelize } = require('../config/database');
 const bcrypt = require('bcrypt');
 
@@ -370,6 +370,53 @@ const RestaurantMenu = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
+const Feedback = sequelize.define('Feedback',{
+  feedbackId:{
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },message:{
+    type:DataTypes.STRING(500),
+    allowNull:false
+  },feedbackTime:{
+    type:DataTypes.DATE,
+    defaultValue:sequelize.NOW
+  }
+  
+},  { timestamps: false, freezeTableName: true }
+);
+
+const SentimentAnalysis = sequelize.define('SentimentAnalysis', 
+{
+  id:{
+
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+
+  },dateOfAnalysis:{
+    type:DataTypes.DATE,
+    allowNull:false
+  },negative:{
+    type:DataTypes.FLOAT,
+    allowNull:false
+  },postive:{
+    type:DataTypes.FLOAT,
+    allowNull:false
+  },neutral:{
+    type:DataTypes.FLOAT,
+    allowNull:false
+  }
+
+},  { timestamps: false, freezeTableName: true }
+);
+Restaurant.hasMany(Feedback, {
+  foreignKey: { name: 'restaurantId', allowNull: false },
+});
+Restaurant.hasMany(SentimentAnalysis, {
+  foreignKey: { name: 'restaurantId', allowNull: false },
+});
+
 
 // Category associations
 Category.belongsTo(Restaurant, {
@@ -521,21 +568,24 @@ CustomerPhoneNumber.belongsTo(Customer, {
 
 // Owner Hooks
 Owner.beforeSave(async (owner, option) => {
-  const hashedPassword = await bcrypt.hash(owner.password, 10);
-  owner.password = hashedPassword;
+  if (owner.changed('password')) {
+    const hashedPassword = await bcrypt.hash(owner.password, 10);
+    owner.password = hashedPassword;
+  }
 });
 
 // // Restaurant Hooks
 Restaurant.afterCreate(async (restaurant, option) => {
   const link = `/restaurant${restaurant.restaurantId}`;
   restaurant.link = link;
-  await restaurant.save();
 });
 
 // RestaurantWorker Hooks
 RestaurantWorker.beforeSave(async (worker, option) => {
-  const hashedPassword = await bcrypt.hash(worker.password, 10);
-  worker.password = hashedPassword;
+  if (worker.changed('password')) {
+    const hashedPassword = await bcrypt.hash(worker.password, 10);
+    worker.password = hashedPassword;
+  }
 });
 
 module.exports = {
@@ -556,4 +606,6 @@ module.exports = {
   Owner,
   Category,
   Customer,
+  SentimentAnalysis,
+  Feedback
 };
