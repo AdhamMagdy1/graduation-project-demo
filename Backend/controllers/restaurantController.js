@@ -867,11 +867,9 @@ const editCategory = async (req, res, next) => {
 
 // Controller to get all the categories of a resturant
 const getRestaurantCategories = async (req, res, next) => {
-  const ownerId = req.user.ownerId; // Extract ownerId from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
   try {
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    // const restaurantId = restaurant.restaurantId;
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
