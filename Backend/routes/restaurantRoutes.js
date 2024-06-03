@@ -26,9 +26,6 @@ const {
   getExtraById,
   editExtraById,
   deleteExtraById,
-  getAllProductExtras,
-  editProductExtra,
-  deleteProductExtras,
   uploadMenu,
   getMenu,
   editMenu,
@@ -41,10 +38,11 @@ const {
   deleteCategory,
   getRestaurantCategories,
   getAllCategoryProducts,
-  // editRestaurantDeliveryAreas, // no routes for this
+  editRestaurantDeliveryAreas,
   forgotPassword,
   resetPassword,
   ownerUpdatePassword,
+  workerUpdatePassword,
 } = require("../controllers/restaurantController");
 const { Owner } = require("../models/allModels");
 const {
@@ -108,6 +106,12 @@ router.get(
   autherizeUser("Owner"),
   getAllWorkers
 );
+router.patch(
+  "/worker/password",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  workerUpdatePassword
+);
 router.put(
   "/worker",
   authenticateUser(Owner),
@@ -126,13 +130,6 @@ router.delete(
   authenticateUser(Owner),
   autherizeUser("Owner"),
   deleteOwnerRestaurant
-);
-
-router.get(
-  "/products/productExtras",
-  authenticateUser(Owner),
-  autherizeUser("Owner"),
-  getAllProductExtras
 );
 
 // products
@@ -205,20 +202,6 @@ router.delete(
   deleteExtraById
 );
 
-//productsExstras
-router.put(
-  "/products/:productId/extras/:extraId",
-  authenticateUser(Owner),
-  autherizeUser("Owner"),
-  editProductExtra
-);
-router.delete(
-  "/products/:productId/extras/",
-  authenticateUser(Owner),
-  autherizeUser("Owner"),
-  deleteProductExtras
-);
-
 // Menu routes
 router.post(
   "/menu/upload",
@@ -248,12 +231,12 @@ router.get(
   autherizeUser("Owner"),
   getRestaurantDeliveryAreas
 );
-// router.put(
-//   "/editDeliveryAreas",
-//   authenticateUser(Owner),
-//   autherizeUser("Owner"),
-//   editRestaurantDeliveryAreas
-// );
+router.put(
+  "/editDeliveryAreas",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  editRestaurantDeliveryAreas
+);
 
 // Category routes
 router.post(

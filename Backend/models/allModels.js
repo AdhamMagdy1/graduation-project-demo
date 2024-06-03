@@ -1,9 +1,9 @@
-const { DataTypes, TIME } = require('sequelize');
-const { sequelize } = require('../config/database');
-const bcrypt = require('bcrypt');
+const { DataTypes, TIME } = require("sequelize");
+const { sequelize } = require("../config/database");
+const bcrypt = require("bcrypt");
 
 const Customer = sequelize.define(
-  'Customer',
+  "Customer",
   {
     customerId: {
       type: DataTypes.INTEGER,
@@ -15,14 +15,6 @@ const Customer = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    // firstName: {
-    //   type: DataTypes.STRING(50),
-    //   allowNull: false,
-    // },
-    // lastName: {
-    //   type: DataTypes.STRING(50),
-    //   allowNull: false,
-    // },
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -32,7 +24,7 @@ const Customer = sequelize.define(
 );
 
 const Owner = sequelize.define(
-  'Owner',
+  "Owner",
   {
     ownerId: {
       type: DataTypes.INTEGER,
@@ -51,10 +43,6 @@ const Owner = sequelize.define(
       type: DataTypes.STRING(256),
       allowNull: false,
     },
-    // hasRestaurant: {
-    //   type: DataTypes.BOOLEAN,
-    //   defaultValue: false,
-    // },
     passwordResetToken: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -68,7 +56,7 @@ const Owner = sequelize.define(
 );
 
 const Restaurant = sequelize.define(
-  'Restaurant',
+  "Restaurant",
   {
     restaurantId: {
       type: DataTypes.INTEGER,
@@ -86,7 +74,7 @@ const Restaurant = sequelize.define(
     subscription: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Date.now()
+      defaultValue: Date.now(),
     },
     themeColor: {
       type: DataTypes.STRING(20),
@@ -105,24 +93,16 @@ const Restaurant = sequelize.define(
 );
 
 const Product = sequelize.define(
-  'Product',
+  "Product",
   {
     productId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    // price: {
-    //   type: DataTypes.DECIMAL(6, 2),
-    //   allowNull: false,
-    // },
-    description: {
+    ingredient: {
       type: DataTypes.STRING(300),
-      allowNull: false,
+      allowNull: true,
     },
     name: {
       type: DataTypes.STRING(100),
@@ -130,14 +110,14 @@ const Product = sequelize.define(
     },
     size: {
       type: DataTypes.JSON,
-      allowNull: true,
+      allowNull: false,
     },
   },
   { timestamps: false, freezeTableName: true }
 );
 
 const Extra = sequelize.define(
-  'Extra',
+  "Extra",
   {
     extraId: {
       type: DataTypes.INTEGER,
@@ -157,7 +137,7 @@ const Extra = sequelize.define(
 );
 
 const Address = sequelize.define(
-  'Address',
+  "Address",
   {
     addressId: {
       type: DataTypes.INTEGER,
@@ -188,34 +168,8 @@ const Address = sequelize.define(
   { timestamps: false, freezeTableName: true }
 );
 
-// const WaitingOrder = sequelize.define(
-//   'WaitingOrder',
-//   {
-//     waitId: {
-//       type: DataTypes.INTEGER,
-//       primaryKey: true,
-//       autoIncrement: true,
-//     },
-//     orderTime: {
-//       type: DataTypes.DATE,
-//       allowNull: false,
-//     },
-//     price: {
-//       type: DataTypes.DECIMAL(6, 2),
-//       allowNull: false,
-//     },
-//   },
-//   { timestamps: false, freezeTableName: true }
-// );
-
-const ProductExtra = sequelize.define(
-  'ProductExtra',
-  {},
-  { timestamps: false, freezeTableName: true }
-);
-
 const CustomerPhoneNumber = sequelize.define(
-  'CustomerPhoneNumber',
+  "CustomerPhoneNumber",
   {
     phoneNumber: {
       type: DataTypes.STRING(20),
@@ -226,7 +180,7 @@ const CustomerPhoneNumber = sequelize.define(
 );
 
 const RestaurantDeliveryAreas = sequelize.define(
-  'RestaurantDeliveryAreas',
+  "RestaurantDeliveryAreas",
   {
     deliveryAreasId: {
       type: DataTypes.INTEGER,
@@ -245,7 +199,7 @@ const RestaurantDeliveryAreas = sequelize.define(
 );
 
 const RestaurantWorker = sequelize.define(
-  'RestaurantWorker',
+  "RestaurantWorker",
   {
     workerId: {
       type: DataTypes.INTEGER,
@@ -268,38 +222,22 @@ const RestaurantWorker = sequelize.define(
   { timestamps: false, freezeTableName: true }
 );
 
-const ProductIngredient = sequelize.define(
-  'ProductIngredient',
-  {
-    ingredientId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    ingredientName: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
-
 const Order = sequelize.define(
-  'Order',
+  "Order",
   {
     orderId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    deliveyCost: {
+    deliveryCost: {
       type: DataTypes.DECIMAL(6, 2),
       allowNull: false,
     },
     status: {
       type: DataTypes.STRING(20),
       allowNull: false,
-      defaultValue: 'pending',
+      defaultValue: "pending",
     },
     orderTime: {
       type: DataTypes.DATE,
@@ -314,30 +252,8 @@ const Order = sequelize.define(
   { timestamps: false, freezeTableName: true }
 );
 
-// const OrderItem = sequelize.define(
-//   'OrderItem',
-//   {
-//     orderItemId: {
-//       type: DataTypes.INTEGER,
-//       primaryKey: true,
-//       autoIncrement: true,
-//     },
-//     price: {
-//       type: DataTypes.DECIMAL(6, 2),
-//       allowNull: false,
-//     },
-//   },
-//   { timestamps: false, freezeTableName: true }
-// );
-
-// const ItemExtra = sequelize.define(
-//   'ItemExtra',
-//   {},
-//   { timestamps: false, freezeTableName: true }
-// );
-
 const Category = sequelize.define(
-  'Category',
+  "Category",
   {
     categoryId: {
       type: DataTypes.INTEGER,
@@ -351,8 +267,9 @@ const Category = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
+
 const RestaurantMenu = sequelize.define(
-  'RestaurantMenu',
+  "RestaurantMenu",
   {
     menuId: {
       type: DataTypes.INTEGER,
@@ -370,71 +287,75 @@ const RestaurantMenu = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
-const Feedback = sequelize.define('Feedback',{
-  feedbackId:{
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },message:{
-    type:DataTypes.STRING(500),
-    allowNull:false
-  },feedbackTime:{
-    type:DataTypes.DATE,
-    defaultValue:sequelize.NOW
-  }
-  
-},  { timestamps: false, freezeTableName: true }
+
+const Feedback = sequelize.define(
+  "Feedback",
+  {
+    feedbackId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    message: {
+      type: DataTypes.STRING(500),
+      allowNull: false,
+    },
+    feedbackTime: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.NOW,
+    },
+  },
+  { timestamps: false, freezeTableName: true }
 );
 
-const SentimentAnalysis = sequelize.define('SentimentAnalysis', 
-{
-  id:{
-
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-
-  },dateOfAnalysis:{
-    type:DataTypes.DATE,
-    allowNull:false
-  },negative:{
-    type:DataTypes.FLOAT,
-    allowNull:false
-  },postive:{
-    type:DataTypes.FLOAT,
-    allowNull:false
-  },neutral:{
-    type:DataTypes.FLOAT,
-    allowNull:false
-  }
-
-},  { timestamps: false, freezeTableName: true }
+const SentimentAnalysis = sequelize.define(
+  "SentimentAnalysis",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    dateOfAnalysis: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    negative: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    postive: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    neutral: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  },
+  { timestamps: false, freezeTableName: true }
 );
 Restaurant.hasMany(Feedback, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasMany(SentimentAnalysis, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
-
 
 // Category associations
 Category.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Category.hasMany(Product, {
-  foreignKey: { name: 'categoryId', allowNull: false },
+  foreignKey: { name: "categoryId", allowNull: false },
 });
 
 // Customer associations
 Customer.hasMany(Address, {
-  foreignKey: { name: 'customerId', allowNull: false },
+  foreignKey: { name: "customerId", allowNull: false },
 });
-// Customer.hasMany(WaitingOrder, {
-//   foreignKey: { name: 'customerId', allowNull: false, unique: true },
-// });
 Customer.hasMany(CustomerPhoneNumber, {
-  foreignKey: { name: 'customerId', allowNull: false },
+  foreignKey: { name: "customerId", allowNull: false },
 });
 
 // Restaurant associations
@@ -442,26 +363,26 @@ Restaurant.hasOne(Owner, {
   foreignKey: { name: "hasRestaurant", allowNull: true, unique: true },
 });
 Restaurant.hasMany(Product, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasMany(Extra, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasMany(RestaurantDeliveryAreas, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasOne(RestaurantWorker, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasMany(RestaurantMenu, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasMany(Category, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 // uncomment allow null constraint when integreating with frontend is tested
 Restaurant.hasMany(Order, {
-  foreignKey: { name: 'restaurantId' /*, allowNull: false*/ },
+  foreignKey: { name: "restaurantId" /*, allowNull: false*/ },
 });
 
 // Owner associations
@@ -471,104 +392,59 @@ Owner.belongsTo(Restaurant, {
 
 // Product associations
 Product.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Product.belongsTo(Category, {
-  foreignKey: { name: 'categoryId', allowNull: false },
-});
-Product.belongsToMany(Extra, {
-  through: ProductExtra,
-  foreignKey: { name: 'productId', allowNull: false },
-  otherKey: { name: 'extraId', allowNull: false },
-});
-Product.hasMany(ProductIngredient, {
-  foreignKey: { name: 'productId', allowNull: false },
+  foreignKey: { name: "categoryId", allowNull: false },
 });
 
 // Extra associations
 Extra.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
-Extra.belongsToMany(Product, {
-  through: ProductExtra,
-  foreignKey: { name: 'extraId', allowNull: false },
-  otherKey: { name: 'productId', allowNull: false },
-});
-// Extra.belongsToMany(OrderItem, {
-//   through: ItemExtra,
-//   foreignKey: { name: 'extraId', allowNull: false },
-//   otherKey: { name: 'orderItemId', allowNull: false },
-// });
 
 // Address associations
 Address.belongsTo(Customer, {
-  foreignKey: { name: 'customerId', allowNull: false },
+  foreignKey: { name: "customerId", allowNull: false },
 });
-
-// WaitingOrder associations
-// WaitingOrder.belongsTo(Customer, {
-//   foreignKey: { name: 'customerId', allowNull: false },
-// });
 
 // RestaurantDeliveryAreas associations
 RestaurantDeliveryAreas.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 
 // RestaurantWorker associations
 RestaurantWorker.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
-});
-
-// ProductIngredient associations
-ProductIngredient.belongsTo(Product, {
-  foreignKey: { name: 'productId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 
 // Order associations
 // uncomment allow null constraint when integreating with frontend is tested
 Order.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId' /*, allowNull: false*/ },
+  foreignKey: { name: "restaurantId" /*, allowNull: false*/ },
 });
 Order.belongsTo(Address, {
-  foreignKey: { name: 'addressId', allowNull: false },
+  foreignKey: { name: "addressId", allowNull: false },
 });
 Order.belongsTo(Customer, {
-  foreignKey: { name: 'customerId', allowNull: false },
+  foreignKey: { name: "customerId", allowNull: false },
 });
-
-// OrderItem associations
-// OrderItem.belongsTo(Product, {
-//   foreignKey: { name: 'productId', allowNull: false },
-// });
-// OrderItem.belongsTo(WaitingOrder, {
-//   foreignKey: { name: 'waitId', allowNull: false },
-// });
-// OrderItem.belongsTo(Order, {
-//   foreignKey: { name: 'orderId', allowNull: false },
-// });
-// // check this logic
-// OrderItem.belongsToMany(Extra, {
-//   through: ItemExtra,
-//   foreignKey: { name: 'orderItemId', allowNull: false },
-//   otherKey: { name: 'extraId', allowNull: false },
-// });
 
 // RestaurantMenu associations
 RestaurantMenu.belongsTo(Restaurant, {
-  foreignKey: { name: 'restaurantId', allowNull: false },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 
 // CustomerPhoneNumber associations
 CustomerPhoneNumber.belongsTo(Customer, {
-  foreignKey: { name: 'customerId', allowNull: false },
+  foreignKey: { name: "customerId", allowNull: false },
 });
 
 // Hooks
 
 // Owner Hooks
 Owner.beforeSave(async (owner, option) => {
-  if (owner.changed('password')) {
+  if (owner.changed("password")) {
     const hashedPassword = await bcrypt.hash(owner.password, 10);
     owner.password = hashedPassword;
   }
@@ -582,7 +458,7 @@ Restaurant.afterCreate(async (restaurant, option) => {
 
 // RestaurantWorker Hooks
 RestaurantWorker.beforeSave(async (worker, option) => {
-  if (worker.changed('password')) {
+  if (worker.changed("password")) {
     const hashedPassword = await bcrypt.hash(worker.password, 10);
     worker.password = hashedPassword;
   }
@@ -593,19 +469,14 @@ module.exports = {
   Product,
   Extra,
   Address,
-  // WaitingOrder,
-  ProductExtra,
   CustomerPhoneNumber,
   RestaurantDeliveryAreas,
   RestaurantWorker,
-  ProductIngredient,
   Order,
-  // OrderItem,
-  // ItemExtra,
   RestaurantMenu,
   Owner,
   Category,
   Customer,
   SentimentAnalysis,
-  Feedback
+  Feedback,
 };

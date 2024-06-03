@@ -56,7 +56,7 @@ const customAction = async (mainNamespace, customObject) => {
       size: customObject.food_size,
     };
     const order = await Order.create({
-      deliveyCost: 20,
+      deliveryCost: 20,
       orderDetails,
       addressId: 1,
       restaurantId: restaurant_id,
