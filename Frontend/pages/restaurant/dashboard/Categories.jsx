@@ -7,18 +7,17 @@ import Loading from '../../../src/Loading';
 import { Link } from 'react-router-dom';
 import Empty from './Empty';
 import useFetch from '../../../src/hooks/useFetch';
-// import useAddItem from '../../../src/hooks/useAddItem';
-
-const url = `/restaurant/category/all`;
+import useAddItem from '../../../src/hooks/useAddItem';
+import useDeleteItem from '../../../src/hooks/useDeleteItem';
+import useEditItem from '../../../src/hooks/useEditItem';
 
 const Categories = () => {
-	const URL = import.meta.env.VITE_REACT_API_URL;
 
 	const [updateTrigger, setUpdateTrigger] = useState(0);
-	const { isLoading, isError, data: resp } = useFetch(url, [updateTrigger]);
+	const { isLoading, isError, data: resp } = useFetch(`/restaurant/category/all`, [updateTrigger]);
 
 	const [categoryName, setCategoryName] = useState("");
-	const [errMsg, setErrMsg] = useState();
+	// const [errMsg, setErrMsg] = useState();
 	const [currentCategoryId, setCurrentCategoryId] = useState();
 
 	const {
@@ -30,95 +29,50 @@ const Categories = () => {
 		closeSecondModal
 	} = useGlobalContext();
 
-	const newCategory = {
-		name: categoryName,
-	};
-	// const {updatedTrigger} = useAddItem(`/restaurant/category`, newCategory);
-
-	const addCategory = async () => {
-		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`${URL}/restaurant/category`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': token,
-				},
-				body: JSON.stringify(newCategory)
-			});
-			const result = await response.json();
-			if (response.status != 201) {
-				setErrMsg(result.message);
-				console.log(errMsg);
-			} else {
-				console.log(result.message);
-				setUpdateTrigger(prev => prev + 1);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const resetCategory = () => {
-		setCategoryName("");
-	};
+	//creating new category:
+	const newCategory = { name: categoryName, };
+	const { addItem } = useAddItem(`/restaurant/category`);
+	const resetCategory = () => { setCategoryName(""); };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		addCategory();
-		closeFirstModal();
-		resetCategory();
-	};
-
-	const deleteCategory = async (id) => {
-		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`${URL}/restaurant/category/${id}`, {
-				method: 'DELETE',
-				headers: {
-					'Authorization': token,
-				}
-			});
-			const result = await response.json();
-
-			if (response.status != 200) {
-				setErrMsg(result.message);
-				console.log(errMsg);
-			} else {
-				setUpdateTrigger(prev => prev + 1);
-			}
-		} catch (error) {
-			console.log(error);
+		const resp = await addItem(newCategory);
+		if (resp) {
+			setUpdateTrigger(prev => prev + 1);
+			closeFirstModal();
+			resetCategory();
+		} else {
+			console.log('Sorry, something went wrong');
 		}
 	};
 
+	//delete category:
+	const { deleteItem } = useDeleteItem(`/restaurant/category/`);
+
+	const deleteCategory = async (id) => {
+		const resp = await deleteItem(id);
+		if (resp) {
+			setUpdateTrigger(prev => prev + 1);
+		} else {
+			console.log('Sorry, something went wrong. cannot delete item');
+		}
+	};
+
+	//edti category:
 	const handleEdit = (id, name) => {
 		setCurrentCategoryId(id);
 		setCategoryName(name);
 		openSecondModal();
 	};
 
+	const { editItem } = useEditItem(`/restaurant/category/`);
+
 	const editCategory = async (id) => {
-		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`${URL}/restaurant/category/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': token,
-				},
-				body: JSON.stringify(newCategory)
-			});
-			const result = await response.json();
-			if (response.status != 201) {
-				setErrMsg(result.message);
-				console.log(errMsg);
-			} else {
-				console.log(result.message);
-				setUpdateTrigger(prev => prev + 1);
-			}
-		} catch (error) {
-			console.log(error);
+		const resp = await editItem(id, newCategory);
+		if (resp) {
+			setUpdateTrigger(prev => prev + 1);
+		} else {
+			console.log(`sorry, somthing went wrong. cannot edit item`);
 		}
 	};
 
@@ -141,7 +95,10 @@ const Categories = () => {
 	}
 
 	if (!resp || !resp.categories) {
-		return <Empty pageName={'categories'} />;
+		return <div className="page-container">
+			<Empty pageName={'categories'} openFirstModal={openFirstModal} />
+
+		</div>;
 	}
 
 	const categories = resp.categories;
@@ -204,7 +161,6 @@ const Categories = () => {
 								value={categoryName}
 								onChange={(e) => setCategoryName(e.target.value)}
 							/>
-
 							<button type='submit' className='btn btn-block btn-black '>add</button>
 						</form>
 
