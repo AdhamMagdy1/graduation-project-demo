@@ -239,8 +239,12 @@ const createRestaurant = async (req, res, next) => {
   const logo = req.file.buffer.toString('base64');
   const restaurantDeliveryAreas = JSON.parse(req.body.deliveryAreas);
   const ownerId = req.user.ownerId; // Extract owner ID from token
-
+  const restaurantId = req.user.hasRestaurant;
   try {
+    // Check if restaurant already exists
+    if (restaurantId) {
+      return next(new AppError('Restaurant already exists', 400));
+    }
     // Create new restaurant
     const newRestaurant = await Restaurant.create({
       name,
@@ -251,15 +255,11 @@ const createRestaurant = async (req, res, next) => {
     });
 
     // Update owner's hasRestaurant field
-    // await Owner.update({ hasRestaurant: true }, { where: { ownerId } });
     await Owner.update({ hasRestaurant: newRestaurant.restaurantId }, { where: { ownerId } });
     // Create delivery areas for the restaurant
     const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
       const { city, area } = deliveryArea;
-      // console.log(city, area);
-      const areas = await Promise.all(area.map(async (areaObj) => {
-        const { value } = areaObj;
-        // console.log(city, value);
+      const areas = await Promise.all(area.map(async (value) => {
         const createdDeliveryArea = await RestaurantDeliveryAreas.create({
           city,
           area: value,
@@ -269,7 +269,6 @@ const createRestaurant = async (req, res, next) => {
       }))
       return areas;
     }))
-
     // Initialize an empty object to hold the organized data
     const organizedData = {};
 
@@ -371,8 +370,7 @@ const editRestaurantDeliveryAreas = async (req, res, next) => {
     await RestaurantDeliveryAreas.destroy({ where: { restaurantId } });
     const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
       const { city, area } = deliveryArea;
-      const areas = await Promise.all(area.map(async (areaObj) => {
-        const { value } = areaObj;
+      const areas = await Promise.all(area.map(async (value) => {
         const createdDeliveryArea = await RestaurantDeliveryAreas.create({
           city,
           area: value,
