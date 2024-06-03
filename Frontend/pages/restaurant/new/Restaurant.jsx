@@ -2,12 +2,12 @@ import { useState } from 'react';
 import extractedData from './extractedData.json';
 import { nanoid } from 'nanoid';
 import Select from 'react-select';
-import useAddItem from '../../../src/hooks/useAddItem';
 import { useNavigate } from 'react-router-dom';
 
 
 const Restaurant = () => {
 
+	const URL = import.meta.env.VITE_REACT_API_URL;
 	const navigate = useNavigate();
 
 	const inputArr = [
@@ -26,20 +26,18 @@ const Restaurant = () => {
 	const [logo, setLogo] = useState('');
 	const [color, setColor] = useState('');
 
+	const [errMsg, setErrMsg] = useState();
 
+	//create a new restaurant:
 
-
-
-	//create a new restaurant
-	const newRestaurant = {
-		name,
-		description: desc,
-		themeColor: color,
-		deliverAreas: arr.map(({ selectedCity, selectedAreas }) => ({ city: selectedCity, area: selectedAreas })),
-		logo,
-	};
-	const { addItem } = useAddItem(`/restaurant/setup`, newRestaurant);
-	const resetCategory = () => {
+	// const newRestaurant = {
+	// 	name,
+	// 	description: desc,
+	// 	themeColor: color,
+	// 	deliverAreas: arr.map(({ selectedCity, selectedAreas }) => ({ city: selectedCity, area: selectedAreas })),
+	// 	logo,
+	// };
+	const resetRestaurant = () => {
 		setName("");
 		setDesc("");
 		setLogo("");
@@ -49,13 +47,42 @@ const Restaurant = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const resp = await addItem(newRestaurant);
-		if (resp) {
-			resetCategory();
-			navigate('/restaurant/menus');
-		} else {
-			console.log('Sorry, something went wrong');
+
+		const formData = new FormData();
+		formData.append('name', name);
+		formData.append('description', desc);
+		formData.append('themeColor', color);
+		if (logo) formData.append('logo', logo);
+		arr.forEach(({ selectedCity, selectedAreas }) => {
+			formData.append('deliverAreas[]', JSON.stringify({ city: selectedCity, area: selectedAreas.map(area => area.value) }));
+		});
+
+		for (let pair of formData.entries()) {
+			console.log(pair[0] + ': ' + pair[1]);
 		}
+
+		try {
+			const token = localStorage.getItem('token');
+			const response = await fetch(`${URL}/restaurant/setup`, {
+				method: 'POST',
+				headers: {
+					Authorization: token,
+				},
+				body: formData,
+			});
+			const result = await response.json();
+			if (response.status != 201) {
+				console.log(errMsg);
+			} else {
+				console.log(result.message);
+				resetRestaurant();
+				navigate(`/restaurant/menus`);
+			}
+		} catch (error) {
+			console.log(error);
+			setErrMsg(error);
+		}
+
 	};
 
 	const changeCity = (id) => (e) => {
