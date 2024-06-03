@@ -497,10 +497,10 @@ const editRestaurant = async (req, res, next) => {
   const restaurantId = req.user.hasRestaurant;
   const { name, description, themeColor } = req.body;
   try {
-    const restaurant = await Restaurant.findByPk(restaurantId);
-    if (!restaurant) {
+    if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
+    const restaurant = await Restaurant.findByPk(restaurantId);
     // Update restaurant details
     restaurant.name = name || restaurant.name;
     restaurant.description = description || restaurant.description;
