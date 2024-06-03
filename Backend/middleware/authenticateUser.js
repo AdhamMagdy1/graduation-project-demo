@@ -14,6 +14,11 @@ const authenticateUser = (Model) => {
       }
       // Verify token
       const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+      // check if user is a restaurant worker
+      if (decoded.role === 'RestaurantWorker') {
+        req.user = decoded;
+        next();
+      }
       // Check if user still exists
       const user = await Model.findByPk(decoded.id, { attributes: { exclude: ['password', 'passwordResetToken', 'passwordResetExpires'] } });
       if (!user) {
