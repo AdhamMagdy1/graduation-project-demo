@@ -124,7 +124,7 @@ const Restaurant = () => {
 
 								<div className='mini-container'>
 									<label htmlFor='city'>city</label>
-									<select style={{ height: '2.2rem' }} className='select' id='city' value={item.selectedCity} onChange={changeCity(item.id)} >
+									<select style={{ height: '2.2rem', padding: '0.3rem' }} className='select' id='city' value={item.selectedCity} onChange={changeCity(item.id)} >
 										<option hidden>Select..</option>
 										{
 											cities.map((city) => {

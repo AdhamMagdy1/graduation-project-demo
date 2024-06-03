@@ -567,6 +567,7 @@ td {
   max-width: 800px;
   box-shadow: var(--shadow-2);
   height: fit-content;
+  transition: 0.3s;
 }
 .container:hover {
   box-shadow: var(--shadow-3);
