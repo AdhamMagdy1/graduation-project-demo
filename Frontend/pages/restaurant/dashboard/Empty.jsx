@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import SideBar from './SideBar';
 
-const Empty = ({ pageName }) => {
+const Empty = ({ pageName, openFirstModal }) => {
+
+
 	return (
 		<div className="page-container">
 			<SideBar />
@@ -9,12 +11,12 @@ const Empty = ({ pageName }) => {
 				<div className="side-page-nav">
 					<div className="side-page-heading">{pageName}</div>
 					<div className="add-item">
-						<button type='button' className='btn'
-						>add new {pageName}</button>
+						<button type='button' className='btn' onClick={openFirstModal}  >add new {pageName}</button>
 					</div>
 				</div>
 				<h3>your {pageName} is empty, start adding!</h3>
 			</div>
+
 		</div>
 	);
 };
