@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react';
 
-const useAddItem = (url) => {
+const useEditItem = (url) => {
   const URL = import.meta.env.VITE_REACT_API_URL;
   const [errMsg, setErrMsg] = useState();
 
-  const addItem = useCallback(
-    async (newItem) => {
+  const editItem = useCallback(
+    async (id, newItem) => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${URL}${url}`, {
-          method: 'POST',
+        const response = await fetch(`${URL}${url}${id}`, {
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             Authorization: token,
@@ -33,7 +33,7 @@ const useAddItem = (url) => {
     [URL, url]
   );
 
-  return { addItem };
+  return { editItem };
 };
 
-export default useAddItem;
+export default useEditItem;

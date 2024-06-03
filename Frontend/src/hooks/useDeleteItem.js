@@ -1,23 +1,22 @@
 import { useCallback, useState } from 'react';
 
-const useAddItem = (url) => {
+const useDeleteItem = (url) => {
   const URL = import.meta.env.VITE_REACT_API_URL;
   const [errMsg, setErrMsg] = useState();
 
-  const addItem = useCallback(
-    async (newItem) => {
+  const deleteItem = useCallback(
+    async (itemId) => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${URL}${url}`, {
-          method: 'POST',
+        console.log(`${URL}${url}${itemId}`);
+        const response = await fetch(`${URL}${url}${itemId}`, {
+          method: 'DELETE',
           headers: {
-            'Content-Type': 'application/json',
             Authorization: token,
           },
-          body: JSON.stringify(newItem),
         });
         const result = await response.json();
-        if (response.status != 201) {
+        if (response.status !== 200) {
           setErrMsg(result.message);
           console.log(errMsg);
           return false;
@@ -33,7 +32,7 @@ const useAddItem = (url) => {
     [URL, url]
   );
 
-  return { addItem };
+  return { deleteItem };
 };
 
-export default useAddItem;
+export default useDeleteItem;
