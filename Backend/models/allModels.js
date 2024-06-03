@@ -454,6 +454,7 @@ Owner.beforeSave(async (owner, option) => {
 Restaurant.afterCreate(async (restaurant, option) => {
   const link = `/restaurant${restaurant.restaurantId}`;
   restaurant.link = link;
+  await restaurant.save();
 });
 
 // RestaurantWorker Hooks
