@@ -23,24 +23,16 @@ const Restaurant = () => {
 	const cities = extractedData;
 	const [name, setName] = useState('');
 	const [desc, setDesc] = useState('');
-	const [logo, setLogo] = useState('');
+	const [logo, setLogo] = useState(null);
 	const [color, setColor] = useState('');
 
 	const [errMsg, setErrMsg] = useState();
 
 	//create a new restaurant:
-
-	// const newRestaurant = {
-	// 	name,
-	// 	description: desc,
-	// 	themeColor: color,
-	// 	deliverAreas: arr.map(({ selectedCity, selectedAreas }) => ({ city: selectedCity, area: selectedAreas })),
-	// 	logo,
-	// };
 	const resetRestaurant = () => {
 		setName("");
 		setDesc("");
-		setLogo("");
+		setLogo(null);
 		setColor("");
 		setArr([]);
 	};
@@ -48,18 +40,31 @@ const Restaurant = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const formData = new FormData();
-		formData.append('name', name);
-		formData.append('description', desc);
-		formData.append('themeColor', color);
-		if (logo) formData.append('logo', logo);
-		arr.forEach(({ selectedCity, selectedAreas }) => {
-			formData.append('deliverAreas[]', JSON.stringify({ city: selectedCity, area: selectedAreas.map(area => area.value) }));
+		const deliveryAreas = arr.map(({ selectedCity, selectedAreas }) => ({
+			city: selectedCity,
+			area: selectedAreas.map(area => area.value)
+		}));
+
+		const restaurantData = {
+			name,
+			description: desc,
+			themeColor: color,
+			deliveryAreas
+		};
+
+		// Convert the logo file to base64 before sending
+		const toBase64 = (file) => new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = error => reject(error);
 		});
 
-		for (let pair of formData.entries()) {
-			console.log(pair[0] + ': ' + pair[1]);
+		if (logo) {
+			restaurantData.logo = await toBase64(logo);
 		}
+
+		console.log(JSON.stringify(restaurantData)); // Log the data being sent
 
 		try {
 			const token = localStorage.getItem('token');
@@ -67,22 +72,37 @@ const Restaurant = () => {
 				method: 'POST',
 				headers: {
 					Authorization: token,
+					'Content-Type': 'application/json',
 				},
-				body: formData,
+				body: JSON.stringify(restaurantData),
 			});
 			const result = await response.json();
 			if (response.status != 201) {
+				setErrMsg(result.message);
 				console.log(errMsg);
 			} else {
 				console.log(result.message);
 				resetRestaurant();
-				navigate(`/restaurant/menus`);
+
+				const res = await fetch('http://localhost:5000/restaurant/owner', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': token,
+					},
+				});
+
+				const userData = await res.json();
+				localStorage.setItem("userData", JSON.stringify(userData));
+				localStorage.setItem("isLogged", true);
+				if (userData.hasRestaurant) {
+					navigate(`/restaurant/menus`);
+				}
 			}
 		} catch (error) {
 			console.log(error);
 			setErrMsg(error);
 		}
-
 	};
 
 	const changeCity = (id) => (e) => {
