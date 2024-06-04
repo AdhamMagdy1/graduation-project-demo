@@ -40,31 +40,29 @@ const Restaurant = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const deliveryAreas = arr.map(({ selectedCity, selectedAreas }) => ({
-			city: selectedCity,
-			area: selectedAreas.map(area => area.value)
-		}));
+		const formData = new FormData();
 
-		const restaurantData = {
-			name,
-			description: desc,
-			themeColor: color,
-			deliveryAreas
-		};
+		// Append restaurant name, description, theme color
+		formData.append('name', name);
+		formData.append('description', desc);
+		formData.append('themeColor', color);
 
-		// Convert the logo file to base64 before sending
-		const toBase64 = (file) => new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
-			reader.onerror = error => reject(error);
-		});
-
+		// Append logo file
 		if (logo) {
-			restaurantData.logo = await toBase64(logo);
+			formData.append('logo', logo);
 		}
 
-		console.log(JSON.stringify(restaurantData)); // Log the data being sent
+		// Append delivery areas
+		const deliveryAreas = arr.map(({ selectedCity, selectedAreas }) => ({
+			city: selectedCity,
+			areas: selectedAreas.map(area => area.value)
+		}));
+
+		formData.append('deliveryAreas', JSON.stringify(deliveryAreas));
+
+		for (var pair of formData.entries()) {
+			console.log(pair[0] + ': ' + pair[1]);
+		} // Log the FormData object being sent
 
 		try {
 			const token = localStorage.getItem('token');
@@ -72,36 +70,35 @@ const Restaurant = () => {
 				method: 'POST',
 				headers: {
 					Authorization: token,
-					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(restaurantData),
+				body: formData,
 			});
-			const result = await response.json();
-			if (response.status != 201) {
+
+			if (!response.ok) {
+				const result = await response.json();
 				setErrMsg(result.message);
 				console.log(errMsg);
 			} else {
-				console.log(result.message);
+				console.log('Restaurant created successfully');
 				resetRestaurant();
-
-				const res = await fetch('http://localhost:5000/restaurant/owner', {
+				const userDataRes = await fetch(`${URL}/restaurant/owner`, {
 					method: 'GET',
 					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': token,
+						Authorization: token,
 					},
 				});
-
-				const userData = await res.json();
-				localStorage.setItem("userData", JSON.stringify(userData));
-				localStorage.setItem("isLogged", true);
-				if (userData.hasRestaurant) {
-					navigate(`/restaurant/menus`);
+				if (userDataRes.ok) {
+					const userData = await userDataRes.json();
+					if (userData.hasRestaurant) {
+						navigate(`/restaurant/menus`);
+					}
+				} else {
+					console.error('Failed to fetch user data');
 				}
 			}
 		} catch (error) {
-			console.log(error);
-			setErrMsg(error);
+			console.error('Error creating restaurant:', error);
+			setErrMsg('Internal server error');
 		}
 	};
 
