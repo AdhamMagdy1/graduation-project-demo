@@ -3,6 +3,7 @@ import extractedData from './extractedData.json';
 import { nanoid } from 'nanoid';
 import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../../src/Loading';
 
 
 const Restaurant = () => {
@@ -19,6 +20,7 @@ const Restaurant = () => {
 			areas: []
 		},
 	];
+	const [isLoading, setIsLoading] = useState(false);
 	const [arr, setArr] = useState(inputArr);
 	const cities = extractedData;
 	const [name, setName] = useState('');
@@ -64,6 +66,7 @@ const Restaurant = () => {
 			console.log(pair[0] + ': ' + pair[1]);
 		} // Log the FormData object being sent
 
+		setIsLoading(true);
 		try {
 			const token = localStorage.getItem('token');
 			const response = await fetch(`${URL}/restaurant/setup`, {
@@ -75,6 +78,7 @@ const Restaurant = () => {
 			});
 
 			if (!response.ok) {
+				setIsLoading(false);
 				const result = await response.json();
 				setErrMsg(result.message);
 				console.log(errMsg);
@@ -88,11 +92,13 @@ const Restaurant = () => {
 					},
 				});
 				if (userDataRes.ok) {
+					setIsLoading(false);
 					const userData = await userDataRes.json();
 					if (userData.hasRestaurant) {
 						navigate(`/restaurant/menus`);
 					}
 				} else {
+					setIsLoading(false);
 					console.error('Failed to fetch user data');
 				}
 			}
@@ -132,6 +138,12 @@ const Restaurant = () => {
 	const deleteCity = (id) => {
 		setArr(arr.filter((item) => item.id !== id));
 	};
+
+	if (isLoading) {
+		return <div className="page-container">
+			<Loading />
+		</div>;
+	}
 
 	return (
 		<div className="container">
