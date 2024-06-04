@@ -70,6 +70,7 @@ const Menus = () => {
 						console.log(event.target.files);
 					}}
 					required
+					multiple
 				/>
 
 				{/* description */}
