@@ -236,7 +236,7 @@ const deleteOwner = async (req, res, next) => {
 // Controller function to create restaurant information
 const createRestaurant = async (req, res, next) => {
   const { name, description, themeColor } = req.body;
-  const logo = req.file ? req.file.buffer : req.body.logo;
+  const logo = req.file ? req.file.buffer.toString('base64') : req.body.logo;
   const restaurantDeliveryAreas = JSON.parse(req.body.deliveryAreas);
   const ownerId = req.user.ownerId; // Extract owner ID from token
   const restaurantId = req.user.hasRestaurant;
