@@ -205,7 +205,7 @@ router.delete(
 // Menu routes
 router.post(
   "/menu/upload",
-  upload.single("menuImage"),
+  upload.array("menuImage"),
   authenticateUser(Owner),
   autherizeUser("Owner"),
   uploadMenu
