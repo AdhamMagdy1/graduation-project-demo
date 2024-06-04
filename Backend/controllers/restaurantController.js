@@ -746,29 +746,36 @@ const deleteExtraById = async (req, res, next) => {
 
 //controlller to handle menu upload
 const uploadMenu = async (req, res, next) => {
-  const ownerId = req.user.ownerId; // Extract ownerId from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
   try {
     // Extract data from form-data
     const { description } = req.body;
-    const menuImage = req.file.buffer.toString('base64');
-    // Find the restaurant associated with the owner
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    // if (!restaurant) {
-    //   return next(new AppError('Restaurant not found for the owner', 404));
-    // }
+    // const menuImage = req.file.buffer.toString('base64');
+    const menuImages = req.files.map(file => file.buffer.toString('base64'));
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
     // Save menu to database
-    const menu = await RestaurantMenu.create({
-      description,
-      menuImage,
-      restaurantId: /*restaurant.*/restaurantId,
-    });
+    // const menu = await RestaurantMenu.create({
+    //   description,
+    //   menuImage,
+    //   restaurantId,
+    // });
 
+    // Save each menu image to the database
+    const menuEntries = await Promise.all(
+      menuImages.map(async (menuImage) => {
+        const menu = await RestaurantMenu.create({
+          description,
+          menuImage,
+          restaurantId,
+        });
+        return menu;
+      })
+    );
     // Send response
-    res.status(201).json({ success: true, menu });
+    res.status(201).json({ success: true, menu: menuEntries });
   } catch (error) {
     next(error);
   }
@@ -776,11 +783,9 @@ const uploadMenu = async (req, res, next) => {
 
 // controller to get menu
 const getMenu = async (req, res, next) => {
-  const ownerId = req.user.ownerId; // Extract ownerId from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
   try {
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    // const restaurantId = restaurant.restaurantId;
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
