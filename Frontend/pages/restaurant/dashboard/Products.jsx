@@ -57,7 +57,40 @@ const Products = (props) => {
 	}
 
 	if (!products) {
-		return <Empty pageName={"products"} />;
+		return <div className="page-container">
+			<Empty pageName={"products"} openFirstModal={openFirstModal} />
+			<div className={isFirstModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+				<div className="modal-container">
+					<h2 className="modal-heading">
+						add product
+					</h2>
+					<form className='modal-form'>
+
+						<input
+							type="text"
+							placeholder='product name'
+							className='modal-input input-block'
+							value={productName}
+							onChange={(e) => setProductName(e.target.value)}
+						/>
+
+						<input
+							type="text"
+							placeholder='product description'
+							className='modal-input input-block'
+							value={productDescription}
+							onChange={(e) => setProductDescription(e.target.value)}
+						/>
+
+						<button type='submit' className='btn btn-block btn-black '>add</button>
+					</form>
+
+					<button className="close-modal-btn" onClick={closeFirstModal}>
+						<FaTimes />
+					</button>
+				</div>
+			</div>
+		</div>;
 	}
 
 	return (

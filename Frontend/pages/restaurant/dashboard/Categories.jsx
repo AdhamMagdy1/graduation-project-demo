@@ -97,7 +97,28 @@ const Categories = () => {
 	if (!resp || !resp.categories) {
 		return <div className="page-container">
 			<Empty pageName={'categories'} openFirstModal={openFirstModal} />
+			<div className={isFirstModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+				<div className="modal-container">
+					<h2 className="modal-heading">
+						add category
+					</h2>
+					<form onSubmit={handleSubmit} className='modal-form'>
 
+						<input
+							type="text"
+							placeholder='category name'
+							className='modal-input input-block'
+							value={categoryName}
+							onChange={(e) => setCategoryName(e.target.value)}
+						/>
+						<button type='submit' className='btn btn-block btn-black '>add</button>
+					</form>
+
+					<button className="close-modal-btn" onClick={closeFirstModal}>
+						<FaTimes />
+					</button>
+				</div>
+			</div>
 		</div>;
 	}
 
