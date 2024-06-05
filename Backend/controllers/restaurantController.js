@@ -751,17 +751,10 @@ const uploadMenu = async (req, res, next) => {
   try {
     // Extract data from form-data
     const { description } = req.body;
-    // const menuImage = req.file.buffer.toString('base64');
     const menuImages = req.files.map(file => file.buffer.toString('base64'));
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    // Save menu to database
-    // const menu = await RestaurantMenu.create({
-    //   description,
-    //   menuImage,
-    //   restaurantId,
-    // });
 
     // Save each menu image to the database
     const menuEntries = await Promise.all(
