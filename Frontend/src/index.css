@@ -118,11 +118,30 @@ ul {
   overflow: hidden;
   display: flex;
 }
-
+.sizes-container {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.input-holder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+.input-num {
+  width: 4rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.75rem;
+  caret-color: var(--primary-1);
+  background-color: transparent;
+}
 /*===============*/
 
 /* || SIDE-PAGE */
-
 .side-page {
   display: flex;
   flex-direction: column;
@@ -587,6 +606,9 @@ td {
   left: 0;
   height: 35%;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-transform: capitalize;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
