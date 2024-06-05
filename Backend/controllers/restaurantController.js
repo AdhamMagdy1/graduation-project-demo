@@ -847,6 +847,21 @@ const editMenu = async (req, res, next) => {
   }
 };
 
+const deleteMenu = async (req, res, next) => {
+  const { menuId } = req.params;
+  try {
+    const menu = await RestaurantMenu.findByPk(menuId);
+    if (!menu) {
+      return next(new AppError('Menu not found', 404));
+    }
+    await menu.destroy();
+    return res.status(200).json({ message: 'Menu deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting menu:', error);
+    return next(new AppError('Internal server error', 500));
+  }
+};
+
 // Controller to create a new category
 const createCategory = async (req, res, next) => {
   const { name } = req.body;
@@ -964,4 +979,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   workerUpdatePassword,
+  deleteMenu,
 };
