@@ -1,4 +1,4 @@
-const { Order, CustomerPhoneNumber } = require('../models/allModels'); // Import the customer related models
+const { Order, CustomerPhoneNumber,Feedback } = require('../models/allModels'); // Import the customer related models
 
 // const fetch = require('node-fetch');
 
@@ -46,7 +46,7 @@ const customAction = async (mainNamespace, customObject) => {
     return '';
   } else if (customObject.code == 422) {
     // If code is 422, call createOrderMessage function and return food extra and food size
-    const { restaurant_id, customer_id , socket_id, phone_number } = customObject;
+    const { restaurant_id, customer_id , socket_id, phone_number,address_id } = customObject;
     const customerPhoneNumber = await CustomerPhoneNumber.create({
       phoneNumber: phone_number,
       customerId: customer_id,
@@ -58,12 +58,21 @@ const customAction = async (mainNamespace, customObject) => {
     const order = await Order.create({
       deliveryCost: 20,
       orderDetails,
-      addressId: 1,
+      addressId: address_id,
       restaurantId: restaurant_id,
       customerId: customer_id,
     });
     mainNamespace.to(restaurant_id).emit('order', order);
     return '';
+  }else if(customObject.code == 422){
+    const { restaurant_id,feedback } = customObject;
+    const feedbackRecord =await Feedback.create({
+        message:feedback,
+        restaurantId:restaurant_id
+    });
+    return '';
+    
+
   } else {
     // For other codes, return a default message
     return 'Default custom action performed.';
