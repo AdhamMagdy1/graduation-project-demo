@@ -2,7 +2,7 @@ import SideBar from './SideBar';
 import Loading from '../../../src/Loading';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Buffer } from 'buffer';
+// import { Buffer } from 'buffer';
 
 const Menu = () => {
 
@@ -19,23 +19,18 @@ const Menu = () => {
 						'Authorization': localStorage.getItem('token'),
 					},
 				});
-
 				if (response.status === 200) {
-					const data = response.data;
+					const data = await response.data;
 					console.log(data);
-					// Convert the binary data to base64 string
 					const base64Images = data.map(item => {
-						const buffer = item.menuImage.data;
-						const base64String = Buffer.from(buffer).toString('base64');
+						const base64String = item.menuImage; // assuming item.menuImage is already a valid base64 string
 						return {
 							...item,
-							menuImage: `data:image/png;base64,${base64String}`,
+							menuImage: `data:image/png;base64,${base64String.replace(/^\\x/, '')}`, // removing the leading \x
 						};
 					});
-
 					setImages(base64Images);
 					console.log(images);
-					console.log(base64Images);
 					setIsLoading(false);
 				} else {
 					console.error('Failed to fetch images');
@@ -69,11 +64,16 @@ const Menu = () => {
 			</div>
 
 			<ul className="list-items">
-				{
-					images?.map((image) => {
-						return <img key={image.menuId} src={image.menuImage} alt="menu image" />;
-					})
-				}
+				<div className="menu-container">
+					{
+						images?.map((image) => {
+							return <div key={image.menuId} className="menu-item">
+								<img className='menu-img' src={image.menuImage} alt="menu image" />
+								<p className="meu-description">{image.description}</p>
+							</div>;
+						})
+					}
+				</div>;
 			</ul>
 		</div>
 	</div>;
