@@ -81,7 +81,7 @@ const Restaurant = sequelize.define(
       allowNull: true,
     },
     logo: {
-      type: DataTypes.BLOB,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     link: {
@@ -281,7 +281,7 @@ const RestaurantMenu = sequelize.define(
       allowNull: true,
     },
     menuImage: {
-      type: DataTypes.BLOB,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
   },
