@@ -205,7 +205,10 @@ const Extras = () => {
 					<h2 className="modal-heading">
 						edit category
 					</h2>
-					<form onSubmit={() => editExtra(currentExtra)} className='modal-form'>
+					<form onSubmit={(e) => {
+						e.preventDefault();
+						editExtra(currentExtra);
+					}} className='modal-form'>
 
 						<input
 							type="text"
