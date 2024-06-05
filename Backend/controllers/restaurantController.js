@@ -68,7 +68,10 @@ const login = async (req, res, next) => {
     }
 
     // Generate JWT token
-    const tokenPayload = accountType === 'owner' ? { id: user.ownerId, role: "Owner" } : { id: user.workerId, role: "RestaurantWorker"};
+    const tokenPayload =
+      accountType === 'owner'
+        ? { id: user.ownerId, role: 'Owner' }
+        : { id: user.workerId, role: 'RestaurantWorker' };
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
       expiresIn: '180h',
     });
@@ -86,7 +89,9 @@ const getOwner = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
   try {
     const owner = await Owner.findByPk(ownerId, {
-      attributes: { exclude: ['password', 'passwordResetToken', 'passwordResetExpires'] },
+      attributes: {
+        exclude: ['password', 'passwordResetToken', 'passwordResetExpires'],
+      },
     });
     if (!owner) {
       return next(new AppError('Owner not found', 404));
@@ -110,7 +115,7 @@ const editOwner = async (req, res, next) => {
     owner.name = name || owner.name;
     owner.email = email || owner.email;
     await owner.save();
-    return res.status(200).json("owner updated successfully");
+    return res.status(200).json('owner updated successfully');
   } catch (error) {
     console.error('Error editing owner:', error);
     return next(new AppError('Internal server error', 500));
@@ -126,7 +131,10 @@ const ownerUpdatePassword = async (req, res, next) => {
     if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
-    const isPasswordCorrect = await bcrypt.compare(currentPassword, owner.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      currentPassword,
+      owner.password
+    );
     if (!isPasswordCorrect) {
       return next(new AppError('Invalid current password', 400));
     }
@@ -137,15 +145,15 @@ const ownerUpdatePassword = async (req, res, next) => {
     console.error('Error updating owner password', error);
     return next(new AppError('Internal server error', 500));
   }
-}
+};
 
 // controller to create password reset token
 const createPasswordResetToken = async (ownerId) => {
-  const resetToken = crypto.randomBytes(32).toString("hex");
+  const resetToken = crypto.randomBytes(32).toString('hex');
   const passwordResetToken = crypto
-    .createHash("sha256")
+    .createHash('sha256')
     .update(resetToken)
-    .digest("hex");
+    .digest('hex');
   await Owner.update(
     {
       passwordResetToken: passwordResetToken,
@@ -155,7 +163,7 @@ const createPasswordResetToken = async (ownerId) => {
   );
   console.log({ resetToken }, passwordResetToken);
   return resetToken;
-}
+};
 
 // controller to forgot password
 const forgotPassword = async (req, res, next) => {
@@ -163,31 +171,33 @@ const forgotPassword = async (req, res, next) => {
   const owner = await Owner.findOne({ where: { email } });
   try {
     if (!owner) {
-      return next(new AppError("User not found", 404));
+      return next(new AppError('User not found', 404));
     }
     const resetToken = await createPasswordResetToken(owner.ownerId);
-    const resetURL = `${req.protocol}://${req.get("host")}/restaurant/owner/resetPassword/${resetToken}`;
+    const resetURL = `${req.protocol}://${req.get(
+      'host'
+    )}/restaurant/owner/resetPassword/${resetToken}`;
     // email service
     await new Email(owner, resetURL).sendPasswordReset();
-    return res.status(200).json({ message: "Token sent to email!" });
+    return res.status(200).json({ message: 'Token sent to email!' });
   } catch (error) {
     await Owner.update(
       { passwordResetToken: null, passwordResetExpires: null },
       { where: { id: owner.ownerId } }
     );
-    console.error("Error sending password reset email:", error);
-    return next(new AppError("Internal Server Error", 500));
+    console.error('Error sending password reset email:', error);
+    return next(new AppError('Internal Server Error', 500));
   }
-}
+};
 
 // controller to reset password
 const resetPassword = async (req, res, next) => {
   const { newPassword } = req.body;
   try {
     const hashedToken = crypto
-      .createHash("sha256")
+      .createHash('sha256')
       .update(req.params.resetToken)
-      .digest("hex");
+      .digest('hex');
     const owner = await Owner.findOne({
       where: {
         passwordResetToken: hashedToken,
@@ -195,21 +205,18 @@ const resetPassword = async (req, res, next) => {
       },
     });
     if (!owner) {
-      return next(new AppError("Token is invalid or has expired", 400));
+      return next(new AppError('Token is invalid or has expired', 400));
     }
     owner.password = newPassword;
     owner.passwordResetToken = null;
     owner.passwordResetExpires = null;
     await owner.save();
-    return res
-      .status(200)
-      .json({ message: "Password reset successfully" });
+    return res.status(200).json({ message: 'Password reset successfully' });
   } catch (error) {
-    console.error("Error resetting password:", error);
-    return next(new AppError("Internal Server Error", 500));
+    console.error('Error resetting password:', error);
+    return next(new AppError('Internal Server Error', 500));
   }
-}
-
+};
 
 // Controller function to delete owner
 const deleteOwner = async (req, res, next) => {
@@ -255,35 +262,42 @@ const createRestaurant = async (req, res, next) => {
     });
 
     // Update owner's hasRestaurant field
-    await Owner.update({ hasRestaurant: newRestaurant.restaurantId }, { where: { ownerId } });
+    await Owner.update(
+      { hasRestaurant: newRestaurant.restaurantId },
+      { where: { ownerId } }
+    );
     // Create delivery areas for the restaurant
-    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
-      const { city, areas } = deliveryArea;
-      const area = await Promise.all(areas.map(async (value) => {
-        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-          city,
-          area: value,
-          restaurantId: newRestaurant.restaurantId,
-        })
-        return createdDeliveryArea
-      }))
-      return area;
-    }))
+    const deliveryAreas = await Promise.all(
+      restaurantDeliveryAreas.map(async (deliveryArea) => {
+        const { city, areas } = deliveryArea;
+        const area = await Promise.all(
+          areas.map(async (value) => {
+            const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+              city,
+              area: value,
+              restaurantId: newRestaurant.restaurantId,
+            });
+            return createdDeliveryArea;
+          })
+        );
+        return area;
+      })
+    );
     // Initialize an empty object to hold the organized data
     const organizedData = {};
 
     // Loop through the array to organize data by city
     deliveryAreas.flat().forEach(({ city, area }) => {
-    if (!organizedData[city]) {
-      organizedData[city] = [];
-    }
-    organizedData[city].push(area);
+      if (!organizedData[city]) {
+        organizedData[city] = [];
+      }
+      organizedData[city].push(area);
     });
 
     // Convert the object to an array if needed
-    const organizedArray = Object.keys(organizedData).map(city => ({
-    city,
-    areas: organizedData[city]
+    const organizedArray = Object.keys(organizedData).map((city) => ({
+      city,
+      areas: organizedData[city],
     }));
 
     // Generate worker data based on restaurant information
@@ -300,9 +314,11 @@ const createRestaurant = async (req, res, next) => {
       password: workerPassword,
       restaurantId: newRestaurant.restaurantId,
     });
-    return res
-      .status(201)
-      .json({ restaurant: newRestaurant, worker: newWorker, deliveryAreas: organizedArray});
+    return res.status(201).json({
+      restaurant: newRestaurant,
+      worker: newWorker,
+      deliveryAreas: organizedArray,
+    });
   } catch (error) {
     console.error('Error creating restaurant:', error);
     return next(new AppError('Internal server error', 500));
@@ -331,7 +347,9 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const deliveryAreas = await RestaurantDeliveryAreas.findAll({ where: { restaurantId } });
+    const deliveryAreas = await RestaurantDeliveryAreas.findAll({
+      where: { restaurantId },
+    });
     if (deliveryAreas.length === 0) {
       return next(new AppError('Delivery areas not found', 404));
     }
@@ -340,16 +358,16 @@ const getRestaurantDeliveryAreas = async (req, res, next) => {
 
     // Loop through the array to organize data by city
     deliveryAreas.flat().forEach(({ city, area }) => {
-    if (!organizedData[city]) {
-      organizedData[city] = [];
-    }
-    organizedData[city].push(area);
+      if (!organizedData[city]) {
+        organizedData[city] = [];
+      }
+      organizedData[city].push(area);
     });
 
     // Convert the object to an array if needed
-    const organizedArray = Object.keys(organizedData).map(city => ({
-    city,
-    areas: organizedData[city]
+    const organizedArray = Object.keys(organizedData).map((city) => ({
+      city,
+      areas: organizedData[city],
     }));
     return res.status(200).json({ deliveryAreas: organizedArray });
   } catch (error) {
@@ -368,34 +386,38 @@ const editRestaurantDeliveryAreas = async (req, res, next) => {
       return next(new AppError('Restaurant not found', 404));
     }
     await RestaurantDeliveryAreas.destroy({ where: { restaurantId } });
-    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
-      const { city, area } = deliveryArea;
-      const areas = await Promise.all(area.map(async (value) => {
-        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-          city,
-          area: value,
-          restaurantId,
-        })
-        return createdDeliveryArea
-      }))
-      return areas;
-    }))
+    const deliveryAreas = await Promise.all(
+      restaurantDeliveryAreas.map(async (deliveryArea) => {
+        const { city, area } = deliveryArea;
+        const areas = await Promise.all(
+          area.map(async (value) => {
+            const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+              city,
+              area: value,
+              restaurantId,
+            });
+            return createdDeliveryArea;
+          })
+        );
+        return areas;
+      })
+    );
 
     // Initialize an empty object to hold the organized data
     const organizedData = {};
 
     // Loop through the array to organize data by city
     deliveryAreas.flat().forEach(({ city, area }) => {
-    if (!organizedData[city]) {
-      organizedData[city] = [];
-    }
-    organizedData[city].push(area);
+      if (!organizedData[city]) {
+        organizedData[city] = [];
+      }
+      organizedData[city].push(area);
     });
 
     // Convert the object to an array if needed
-    const organizedArray = Object.keys(organizedData).map(city => ({
-    city,
-    areas: organizedData[city]
+    const organizedArray = Object.keys(organizedData).map((city) => ({
+      city,
+      areas: organizedData[city],
     }));
 
     return res.status(200).json({ deliveryAreas: organizedArray });
@@ -413,7 +435,10 @@ const getRestaurant = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const restaurant = await Restaurant.findByPk(restaurantId, {attributes: { exclude: ['logo'] }, include: [ RestaurantWorker ] });
+    const restaurant = await Restaurant.findByPk(restaurantId, {
+      attributes: { exclude: ['logo'] },
+      include: [RestaurantWorker],
+    });
     return res.status(200).json({ restaurant });
   } catch (error) {
     console.error('Error getting restaurant:', error);
@@ -445,7 +470,10 @@ const updateWorker = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const worker = await RestaurantWorker.findOne({ where: { restaurantId }, attributes: { exclude: ['password'] }});
+    const worker = await RestaurantWorker.findOne({
+      where: { restaurantId },
+      attributes: { exclude: ['password'] },
+    });
     if (!worker) {
       return next(new AppError('Worker not found', 404));
     }
@@ -476,7 +504,10 @@ const workerUpdatePassword = async (req, res, next) => {
     if (!worker) {
       return next(new AppError('Worker not found', 404));
     }
-    const isPasswordCorrect = await bcrypt.compare(currentPassword, worker.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      currentPassword,
+      worker.password
+    );
     if (!isPasswordCorrect) {
       return next(new AppError('Invalid current password', 400));
     }
@@ -557,7 +588,9 @@ const createProduct = async (req, res, next) => {
       categoryId,
       restaurantId,
     });
-    res.status(201).json({ message: 'Products created successfully', product: newProduct });
+    res
+      .status(201)
+      .json({ message: 'Products created successfully', product: newProduct });
   } catch (error) {
     console.error('Error creating products:', error);
     next(new AppError('Internal server error', 500));
@@ -629,7 +662,7 @@ const editProductById = async (req, res, next) => {
     product.ingredient = ingredient || product.ingredient;
     product.size = size || product.size;
     await product.save();
-    return res.status(200).json(product);
+    return res.status(201).json(product);
   } catch (error) {
     console.error('Error editing product:', error);
     return next(new AppError('Internal server error', 500));
@@ -751,7 +784,7 @@ const uploadMenu = async (req, res, next) => {
   try {
     // Extract data from form-data
     const { description } = req.body;
-    const menuImages = req.files.map(file => file.buffer.toString('base64'));
+    const menuImages = req.files.map((file) => file.buffer.toString('base64'));
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
@@ -830,7 +863,7 @@ const createCategory = async (req, res, next) => {
     }
     const newCategory = await Category.create({
       name,
-      restaurantId: /*restaurant.*/restaurantId,
+      restaurantId: /*restaurant.*/ restaurantId,
     });
     res.status(201).json({
       message: 'Category created successfully',
