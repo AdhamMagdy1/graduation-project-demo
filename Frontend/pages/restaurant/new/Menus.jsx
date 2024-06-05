@@ -16,8 +16,13 @@ const Menus = () => {
 
 		const formData = new FormData();
 		formData.append('description', description);
-		if (menu) {
-			formData.append('menuImage', menu);
+
+		for (let i = 0; i < menu.length; i++) {
+			formData.append('menuImage', menu[i]);
+		}
+
+		for (let [key, value] of formData.entries()) {
+			console.log(`${key}: ${value}`);
 		}
 
 		setIsLoading(true);
@@ -66,7 +71,7 @@ const Menus = () => {
 					id='menuImage'
 					name="menuImage"
 					onChange={(event) => {
-						setMenu(event.target.files[0]);
+						setMenu(event.target.files);
 						console.log(event.target.files);
 					}}
 					required

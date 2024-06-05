@@ -69,11 +69,11 @@ const Menu = () => {
 						images?.map((image) => {
 							return <div key={image.menuId} className="menu-item">
 								<img className='menu-img' src={image.menuImage} alt="menu image" />
-								<p className="meu-description">{image.description}</p>
+								<p className="menu-description">{image.description}</p>
 							</div>;
 						})
 					}
-				</div>;
+				</div>
 			</ul>
 		</div>
 	</div>;
