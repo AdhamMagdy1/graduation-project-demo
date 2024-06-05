@@ -88,6 +88,7 @@ const Menus = () => {
 					placeholder='description'
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
+					required
 				/>
 
 				<button className='btn btn-block' onClick={handleSubmit} type='submit'>done</button>
