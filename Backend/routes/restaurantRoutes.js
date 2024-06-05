@@ -43,6 +43,7 @@ const {
   resetPassword,
   ownerUpdatePassword,
   workerUpdatePassword,
+  deleteMenu,
 } = require("../controllers/restaurantController");
 const { Owner } = require("../models/allModels");
 const {
@@ -223,7 +224,12 @@ router.put(
   autherizeUser("Owner"),
   editMenu
 );
-
+router.delete(
+  "/menu/:menuId",
+  authenticateUser(Owner),
+  autherizeUser("Owner"),
+  deleteMenu
+)
 // Delivery Areas routes
 router.get(
   "/deliveryAreas",
