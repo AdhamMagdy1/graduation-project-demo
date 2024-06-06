@@ -533,6 +533,19 @@ input:focus {
   margin-bottom: 3rem;
   text-transform: capitalize;
 }
+.btn-holder {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.filter-buttons {
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -556,15 +569,10 @@ td {
   text-align: center;
   text-transform: capitalize;
 }
-.red,
-.green,
-.blue {
-  padding: 0 0 0 0;
-  margin-top: 2px;
-  width: fit-content;
-  color: var(--white);
-  border-radius: 20px;
-  font-size: 0.9rem;
+.status-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .green {
   background-color: #7df971;
@@ -574,6 +582,25 @@ td {
 }
 .red {
   background-color: #fc8585;
+}
+.order-status {
+  margin-top: 2px;
+  width: fit-content;
+  color: var(--white);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+.select-status {
+  text-transform: capitalize;
+
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  border-radius: 0.3rem;
+  border-color: transparent;
+  margin-top: 0.25rem;
+  color: var(--primary-1);
+  font-weight: 700;
 }
 /*==============*/
 
