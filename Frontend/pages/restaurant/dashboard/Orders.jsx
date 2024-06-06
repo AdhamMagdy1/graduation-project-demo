@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import SideBar from "./SideBar";
 import { nanoid } from 'nanoid';
 
@@ -10,7 +10,7 @@ const fakeOrders = [
 		phone: 789456123,
 		bill: 220,
 		address: "miami",
-		status: 'delieverd',
+		status: 'delivered',
 	},
 	{
 		id: nanoid(),
@@ -19,7 +19,7 @@ const fakeOrders = [
 		phone: 789456123,
 		bill: 220,
 		address: "miami",
-		status: 'waiting',
+		status: '',
 	},
 	{
 		id: nanoid(),
@@ -46,14 +46,33 @@ const fakeOrders = [
 		phone: 789456123,
 		bill: 220,
 		address: "miami",
-		status: 'delieverd',
+		status: 'delivered',
 	}
 ];
 
 const Orders = () => {
 
-	// const [orders, setOrders] = useState(fakeOrders);
+	const [orders, setOrders] = useState(fakeOrders);
 
+	const changeOrderStatus = (e, id) => {
+		const newStatus = e.target.value;
+		const updatedOrders = orders.map((order) => {
+			return order.id === id ? { ...order, status: newStatus } : order;
+		});
+		setOrders(updatedOrders);
+	};
+
+	const editOrder = (id) => {
+		const updatedOrders = orders.map((order) => {
+			return order.id === id ? { ...order, status: '' } : order;
+		});
+		setOrders(updatedOrders);
+	};
+
+	const deleteOrder = (id) => {
+		const updatedOrders = orders.filter((order) => order.id !== id);
+		setOrders(updatedOrders);
+	};
 
 	return (
 		<>
@@ -63,10 +82,14 @@ const Orders = () => {
 					<div className="orders-center">
 						<div className="orders-heading">
 							<h2>recent orders</h2>
-							<button className="btn">
-								filter
-								<svg style={{ marginLeft: "0.3rem" }} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeMiterlimit="10" strokeWidth="1.5" d="M21.25 12H8.895m-4.361 0H2.75m18.5 6.607h-5.748m-4.361 0H2.75m18.5-13.214h-3.105m-4.361 0H2.75m13.214 2.18a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm-9.25 6.607a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm6.607 6.608a2.18 2.18 0 1 0 0-4.361a2.18 2.18 0 0 0 0 4.36Z" /></svg>
-							</button>
+						</div>
+						<div className="btn-holder">
+							<div className="filter-buttons">
+								<button type="button" className="filter-btn btn">all</button>
+								<button type="button" className="filter-btn btn">delivered</button>
+								<button type="button" className="filter-btn btn">in progress</button>
+								<button type="button" className="filter-btn btn">waiting</button>
+							</div>
 						</div>
 						<table>
 							<thead>
@@ -83,7 +106,7 @@ const Orders = () => {
 							</thead>
 							<tbody>
 								{
-									fakeOrders.map((order) => {
+									orders.map((order) => {
 										return <tr key={order.id}>
 											<td>{order.id}</td>
 											<td>{order.customer}</td>
@@ -91,16 +114,37 @@ const Orders = () => {
 											<td>{order.phone}</td>
 											<td>{order.bill}</td>
 											<td>{order.address}</td>
-											<div className={order.status === 'delieverd' ? 'green' : order.status === 'waiting' ? 'red' : 'blue'}>
-												<td >
-													{order.status}
-												</td>
+											<div className="status-holder">
+												{
+													order.status ? (
+														<div className={order.status === 'delivered' ? 'green order-status' : order.status === 'waiting' ? 'red order-status' : 'blue order-status'}>
+															<td>{order.status}</td>
+														</div>
+													) : (
+														<select
+															className='select-status'
+															name="status"
+															id="status"
+															value={order.status || ''}
+															onChange={(e) => changeOrderStatus(e, order.id)}
+														>
+															<option hidden value="">select status</option>
+															<option value="delivered">delivered</option>
+															<option value="waiting">waiting</option>
+															<option value="in progress">in progress</option>
+														</select>
+													)
+												}
 											</div>
-
 											<td>
-												<button className="btn-action btn-red">
-													<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M7 3h2a1 1 0 0 0-2 0M6 3a2 2 0 1 1 4 0h4a.5.5 0 0 1 0 1h-.564l-1.205 8.838A2.5 2.5 0 0 1 9.754 15H6.246a2.5 2.5 0 0 1-2.477-2.162L2.564 4H2a.5.5 0 0 1 0-1zm1 3.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0zM9.5 6a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5m-4.74 6.703A1.5 1.5 0 0 0 6.246 14h3.508a1.5 1.5 0 0 0 1.487-1.297L12.427 4H3.573z" /></svg>
-												</button>
+												<div className="actions">
+													<button className="btn-action" onClick={() => editOrder(order.id)} >
+														<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M17.204 10.796L19 9c.545-.545.818-.818.964-1.112a2 2 0 0 0 0-1.776C19.818 5.818 19.545 5.545 19 5c-.545-.545-.818-.818-1.112-.964a2 2 0 0 0-1.776 0c-.294.146-.567.419-1.112.964l-1.819 1.819a10.9 10.9 0 0 0 4.023 3.977m-5.477-2.523l-6.87 6.87c-.426.426-.638.638-.778.9c-.14.26-.199.555-.316 1.145l-.616 3.077c-.066.332-.1.498-.005.593c.095.095.26.061.593-.005l3.077-.616c.59-.117.885-.176 1.146-.316c.26-.14.473-.352.898-.777l6.89-6.89a12.901 12.901 0 0 1-4.02-3.98" clipRule="evenodd" /></svg>
+													</button>
+													<button className="btn-action btn-red" onClick={() => deleteOrder(order.id)}>
+														<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M7 3h2a1 1 0 0 0-2 0M6 3a2 2 0 1 1 4 0h4a.5.5 0 0 1 0 1h-.564l-1.205 8.838A2.5 2.5 0 0 1 9.754 15H6.246a2.5 2.5 0 0 1-2.477-2.162L2.564 4H2a.5.5 0 0 1 0-1zm1 3.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0zM9.5 6a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5m-4.74 6.703A1.5 1.5 0 0 0 6.246 14h3.508a1.5 1.5 0 0 0 1.487-1.297L12.427 4H3.573z" /></svg>
+													</button>
+												</div>
 											</td>
 										</tr>;
 									})
