@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import SideBar from "./SideBar";
 import { nanoid } from 'nanoid';
@@ -50,10 +51,24 @@ const fakeOrders = [
 	}
 ];
 
+const allStates = ['all', ...new Set(fakeOrders.map((order) => order.status))];
+
 const Orders = () => {
 
 	const [orders, setOrders] = useState(fakeOrders);
+	const [states, setStates] = useState(allStates);
 
+	//filtering orders:
+	const filterOrders = (state) => {
+		if (state === 'all') {
+			setOrders(fakeOrders);
+			return;
+		}
+		const filteredOrders = fakeOrders.filter((order) => order.status === state);
+		setOrders(filteredOrders);
+	};
+
+	//changing status of the order:
 	const changeOrderStatus = (e, id) => {
 		const newStatus = e.target.value;
 		const updatedOrders = orders.map((order) => {
@@ -61,7 +76,6 @@ const Orders = () => {
 		});
 		setOrders(updatedOrders);
 	};
-
 	const editOrder = (id) => {
 		const updatedOrders = orders.map((order) => {
 			return order.id === id ? { ...order, status: '' } : order;
@@ -69,6 +83,7 @@ const Orders = () => {
 		setOrders(updatedOrders);
 	};
 
+	//deleting order:
 	const deleteOrder = (id) => {
 		const updatedOrders = orders.filter((order) => order.id !== id);
 		setOrders(updatedOrders);
@@ -80,17 +95,27 @@ const Orders = () => {
 				<SideBar />
 				<div className="side-page">
 					<div className="orders-center">
-						<div className="orders-heading">
-							<h2>recent orders</h2>
+						<div className="side-page-nav">
+							<h2 className='side-page-heading'>recent orders</h2>
 						</div>
+						{/* filter buttons  */}
 						<div className="btn-holder">
 							<div className="filter-buttons">
-								<button type="button" className="filter-btn btn">all</button>
-								<button type="button" className="filter-btn btn">delivered</button>
-								<button type="button" className="filter-btn btn">in progress</button>
-								<button type="button" className="filter-btn btn">waiting</button>
+								{
+									states.map((state) => {
+										return <button
+											key={nanoid()}
+											type='button'
+											className='btn'
+											onClick={() => filterOrders(state)}
+										>
+											{state ? state : 'unset'}
+										</button>;
+									})
+								}
 							</div>
 						</div>
+						{/* orders */}
 						<table>
 							<thead>
 								<tr>
