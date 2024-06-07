@@ -525,7 +525,7 @@ input:focus {
 .orders-center {
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: 0 2rem;
 }
 .orders-heading {
   display: flex;
@@ -541,7 +541,7 @@ input:focus {
   margin-bottom: 1rem;
 }
 .filter-buttons {
-  width: 350px;
+  width: 400px;
   display: flex;
   align-items: center;
   justify-content: space-between;
