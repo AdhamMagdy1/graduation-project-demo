@@ -386,22 +386,18 @@ const editRestaurantDeliveryAreas = async (req, res, next) => {
       return next(new AppError('Restaurant not found', 404));
     }
     await RestaurantDeliveryAreas.destroy({ where: { restaurantId } });
-    const deliveryAreas = await Promise.all(
-      restaurantDeliveryAreas.map(async (deliveryArea) => {
-        const { city, area } = deliveryArea;
-        const areas = await Promise.all(
-          area.map(async (value) => {
-            const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-              city,
-              area: value,
-              restaurantId,
-            });
-            return createdDeliveryArea;
-          })
-        );
-        return areas;
-      })
-    );
+    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
+      const { city, areas } = deliveryArea;
+      const area = await Promise.all(areas.map(async (value) => {
+        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+          city,
+          area: value,
+          restaurantId,
+        });
+        return createdDeliveryArea;
+      }));
+      return area;
+    }));
 
     // Initialize an empty object to hold the organized data
     const organizedData = {};
@@ -435,10 +431,7 @@ const getRestaurant = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const restaurant = await Restaurant.findByPk(restaurantId, {
-      attributes: { exclude: ['logo'] },
-      include: [RestaurantWorker],
-    });
+    const restaurant = await Restaurant.findByPk(restaurantId, { include: [ RestaurantWorker ] });
     return res.status(200).json({ restaurant });
   } catch (error) {
     console.error('Error getting restaurant:', error);
@@ -865,20 +858,15 @@ const deleteMenu = async (req, res, next) => {
 // Controller to create a new category
 const createCategory = async (req, res, next) => {
   const { name } = req.body;
-  const ownerId = req.user.ownerId; // Extract ownerId from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
-  // Find the restaurant associated with the owner
-  // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-  // if (!restaurant) {
-  //   return next(new AppError('Restaurant not found for the owner', 404));
-  // }
   try {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
     const newCategory = await Category.create({
       name,
-      restaurantId: /*restaurant.*/ restaurantId,
+      restaurantId,
     });
     res.status(201).json({
       message: 'Category created successfully',
