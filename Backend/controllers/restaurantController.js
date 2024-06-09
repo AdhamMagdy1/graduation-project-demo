@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const multer = require('multer');
 const { Op } = require('sequelize');
+const path = require('path');
 const {
   Owner,
   Restaurant,
@@ -176,7 +177,7 @@ const forgotPassword = async (req, res, next) => {
     const resetToken = await createPasswordResetToken(owner.ownerId);
     const resetURL = `${req.protocol}://${req.get(
       'host'
-    )}/restaurant/owner/resetPassword/${resetToken}`;
+    )}/restaurant/owner/resetPasswordPage/?token=${resetToken}`;
     // email service
     await new Email(owner, resetURL).sendPasswordReset();
     return res.status(200).json({ message: 'Token sent to email!' });
@@ -216,6 +217,12 @@ const resetPassword = async (req, res, next) => {
     console.error('Error resetting password:', error);
     return next(new AppError('Internal Server Error', 500));
   }
+};
+
+// controller to send reset password page
+const serveResetPage = async (req, res) => {
+  const filePath = path.join(__dirname, '../utils/reset_password.html');
+  res.sendFile(filePath);
 };
 
 // Controller function to delete owner
@@ -968,4 +975,5 @@ module.exports = {
   resetPassword,
   workerUpdatePassword,
   deleteMenu,
+  serveResetPage,
 };
