@@ -44,6 +44,7 @@ const {
   ownerUpdatePassword,
   workerUpdatePassword,
   deleteMenu,
+  serveResetPage,
 } = require("../controllers/restaurantController");
 const { Owner } = require("../models/allModels");
 const {
@@ -80,7 +81,7 @@ router.patch(
 );
 router.post("/owner/forgotPassword", forgotPassword);
 router.patch("/owner/resetPassword/:resetToken", resetPassword);
-
+router.get("/owner/resetPasswordPage/", serveResetPage);
 // Resturant routes
 router.post(
   "/setup",
