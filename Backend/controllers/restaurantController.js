@@ -431,7 +431,7 @@ const getRestaurant = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const restaurant = await Restaurant.findByPk(restaurantId, { include: [ RestaurantWorker ] });
+    const restaurant = await Restaurant.findByPk(restaurantId);
     return res.status(200).json({ restaurant });
   } catch (error) {
     console.error('Error getting restaurant:', error);
@@ -440,14 +440,14 @@ const getRestaurant = async (req, res, next) => {
 };
 
 // Controller function to get all workers
-const getAllWorkers = async (req, res, next) => {
+const getRestaurantWorker = async (req, res, next) => {
+  const restaurantId = req.user.hasRestaurant;
   try {
-    // Find all workers
-    const workers = await RestaurantWorker.findAll();
-    if (workers.length === 0) {
-      return next(new AppError('Workers not found', 404));
+    if (!restaurantId) {
+      return next(new AppError('Restaurant not found', 404));
     }
-    return res.status(200).json(workers);
+    const worker = await RestaurantWorker.findOne({ where: { restaurantId }, attributes: { exclude: ['password'] } });
+    return res.status(200).json(worker);
   } catch (error) {
     console.error('Error getting workers:', error);
     return next(new AppError('Internal server error', 500));
@@ -953,7 +953,7 @@ module.exports = {
   uploadMenu,
   getMenu,
   editMenu,
-  getAllWorkers,
+  getRestaurantWorker,
   updateWorker,
   deleteOwnerRestaurant,
   createCategory,
