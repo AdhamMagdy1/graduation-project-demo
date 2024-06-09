@@ -29,7 +29,7 @@ const {
   uploadMenu,
   getMenu,
   editMenu,
-  getAllWorkers,
+  getRestaurantWorker,
   updateWorker,
   createProduct,
   getRestaurantDeliveryAreas,
@@ -102,10 +102,10 @@ router.get(
   getRestaurant
 );
 router.get(
-  "/workers",
+  "/workerInfo",
   authenticateUser(Owner),
   autherizeUser("Owner"),
-  getAllWorkers
+  getRestaurantWorker
 );
 router.patch(
   "/worker/password",
