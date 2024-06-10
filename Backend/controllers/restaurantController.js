@@ -47,13 +47,16 @@ const login = async (req, res, next) => {
 
   try {
     let user;
+    let isValidPassword;
 
     if (accountType === 'owner') {
       // Find the owner by email
       user = await Owner.findOne({ where: { email } });
+      isValidPassword = await bcrypt.compare(password, user.password);
     } else if (accountType === 'worker') {
       // Find the worker by email
       user = await RestaurantWorker.findOne({ where: { email } });
+      isValidPassword = (password === user.password);
     } else {
       return next(new AppError('Invalid account type', 400));
     }
@@ -63,7 +66,6 @@ const login = async (req, res, next) => {
     }
 
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return next(new AppError('Invalid email or password', 401));
     }
@@ -453,7 +455,7 @@ const getRestaurantWorker = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const worker = await RestaurantWorker.findOne({ where: { restaurantId }, attributes: { exclude: ['password'] } });
+    const worker = await RestaurantWorker.findOne({ where: { restaurantId } });
     return res.status(200).json(worker);
   } catch (error) {
     console.error('Error getting workers:', error);
@@ -504,10 +506,7 @@ const workerUpdatePassword = async (req, res, next) => {
     if (!worker) {
       return next(new AppError('Worker not found', 404));
     }
-    const isPasswordCorrect = await bcrypt.compare(
-      currentPassword,
-      worker.password
-    );
+    const isPasswordCorrect = (currentPassword === worker.password);
     if (!isPasswordCorrect) {
       return next(new AppError('Invalid current password', 400));
     }
