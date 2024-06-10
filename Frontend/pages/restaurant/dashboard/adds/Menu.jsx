@@ -1,10 +1,10 @@
-import SideBar from './SideBar';
-import Loading from '../../../src/Loading';
+import SideBar from '../SideBar';
+import Loading from '../../../../src/Loading';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 import { FaTimes } from 'react-icons/fa';
-import useDeleteItem from '../../../src/hooks/useDeleteItem';
+import useDeleteItem from '../../../../src/hooks/useDeleteItem';
 
 const Menu = () => {
 
