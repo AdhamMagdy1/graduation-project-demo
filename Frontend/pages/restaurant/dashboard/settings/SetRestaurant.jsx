@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import Select from 'react-select';
 import extractedData from '../../new/extractedData.json';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SetRestaurant = () => {
 
@@ -197,7 +198,6 @@ const SetRestaurant = () => {
 				},
 				body: JSON.stringify(requestBody),
 			});
-
 			if (!response.ok) {
 				setIsLoading(false);
 				const result = await response.json();
@@ -210,6 +210,20 @@ const SetRestaurant = () => {
 		} catch (error) {
 			console.error('Error creating restaurant:', error);
 			setIsLoading(false);
+		}
+	};
+
+	//copy link to clipboard:
+	const saveToClipboard = async () => {
+		if (navigator.clipboard) {
+			try {
+				await navigator.clipboard.writeText(`${link}`);
+				toast.success("Link copied to clipboard");
+			} catch (error) {
+				toast.error("Failed to copy to clipboard", error);
+			}
+		} else {
+			toast.error("Clipboard access not available");
 		}
 	};
 
@@ -235,7 +249,7 @@ const SetRestaurant = () => {
 				<div className='settings-container'>
 					<p>Basic Information</p>
 					<button className='btn enable-btn' type='button' onClick={() => setDisabled(!disabled)}>edit</button>
-					<form style={{ marginTop: '2rem' }} onSubmit={handleSubmit}>
+					<form style={{ marginTop: '1rem' }} onSubmit={handleSubmit}>
 						{/* Restaurant name */}
 						<label htmlFor="name">restaurant name</label>
 						<input
@@ -261,19 +275,27 @@ const SetRestaurant = () => {
 							id="desc"></textarea>
 
 						{/* logo */}
-						<label htmlFor='logo'>logo</label>
-						<input
-							className='input input-block'
-							type="file"
-							id='logo'
-							name="logo"
-							onChange={(event) => {
-								setLogo(event.target.files[0]);
-								console.log(event.target.files);
-							}}
-							disabled={disabled}
-							required
-						/>
+						<div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }} >
+							<div>
+								{logo && (
+									<img src={typeof logo === 'string' ? `data:image/png;base64,${logo.replace(/^\\x/, '')}` : URL.createObjectURL(logo)} alt="Current logo" style={{ width: '50px', height: '50px', margin: '10px 0px' }} />
+								)}
+							</div>
+							<div style={{ marginLeft: '0.75rem' }} >
+								<label htmlFor='logo'>logo</label>
+								<input
+									className='input input-block'
+									type="file"
+									id='logo'
+									name="logo"
+									onChange={(event) => {
+										setLogo(event.target.files[0]);
+										console.log(event.target.files);
+									}}
+									disabled={disabled}
+								/>
+							</div>
+						</div>
 
 						{/* theme color */}
 						<label htmlFor='color'>theme color</label>
@@ -296,7 +318,7 @@ const SetRestaurant = () => {
 								required
 								disabled
 							/>
-							<button className='btn'>copy</button>
+							<button type='button' onClick={() => saveToClipboard()} className='btn'>copy</button>
 						</div>
 
 						<button
@@ -357,6 +379,7 @@ const SetRestaurant = () => {
 					</form>
 				</div>
 			</div>
+			<ToastContainer position="top-center" />
 		</div>
 	);
 };
