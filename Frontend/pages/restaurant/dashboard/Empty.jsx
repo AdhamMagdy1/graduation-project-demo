@@ -14,7 +14,7 @@ const Empty = ({ pageName, openFirstModal }) => {
 						<button type='button' className='btn' onClick={openFirstModal}  >add new {pageName}</button>
 					</div>
 				</div>
-				<h3>your {pageName} is empty, start adding!</h3>
+				<h3 style={{ marginLeft: '1rem' }}>your {pageName} is empty, start adding!</h3>
 			</div>
 
 		</div>
