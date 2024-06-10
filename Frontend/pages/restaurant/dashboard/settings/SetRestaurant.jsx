@@ -175,6 +175,44 @@ const SetRestaurant = () => {
 		setArr(arr.map((item) => item.id === id ? { ...item, selectedAreas: selectedOptions } : item));
 	};
 
+	//edit delivery areas:
+	const handleDeliveryAreas = async (e) => {
+		e.preventDefault();
+		//preparing request body: 
+		const newDeliveryAreas = arr.map(({ selectedCity, selectedAreas }) => ({
+			city: selectedCity,
+			areas: selectedAreas.map(area => area.value)
+		}));
+		const requestBody = { "deliveryAreas": newDeliveryAreas };
+		console.log(requestBody);
+		setIsLoading(true);
+		//start sending data:
+		try {
+			const token = localStorage.getItem('token');
+			const response = await fetch(`${URL}/restaurant/editDeliveryAreas`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: token,
+				},
+				body: JSON.stringify(requestBody),
+			});
+
+			if (!response.ok) {
+				setIsLoading(false);
+				const result = await response.json();
+				console.log(result.message);
+			} else {
+				console.log('delivery areas updated successfully');
+				setIsLoading(false);
+				setTrigger(prev => prev + 1);
+			}
+		} catch (error) {
+			console.error('Error creating restaurant:', error);
+			setIsLoading(false);
+		}
+	};
+
 
 	if (isLoading) {
 		return (
@@ -277,44 +315,7 @@ const SetRestaurant = () => {
 							<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20"><path fill="#eaa90f" d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2zm-1 11a10 10 0 1 1 0-20a10 10 0 0 1 0 20m0-2a8 8 0 1 0 0-16a8 8 0 0 0 0 16" /></svg>
 						</button>
 					</div>
-					<form>
-						{/* {
-							arr?.map((item) => {
-								return <div className="select-container" key={item.id}>
-									<div className='mini-container'>
-										<label htmlFor='city'>city</label>
-										<select style={{ height: '2.2rem', padding: '0.3rem' }} className='select' id='city' value={item.selectedCity} onChange={changeCity(item.id)} >
-											<option hidden>Select..</option>
-											{
-												cities.map((city) => {
-													return <option value={city.code} key={nanoid()}>{city.code}</option>;
-												})
-											}
-										</select>
-									</div>
-									<div className='mini-container'>
-										<label htmlFor='area'>area</label>
-										<Select
-											styles={{ width: '100%' }}
-											className='select'
-											id='area'
-											isMulti
-											name="areas"
-											options={item.areas}
-											value={item.selectedAreas}
-											onChange={changeAreas(item.id)}
-										/>
-									</div>
-									{
-										(arr.length > 1) && (
-											<button className=' minus-icon' type='button' onClick={() => deleteCity(item.id)}>
-												<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="#eaa90f"><path d="M8 11a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2z" /><path fillRule="evenodd" d="M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12S5.925 1 12 1s11 4.925 11 11m-2 0a9 9 0 1 1-18 0a9 9 0 0 1 18 0" clipRule="evenodd" /></g></svg>
-											</button>)
-									}
-
-								</div>;
-							})
-						} */}
+					<form onSubmit={handleDeliveryAreas}>
 						{
 							arr.map((item) => {
 								return <div className="select-container" key={item.id}>
