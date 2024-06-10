@@ -17,7 +17,7 @@ const useEditItem = (url) => {
           body: JSON.stringify(newItem),
         });
         const result = await response.json();
-        if (response.status != 201) {
+        if (response.status != 201 && response.status != 200) {
           setErrMsg(result.message);
           console.log(errMsg);
           return false;

@@ -19,8 +19,7 @@ const useFetch = (url, deps = []) => {
           Authorization: token,
         },
       });
-      // console.log(response);
-      if (response.status === 404) {
+      if (!response.ok) {
         setIsError(true);
         setIsLoading(false);
         setData(null);
