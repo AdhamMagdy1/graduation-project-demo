@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const SideBar = () => {
 
 	const [isAddsOpen, setIsAddsOpen] = useState(false);
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
 
 	return (
@@ -53,6 +54,39 @@ const SideBar = () => {
 										<div className="option">
 											<Link to="/restaurant/extras" className="side-link" >
 												<div className="a">extras</div>
+											</Link>
+										</div>
+									</div>
+								)
+							}
+						</div>
+
+						<div className="dropdown">
+							<button
+								className='dropdown-btn'
+								onClick={() => setIsSettingsOpen(!isSettingsOpen)}>
+								<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="#eaa90f" fillRule="evenodd" d="M17 10v1.126c.367.095.714.24 1.032.428l.796-.797l1.415 1.415l-.797.796c.188.318.333.665.428 1.032H21v2h-1.126c-.095.367-.24.714-.428 1.032l.797.796l-1.415 1.415l-.796-.797a4 4 0 0 1-1.032.428V20h-2v-1.126a4 4 0 0 1-1.032-.428l-.796.797l-1.415-1.415l.797-.796A4 4 0 0 1 12.126 16H11v-2h1.126c.095-.367.24-.714.428-1.032l-.797-.796l1.415-1.415l.796.797A4 4 0 0 1 15 11.126V10zm.406 3.578l.016.016c.354.358.574.85.578 1.392v.028a2 2 0 0 1-3.409 1.406l-.01-.012a2 2 0 0 1 2.826-2.83ZM5 8a4 4 0 1 1 7.938.703a7.03 7.03 0 0 0-3.235 3.235A4 4 0 0 1 5 8m4.29 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h6.101A6.98 6.98 0 0 1 9 15c0-.695.101-1.366.29-2" clipRule="evenodd" /></svg>
+								settings
+								<svg
+									className={isSettingsOpen ? 'flipped' : ''}
+									xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M11.18 15.83L6.543 9.203C5.892 8.275 6.556 7 7.689 7h8.622c1.133 0 1.797 1.275 1.147 2.203l-4.639 6.627a1 1 0 0 1-1.638 0" /></svg>
+							</button>
+							{
+								isSettingsOpen && (
+									<div className="dropdown-list">
+										<div className="option">
+											<Link to="/restaurant/edit" className="side-link" >
+												<div className="a">restaurant</div>
+											</Link>
+										</div>
+										<div className="option">
+											<Link to="/restaurant/employee" className="side-link" >
+												<div className="a">employee</div>
+											</Link>
+										</div>
+										<div className="option">
+											<Link to="/restaurant/profile" className="side-link" >
+												<div className="a">your profile</div>
 											</Link>
 										</div>
 									</div>
