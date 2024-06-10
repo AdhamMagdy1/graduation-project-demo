@@ -458,12 +458,12 @@ Restaurant.afterCreate(async (restaurant, option) => {
 });
 
 // RestaurantWorker Hooks
-RestaurantWorker.beforeSave(async (worker, option) => {
-  if (worker.changed("password")) {
-    const hashedPassword = await bcrypt.hash(worker.password, 10);
-    worker.password = hashedPassword;
-  }
-});
+// RestaurantWorker.beforeSave(async (worker, option) => {
+//   if (worker.changed("password")) {
+//     const hashedPassword = await bcrypt.hash(worker.password, 10);
+//     worker.password = hashedPassword;
+//   }
+// });
 
 module.exports = {
   Restaurant,
