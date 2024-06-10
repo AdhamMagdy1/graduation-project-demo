@@ -49,12 +49,14 @@ const Products = (props) => {
 		setActiveID(newActiveId);
 	};
 
-
+	const filteredSize = Object.fromEntries(
+		Object.entries(size).filter(([key, value]) => value !== null)
+	);
 	const newProduct = {
 		product: {
 			name: productName,
 			ingredient,
-			size,
+			size: filteredSize,
 			categoryId,
 		}
 	};
