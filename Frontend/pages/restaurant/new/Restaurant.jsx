@@ -236,7 +236,6 @@ const Restaurant = () => {
 						})
 					}
 				</div>
-
 				<button className='btn btn-block' type="submit">submit</button>
 			</form>
 		</div>
