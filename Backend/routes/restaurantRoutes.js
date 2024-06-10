@@ -29,7 +29,7 @@ const {
   uploadMenu,
   getMenu,
   editMenu,
-  getAllWorkers,
+  getRestaurantWorker,
   updateWorker,
   createProduct,
   getRestaurantDeliveryAreas,
@@ -44,6 +44,7 @@ const {
   ownerUpdatePassword,
   workerUpdatePassword,
   deleteMenu,
+  serveResetPage,
 } = require("../controllers/restaurantController");
 const { Owner } = require("../models/allModels");
 const {
@@ -80,7 +81,7 @@ router.patch(
 );
 router.post("/owner/forgotPassword", forgotPassword);
 router.patch("/owner/resetPassword/:resetToken", resetPassword);
-
+router.get("/owner/resetPasswordPage/", serveResetPage);
 // Resturant routes
 router.post(
   "/setup",
@@ -102,10 +103,10 @@ router.get(
   getRestaurant
 );
 router.get(
-  "/workers",
+  "/workerInfo",
   authenticateUser(Owner),
   autherizeUser("Owner"),
-  getAllWorkers
+  getRestaurantWorker
 );
 router.patch(
   "/worker/password",

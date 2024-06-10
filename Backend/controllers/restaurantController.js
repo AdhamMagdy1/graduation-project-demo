@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const multer = require('multer');
 const { Op } = require('sequelize');
+const path = require('path');
 const {
   Owner,
   Restaurant,
@@ -176,7 +177,7 @@ const forgotPassword = async (req, res, next) => {
     const resetToken = await createPasswordResetToken(owner.ownerId);
     const resetURL = `${req.protocol}://${req.get(
       'host'
-    )}/restaurant/owner/resetPassword/${resetToken}`;
+    )}/restaurant/owner/resetPasswordPage/?token=${resetToken}`;
     // email service
     await new Email(owner, resetURL).sendPasswordReset();
     return res.status(200).json({ message: 'Token sent to email!' });
@@ -216,6 +217,12 @@ const resetPassword = async (req, res, next) => {
     console.error('Error resetting password:', error);
     return next(new AppError('Internal Server Error', 500));
   }
+};
+
+// controller to send reset password page
+const serveResetPage = async (req, res) => {
+  const filePath = path.join(__dirname, '../utils/reset_password.html');
+  res.sendFile(filePath);
 };
 
 // Controller function to delete owner
@@ -386,22 +393,18 @@ const editRestaurantDeliveryAreas = async (req, res, next) => {
       return next(new AppError('Restaurant not found', 404));
     }
     await RestaurantDeliveryAreas.destroy({ where: { restaurantId } });
-    const deliveryAreas = await Promise.all(
-      restaurantDeliveryAreas.map(async (deliveryArea) => {
-        const { city, area } = deliveryArea;
-        const areas = await Promise.all(
-          area.map(async (value) => {
-            const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-              city,
-              area: value,
-              restaurantId,
-            });
-            return createdDeliveryArea;
-          })
-        );
-        return areas;
-      })
-    );
+    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
+      const { city, areas } = deliveryArea;
+      const area = await Promise.all(areas.map(async (value) => {
+        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+          city,
+          area: value,
+          restaurantId,
+        });
+        return createdDeliveryArea;
+      }));
+      return area;
+    }));
 
     // Initialize an empty object to hold the organized data
     const organizedData = {};
@@ -435,10 +438,7 @@ const getRestaurant = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    const restaurant = await Restaurant.findByPk(restaurantId, {
-      attributes: { exclude: ['logo'] },
-      include: [RestaurantWorker],
-    });
+    const restaurant = await Restaurant.findByPk(restaurantId);
     return res.status(200).json({ restaurant });
   } catch (error) {
     console.error('Error getting restaurant:', error);
@@ -447,14 +447,14 @@ const getRestaurant = async (req, res, next) => {
 };
 
 // Controller function to get all workers
-const getAllWorkers = async (req, res, next) => {
+const getRestaurantWorker = async (req, res, next) => {
+  const restaurantId = req.user.hasRestaurant;
   try {
-    // Find all workers
-    const workers = await RestaurantWorker.findAll();
-    if (workers.length === 0) {
-      return next(new AppError('Workers not found', 404));
+    if (!restaurantId) {
+      return next(new AppError('Restaurant not found', 404));
     }
-    return res.status(200).json(workers);
+    const worker = await RestaurantWorker.findOne({ where: { restaurantId }, attributes: { exclude: ['password'] } });
+    return res.status(200).json(worker);
   } catch (error) {
     console.error('Error getting workers:', error);
     return next(new AppError('Internal server error', 500));
@@ -865,20 +865,15 @@ const deleteMenu = async (req, res, next) => {
 // Controller to create a new category
 const createCategory = async (req, res, next) => {
   const { name } = req.body;
-  const ownerId = req.user.ownerId; // Extract ownerId from token
+  // Extract restaurantId from token
   const restaurantId = req.user.hasRestaurant;
-  // Find the restaurant associated with the owner
-  // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-  // if (!restaurant) {
-  //   return next(new AppError('Restaurant not found for the owner', 404));
-  // }
   try {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
     const newCategory = await Category.create({
       name,
-      restaurantId: /*restaurant.*/ restaurantId,
+      restaurantId,
     });
     res.status(201).json({
       message: 'Category created successfully',
@@ -965,7 +960,7 @@ module.exports = {
   uploadMenu,
   getMenu,
   editMenu,
-  getAllWorkers,
+  getRestaurantWorker,
   updateWorker,
   deleteOwnerRestaurant,
   createCategory,
@@ -980,4 +975,5 @@ module.exports = {
   resetPassword,
   workerUpdatePassword,
   deleteMenu,
+  serveResetPage,
 };
