@@ -1,20 +1,19 @@
 import { FaTimes } from 'react-icons/fa';
-import SideBar from './SideBar';
-import { useGlobalContext } from './context';
-import Loading from '../../../src/Loading';
+import SideBar from '../SideBar';
+import { useGlobalContext } from '../context';
+import Loading from '../../../../src/Loading';
 import { useState } from 'react';
-import Empty from './Empty';
-import useFetch from '../../../src/hooks/useFetch';
-import useAddItem from '../../../src/hooks/useAddItem';
-import useDeleteItem from '../../../src/hooks/useDeleteItem';
-import useEditItem from '../../../src/hooks/useEditItem';
+import Empty from '../Empty';
+import useFetch from '../../../../src/hooks/useFetch';
+import useAddItem from '../../../../src/hooks/useAddItem';
+import useDeleteItem from '../../../../src/hooks/useDeleteItem';
+import useEditItem from '../../../../src/hooks/useEditItem';
 
 const Extras = () => {
 
 	const [updateTrigger, setUpdateTrigger] = useState(0);
 	const { isLoading, data: resp } = useFetch(`/restaurant/extras/all`, [updateTrigger]);
 	const extras = resp;
-	console.log(extras);
 
 	const [currentExtra, setCurrentExtra] = useState();
 	const [extraName, setExtraName] = useState("");
@@ -82,6 +81,7 @@ const Extras = () => {
 	const editExtra = async (id) => {
 		const resp = await editItem(id, newExtra);
 		if (resp) {
+			closeSecondModal();
 			setUpdateTrigger(prev => prev + 1);
 		} else {
 			console.log(`sorry, somthing went wrong. cannot edit item`);

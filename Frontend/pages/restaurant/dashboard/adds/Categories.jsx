@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from 'react';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 import { FaTimes } from "react-icons/fa";
-import SideBar from './SideBar';
-import Loading from '../../../src/Loading';
+import SideBar from '../SideBar';
+import Loading from '../../../../src/Loading';
 import { Link } from 'react-router-dom';
-import Empty from './Empty';
-import useFetch from '../../../src/hooks/useFetch';
-import useAddItem from '../../../src/hooks/useAddItem';
-import useDeleteItem from '../../../src/hooks/useDeleteItem';
-import useEditItem from '../../../src/hooks/useEditItem';
+import Empty from '../Empty';
+import useFetch from '../../../../src/hooks/useFetch';
+import useAddItem from '../../../../src/hooks/useAddItem';
+import useDeleteItem from '../../../../src/hooks/useDeleteItem';
+import useEditItem from '../../../../src/hooks/useEditItem';
 
 const Categories = () => {
 

@@ -2,14 +2,14 @@
 import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { Link, useParams, useLocation } from 'react-router-dom';
-import SideBar from './SideBar';
-import Loading from '../../../src/Loading';
-import { useGlobalContext } from './context';
-import Empty from './Empty';
-import useFetch from '../../../src/hooks/useFetch';
-import useDeleteItem from '../../../src/hooks/useDeleteItem';
-import useAddItem from '../../../src/hooks/useAddItem';
-import useEditItem from '../../../src/hooks/useEditItem';
+import SideBar from '../SideBar';
+import Loading from '../../../../src/Loading';
+import { useGlobalContext } from '../context';
+import Empty from '../Empty';
+import useFetch from '../../../../src/hooks/useFetch';
+import useDeleteItem from '../../../../src/hooks/useDeleteItem';
+import useAddItem from '../../../../src/hooks/useAddItem';
+import useEditItem from '../../../../src/hooks/useEditItem';
 
 
 const Products = (props) => {
