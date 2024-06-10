@@ -144,40 +144,40 @@ const Address = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    area: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    streetName: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    buildingName: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    flatNumber: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    extraDescription: {
-      type: DataTypes.STRING(400),
+    // area: {
+    //   type: DataTypes.STRING(100),
+    //   allowNull: false,
+    // },
+    // streetName: {
+    //   type: DataTypes.STRING(100),
+    //   allowNull: true,
+    // },
+    // buildingName: {
+    //   type: DataTypes.STRING(100),
+    //   allowNull: true,
+    // },
+    // flatNumber: {
+    //   type: DataTypes.STRING(100),
+    //   allowNull: true,
+    // },
+    addressDescription: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
   },
   { timestamps: false, freezeTableName: true }
 );
 
-const CustomerPhoneNumber = sequelize.define(
-  "CustomerPhoneNumber",
-  {
-    phoneNumber: {
-      type: DataTypes.STRING(20),
-      primaryKey: true,
-    },
-  },
-  { timestamps: false, freezeTableName: true }
-);
+// const CustomerPhoneNumber = sequelize.define(
+//   "CustomerPhoneNumber",
+//   {
+//     phoneNumber: {
+//       type: DataTypes.STRING(20),
+//       primaryKey: true,
+//     },
+//   },
+//   { timestamps: false, freezeTableName: true }
+// );
 
 const RestaurantDeliveryAreas = sequelize.define(
   "RestaurantDeliveryAreas",
@@ -230,14 +230,14 @@ const Order = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    deliveryCost: {
-      type: DataTypes.DECIMAL(6, 2),
+    totalPrice: {
+      type: DataTypes.DECIMAL(8, 2),
       allowNull: false,
     },
     status: {
       type: DataTypes.STRING(20),
-      allowNull: false,
-      defaultValue: "pending",
+      allowNull: true,
+      defaultValue: "waiting",
     },
     orderTime: {
       type: DataTypes.DATE,
@@ -247,6 +247,10 @@ const Order = sequelize.define(
     orderDetails: {
       type: DataTypes.JSON,
       allowNull: true,
+    },
+    phoneNumber: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
     },
   },
   { timestamps: false, freezeTableName: true }
@@ -340,9 +344,9 @@ const SentimentAnalysis = sequelize.define(
 Customer.hasMany(Address, {
   foreignKey: { name: "customerId", allowNull: false },
 });
-Customer.hasMany(CustomerPhoneNumber, {
-  foreignKey: { name: "customerId", allowNull: false },
-});
+// Customer.hasMany(CustomerPhoneNumber, {
+//   foreignKey: { name: "customerId", allowNull: false },
+// });
 
 // Restaurant associations
 Restaurant.hasOne(Owner, {
@@ -436,9 +440,9 @@ RestaurantMenu.belongsTo(Restaurant, {
 });
 
 // CustomerPhoneNumber associations
-CustomerPhoneNumber.belongsTo(Customer, {
-  foreignKey: { name: "customerId", allowNull: false },
-});
+// CustomerPhoneNumber.belongsTo(Customer, {
+//   foreignKey: { name: "customerId", allowNull: false },
+// });
 
 // Hooks
 
@@ -452,7 +456,7 @@ Owner.beforeSave(async (owner, option) => {
 
 // // Restaurant Hooks
 Restaurant.afterCreate(async (restaurant, option) => {
-  const link = `/restaurant${restaurant.restaurantId}`;
+  const link = `http://127.0.0.1:5173/restaurant/chat?restaurantId=${restaurant.restaurantId}`;
   restaurant.link = link;
   await restaurant.save();
 });
@@ -470,7 +474,7 @@ module.exports = {
   Product,
   Extra,
   Address,
-  CustomerPhoneNumber,
+  // CustomerPhoneNumber,
   RestaurantDeliveryAreas,
   RestaurantWorker,
   Order,
