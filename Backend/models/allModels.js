@@ -335,20 +335,6 @@ const SentimentAnalysis = sequelize.define(
   },
   { timestamps: false, freezeTableName: true }
 );
-Restaurant.hasMany(Feedback, {
-  foreignKey: { name: "restaurantId", allowNull: false },
-});
-Restaurant.hasMany(SentimentAnalysis, {
-  foreignKey: { name: "restaurantId", allowNull: false },
-});
-
-// Category associations
-Category.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId", allowNull: false },
-});
-Category.hasMany(Product, {
-  foreignKey: { name: "categoryId", allowNull: false },
-});
 
 // Customer associations
 Customer.hasMany(Address, {
@@ -384,10 +370,24 @@ Restaurant.hasMany(Category, {
 Restaurant.hasMany(Order, {
   foreignKey: { name: "restaurantId" /*, allowNull: false*/ },
 });
+Restaurant.hasMany(Feedback, {
+  foreignKey: { name: "restaurantId", allowNull: false },
+});
+Restaurant.hasMany(SentimentAnalysis, {
+  foreignKey: { name: "restaurantId", allowNull: false },
+});
 
 // Owner associations
 Owner.belongsTo(Restaurant, {
   foreignKey: { name: "hasRestaurant", allowNull: true },
+});
+
+// Category associations
+Category.belongsTo(Restaurant, {
+  foreignKey: { name: "restaurantId", allowNull: false },
+});
+Category.hasMany(Product, {
+  foreignKey: { name: "categoryId", allowNull: false },
 });
 
 // Product associations
