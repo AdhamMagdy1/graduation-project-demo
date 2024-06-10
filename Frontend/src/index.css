@@ -1,9 +1,12 @@
 /* || GLOBAL_RULES */
 :root {
+  --primary-0: #c9900c;
   --primary-1: #eaa90f;
   --primary-light: #eba90f4d;
   --primary-2: #ffe9bd;
   --primary-3: #f8f1e1;
+  --primary-4: #f7f2e7;
+  --primary-5: #f9f6f0;
   --white: #fff;
   --black: #000;
   --border: #c9c9c9;
@@ -733,3 +736,38 @@ textarea {
     width: 450px;
   }
 }
+/*==============*/
+
+/* || create new Restaurant form */
+.settings-container {
+  margin: 0 1.5rem;
+  padding: 0.5rem 1rem 1rem;
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow-3);
+  position: relative;
+  background-color: var(--primary-5);
+  max-width: 850px;
+}
+.enable-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+}
+.disabled-btn {
+  background-color: var(--primary-0);
+  cursor: default;
+}
+.settings-container p {
+  text-transform: capitalize;
+  color: var(--grey-600);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.link-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  margin-bottom: 0.5rem;
+}
+/*==============*/
