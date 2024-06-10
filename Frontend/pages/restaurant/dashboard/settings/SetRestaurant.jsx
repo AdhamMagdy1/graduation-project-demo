@@ -6,10 +6,46 @@ import Select from 'react-select';
 import extractedData from '../../new/extractedData.json';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useGlobalContext } from '../context';
+import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const SetRestaurant = () => {
 
 	const URL = import.meta.env.VITE_REACT_API_URL;
+
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const getOwner = async () => {
+			try {
+				const token = localStorage.getItem('token');
+				const res = await fetch(`${URL}/restaurant/owner`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': token,
+					},
+				});
+				if (res.ok) {
+					const userData = await res.json();
+					if (!(userData.hasRestaurant)) {
+						navigate("/restaurant/create");
+					}
+					console.log(`has restaurant status: ${userData.hasRestaurant}`);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getOwner();
+	}, []);
+
+	const { isFirstModalOpen,
+		openFirstModal,
+		closeFirstModal, } = useGlobalContext();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [name, setName] = useState();
 	const [desc, setDesc] = useState();
@@ -168,7 +204,6 @@ const SetRestaurant = () => {
 		const newAreas = cityData.map((area) => ({ value: area.namePrimaryLang, label: area.namePrimaryLang }));
 		setArr(arr.map((item) => item.id === id ? { ...item, selectedCity, areas: newAreas, selectedAreas: [] } : item));
 	};
-
 	const deleteCity = (id) => {
 		setArr(arr.filter((item) => item.id !== id));
 	};
@@ -213,6 +248,34 @@ const SetRestaurant = () => {
 		}
 	};
 
+
+	//delete restaurant:
+	const deleteRestaurant = async () => {
+		setIsLoading(true);
+		try {
+			const token = localStorage.getItem('token');
+			const response = await fetch(`${URL}/restaurant/delete/`, {
+				method: 'DELETE',
+				headers: {
+					Authorization: token,
+				},
+			});
+			const result = await response.json();
+			if (response.status !== 200) {
+				console.log(result.message);
+				setIsLoading(false);
+				navigate("/restaurant/create");
+			} else {
+				console.log(result.message);
+				setIsLoading(false);
+				closeFirstModal();
+			}
+		} catch (error) {
+			console.log(error);
+			setIsLoading(false);
+		}
+	};
+
 	//copy link to clipboard:
 	const saveToClipboard = async () => {
 		if (navigator.clipboard) {
@@ -245,6 +308,7 @@ const SetRestaurant = () => {
 					<div className="side-page-heading">
 						restaurant information
 					</div>
+					<button className='btn delete' onClick={openFirstModal} >delete restaurant</button>
 				</div>
 				<div className='settings-container'>
 					<p>Basic Information</p>
@@ -315,10 +379,15 @@ const SetRestaurant = () => {
 								id='link'
 								value={link}
 								className='input-block '
+								style={{ borderRightColor: 'transparent', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', padding: '0.25rem 0.75rem' }}
 								required
 								disabled
 							/>
-							<button type='button' onClick={() => saveToClipboard()} className='btn'>copy</button>
+							<button
+								type='button'
+								style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
+								onClick={() => saveToClipboard()}
+								className='btn'>copy</button>
 						</div>
 
 						<button
@@ -380,6 +449,22 @@ const SetRestaurant = () => {
 				</div>
 			</div>
 			<ToastContainer position="top-center" />
+
+			<div className={isFirstModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+				<div className="modal-container">
+					<h2 className="modal-heading">
+						delete restaurant
+					</h2>
+					<h4>are you sure you want to delete your restaurant?</h4>
+					<div className="btn-holder">
+						<button className='btn btn-black'>cancel</button>
+						<button onClick={() => deleteRestaurant()} style={{ marginLeft: '1rem' }} className='btn delete' >delete</button>
+					</div>
+					<button className="close-modal-btn" onClick={closeFirstModal}>
+						<FaTimes />
+					</button>
+				</div>
+			</div>
 		</div>
 	);
 };
