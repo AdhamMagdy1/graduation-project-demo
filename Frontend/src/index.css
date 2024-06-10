@@ -88,6 +88,9 @@ ul {
 .btn-red {
   color: var(--light-red);
 }
+.delete {
+  background-color: var(--light-red);
+}
 .btn-green {
   color: rgb(79, 189, 79);
 }
@@ -546,6 +549,7 @@ input:focus {
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 .filter-buttons {
   width: 400px;
@@ -751,6 +755,13 @@ textarea {
   position: relative;
   background-color: var(--primary-5);
   max-width: 85%;
+}
+.settings-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
 }
 .enable-btn {
   position: absolute;
