@@ -1,4 +1,4 @@
-const { Order, CustomerPhoneNumber,Feedback } = require('../models/allModels'); // Import the customer related models
+const { Order,/* CustomerPhoneNumber,*/ Feedback, Address } = require('../models/allModels'); // Import the customer related models
 
 // const fetch = require('node-fetch');
 
@@ -47,21 +47,19 @@ const customAction = async (mainNamespace, customObject) => {
   } else if (customObject.code == 422) {
     // If code is 422, call createOrderMessage function and return food extra and food size
     const { restaurant_id, customer_id , socket_id, phone_number,address_id } = customObject;
-    const customerPhoneNumber = await CustomerPhoneNumber.create({
-      phoneNumber: phone_number,
-      customerId: customer_id,
-    });
     const orderDetails = {
       food: customObject.food_extra,
       size: customObject.food_size,
     };
-    const order = await Order.create({
+    const newOrder = await Order.create({
       deliveryCost: 20,
       orderDetails,
-      addressId: address_id,
-      restaurantId: restaurant_id,
-      customerId: customer_id,
+      phoneNumber: phone_number,
+      addressId: address_id || 1,
+      restaurantId: restaurant_id || 57,
+      customerId: customer_id || 1
     });
+    const order = await Order.findOne({  where: { OrderId: newOrder.OrderId }, include: [ Address ] });
     mainNamespace.to(restaurant_id).emit('order', order);
     return '';
   }else if(customObject.code == 422){
@@ -80,19 +78,7 @@ const customAction = async (mainNamespace, customObject) => {
 };
 
 const orderState = async (order) => {
-  if (order.state === 'finished') {
-    const order = await Order.update(
-      { state: 'pending' },
-      { where: { id: order.orderId } }
-    );
-    return order;
-  } else {
-    const order = await Order.update(
-      { state: 'finished' },
-      { where: { id: order.orderId } }
-    );
-    return order;
-  }
+  await Order.update({ status: order.newStatus }, { where: { OrderId: order.orderId } });
 };
 
 module.exports = {
