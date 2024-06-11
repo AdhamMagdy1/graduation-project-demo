@@ -69,14 +69,10 @@ const customerController = {
 
   createAddress: async (req, res, next) => {
     const customerId = req.user.customerId;
-    const { area, streetName, buildingName, flatNumber, extraDescription } = req.body;
+    const { addressDescription } = req.body;
     try {
       const address = await Address.create({
-        area,
-        streetName,
-        buildingName,
-        flatNumber,
-        extraDescription,
+        addressDescription,
         customerId
       })
       return res.status(201).json({ address });
@@ -99,18 +95,18 @@ const customerController = {
     }
   },
 
-  getAllCustomersPhoneNumber: async (req, res, next) => {
-    try {
-      const customerPhoneNumbers = await CustomerPhoneNumber.findAll();
-      if (customerPhoneNumbers.length === 0) {
-        return next(new AppError("No customer phone numbers found", 404));
-      }
-      return res.status(200).json({ customerPhoneNumbers });
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
-    }
-  },
+  // getAllCustomersPhoneNumber: async (req, res, next) => {
+  //   try {
+  //     const customerPhoneNumbers = await CustomerPhoneNumber.findAll();
+  //     if (customerPhoneNumbers.length === 0) {
+  //       return next(new AppError("No customer phone numbers found", 404));
+  //     }
+  //     return res.status(200).json({ customerPhoneNumbers });
+  //   } catch (error) {
+  //     console.error("Error :", error);
+  //     return next(new AppError("Internal Server Error", 500));
+  //   }
+  // },
 
   deleteAllOrders: async (req, res, next) => {
     try {
