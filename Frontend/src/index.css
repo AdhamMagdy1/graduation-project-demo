@@ -145,6 +145,22 @@ ul {
   caret-color: var(--primary-1);
   background-color: transparent;
 }
+.password {
+  position: relative;
+  width: 100%;
+}
+.show-password {
+  position: absolute;
+  background-color: transparent;
+  border-color: transparent;
+  font-size: 1.1rem;
+  right: 2px;
+  fill: var(--black);
+  transition: 0.3;
+}
+.show {
+  fill: var(--primary-0);
+}
 /*===============*/
 
 /* || SIDE-PAGE */
@@ -523,6 +539,18 @@ input:focus {
   border-color: transparent;
   cursor: pointer;
   color: var(--red-dark);
+}
+.modal-input {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border-color: transparent;
+  border-bottom: 1px solid var(--black);
+  transition: 0.3s;
+  padding: 0.25rem 0.75rem;
+  caret-color: var(--primary-0);
+}
+.modal-input:focus {
+  border-bottom: 1px solid var(--primary-0);
 }
 /*==============*/
 
