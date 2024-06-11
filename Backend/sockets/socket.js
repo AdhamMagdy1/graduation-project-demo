@@ -24,9 +24,16 @@ const runSocket = (io, mainNamespace) => {
       mainNamespace.to(socket.id).emit('message', emitMessage);
     });
 
-    socket.on('changeOrderState', async (order) => {
+    socket.on('changeOrderState', async (order, callback) => {
       const newOrder = await orderState(order);
-      socket.to(order.restaurantId).emit('order', newOrder);
+      callback({
+        status: 'success'
+      });
+    });
+
+    socket.on('disconnecting', () => {
+      // console.log(`User ${socket.id} left restaurant room ${restaurantId}`);
+      console.log(socket.rooms);
     });
 
     socket.on('disconnect', () => {
@@ -39,5 +46,13 @@ const runSocket = (io, mainNamespace) => {
     mode: 'development',
   });
 };
+
+// try {
+//   // Emit the changeOrderState event to the server
+//   const response = await restaurantSocket.emitWithAck('changeOrderState', { orderId, newStatus });
+//   console.log(`Order ${orderId} status changed to ${newStatus}`);
+// } catch (error) {
+//   console.log('Error changing order status:', error);
+// }
 
 module.exports = { runSocket };
