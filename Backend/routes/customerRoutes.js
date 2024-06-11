@@ -9,7 +9,7 @@ router.post('/login', customerController.login);
 router.post('/createAddress', authenticateUser(Customer), customerController.createAddress);
 router.get('/all', customerController.getAllCustomers);
 router.get('/allOrders', customerController.getAllOrders);
-router.get('/allPhoneNumbers',  customerController.getAllCustomersPhoneNumber);
+// router.get('/allPhoneNumbers',  customerController.getAllCustomersPhoneNumber);
 router.delete('/order/all', customerController.deleteAllOrders);
 
 module.exports = router;
