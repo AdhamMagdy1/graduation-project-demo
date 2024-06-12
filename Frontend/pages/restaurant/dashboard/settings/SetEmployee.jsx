@@ -59,6 +59,7 @@ const SetEmployee = () => {
 		getEmployee();
 	}, [trigger]);
 
+	//edit name and email
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
