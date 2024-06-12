@@ -18,6 +18,8 @@ pipeline:
 - name: DIETClassifier
   epochs: 20
   learning_rate: 0.001
+- name: NluComponents.EnglishNlu.EnglishNluRegex
+  intent_name: english
 - name: NluComponents.FoodNER.FoodEntityExtractor
   entity_name: food
 - name: NluComponents.PhoneNumberNER.PhoneNumberEntityExtractor

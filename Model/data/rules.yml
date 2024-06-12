@@ -2,6 +2,12 @@ version: "3.1"
 
 rules:
 
+- rule: english_ignore
+  steps:
+  - intent: english
+  - action: action_english
+  - action: action_restart
+
 - rule: Activate_food_order_form
   steps:
   - intent: order
@@ -18,4 +24,15 @@ rules:
     - requested_slot: null
   - action: utter_submit
   - action: foodslots
-  - action: utter_goodbye
+  - action: send_recommendation
+  - action: action_restart
+  
+
+- rule: Receive_feedback
+  steps:
+  - intent: feedback
+  - action : send_feedback
+  - active_loop: null
+  - action: action_restart
+
+
