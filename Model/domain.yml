@@ -58,11 +58,6 @@ responses:
   utter_mgreet:
   - text: هو فرح وانت داخل توجب ولا ايه ما تطلب يا عم حاجة
   - text: ده انت وجع دماغ يا جدع ما تنجز
-  
-  utter_food_extra_relation:
-  - text: أسفين يا فندم ال{extra} مش بتتقدم مع ال{food} ك اكسترا
-  - text: يا ريت حضرتك تطلب حاجة تاني مع ال{food} غير ال{extra}
-  - text: بنعتذر لحضرتك يا فندم بس احنا مش بنقدم {extra} مع ال{food}
 
   utter_order_unclear:
   - text: ممكن حضرتك توضح عايز أكل أيه مع الاكسترا بالظبط
@@ -171,7 +166,6 @@ actions:
 - utter_submit
 - utter_feedback
 - utter_food_slots
-- utter_food_extra_relation
 - utter_order_unclear
 - utter_food_nonexistence
 - utter_best_match
