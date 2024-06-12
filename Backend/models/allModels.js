@@ -144,40 +144,13 @@ const Address = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    // area: {
-    //   type: DataTypes.STRING(100),
-    //   allowNull: false,
-    // },
-    // streetName: {
-    //   type: DataTypes.STRING(100),
-    //   allowNull: true,
-    // },
-    // buildingName: {
-    //   type: DataTypes.STRING(100),
-    //   allowNull: true,
-    // },
-    // flatNumber: {
-    //   type: DataTypes.STRING(100),
-    //   allowNull: true,
-    // },
     addressDescription: {
-      type: DataTypes.JSON,
+      type: DataTypes.STRING(300),
       allowNull: true,
     },
   },
   { timestamps: false, freezeTableName: true }
 );
-
-// const CustomerPhoneNumber = sequelize.define(
-//   "CustomerPhoneNumber",
-//   {
-//     phoneNumber: {
-//       type: DataTypes.STRING(20),
-//       primaryKey: true,
-//     },
-//   },
-//   { timestamps: false, freezeTableName: true }
-// );
 
 const RestaurantDeliveryAreas = sequelize.define(
   "RestaurantDeliveryAreas",
@@ -344,9 +317,6 @@ const SentimentAnalysis = sequelize.define(
 Customer.hasMany(Address, {
   foreignKey: { name: "customerId", allowNull: false },
 });
-// Customer.hasMany(CustomerPhoneNumber, {
-//   foreignKey: { name: "customerId", allowNull: false },
-// });
 
 // Restaurant associations
 Restaurant.hasOne(Owner, {
@@ -370,9 +340,8 @@ Restaurant.hasMany(RestaurantMenu, {
 Restaurant.hasMany(Category, {
   foreignKey: { name: "restaurantId", allowNull: false },
 });
-// uncomment allow null constraint when integreating with frontend is tested
 Restaurant.hasMany(Order, {
-  foreignKey: { name: "restaurantId" /*, allowNull: false*/ },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Restaurant.hasMany(Feedback, {
   foreignKey: { name: "restaurantId", allowNull: false },
@@ -423,9 +392,8 @@ RestaurantWorker.belongsTo(Restaurant, {
 });
 
 // Order associations
-// uncomment allow null constraint when integreating with frontend is tested
 Order.belongsTo(Restaurant, {
-  foreignKey: { name: "restaurantId" /*, allowNull: false*/ },
+  foreignKey: { name: "restaurantId", allowNull: false },
 });
 Order.belongsTo(Address, {
   foreignKey: { name: "addressId", allowNull: false },
@@ -438,11 +406,6 @@ Order.belongsTo(Customer, {
 RestaurantMenu.belongsTo(Restaurant, {
   foreignKey: { name: "restaurantId", allowNull: false },
 });
-
-// CustomerPhoneNumber associations
-// CustomerPhoneNumber.belongsTo(Customer, {
-//   foreignKey: { name: "customerId", allowNull: false },
-// });
 
 // Hooks
 
@@ -474,7 +437,6 @@ module.exports = {
   Product,
   Extra,
   Address,
-  // CustomerPhoneNumber,
   RestaurantDeliveryAreas,
   RestaurantWorker,
   Order,

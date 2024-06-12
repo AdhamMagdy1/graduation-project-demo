@@ -7,7 +7,6 @@ const { AppError } = require('../utils/error'); // Import the custom error class
 const {
   Order,
   Address,
-  CustomerPhoneNumber,
   Customer
 } = require('../models/allModels'); // Import the customer related models
 
@@ -56,7 +55,7 @@ const customerController = {
 
   getAllOrders : async (req, res, next) => {
     try {
-      const orders = await Order.findAll();
+      const orders = await Order.findAll({ include: [ Address, Customer ] });
       if (orders.length === 0) {
         return next(new AppError("No orders found", 404));
       }
@@ -75,7 +74,7 @@ const customerController = {
         addressDescription,
         customerId
       })
-      return res.status(201).json({ address });
+      return res.status(201).json({ address, customerId });
     } catch (error) {
       console.error("Error :", error);
       return next(new AppError("Internal Server Error", 500));
@@ -95,28 +94,6 @@ const customerController = {
     }
   },
 
-  // getAllCustomersPhoneNumber: async (req, res, next) => {
-  //   try {
-  //     const customerPhoneNumbers = await CustomerPhoneNumber.findAll();
-  //     if (customerPhoneNumbers.length === 0) {
-  //       return next(new AppError("No customer phone numbers found", 404));
-  //     }
-  //     return res.status(200).json({ customerPhoneNumbers });
-  //   } catch (error) {
-  //     console.error("Error :", error);
-  //     return next(new AppError("Internal Server Error", 500));
-  //   }
-  // },
-
-  deleteAllOrders: async (req, res, next) => {
-    try {
-      const orders = await Order.destroy({ truncate: true });
-      return res.status(200).json({ message: "All orders deleted successfully" });
-    } catch (error) {
-      console.error("Error :", error);
-      return next(new AppError("Internal Server Error", 500));
-    }
-  },
 };
 
 module.exports = customerController;
