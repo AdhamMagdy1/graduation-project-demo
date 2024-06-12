@@ -340,7 +340,6 @@ Restaurant.hasMany(RestaurantMenu, {
 Restaurant.hasMany(Category, {
   foreignKey: { name: "restaurantId", allowNull: false },
 });
-// uncomment allow null constraint when integreating with frontend is tested
 Restaurant.hasMany(Order, {
   foreignKey: { name: "restaurantId", allowNull: false },
 });
@@ -393,7 +392,6 @@ RestaurantWorker.belongsTo(Restaurant, {
 });
 
 // Order associations
-// uncomment allow null constraint when integreating with frontend is tested
 Order.belongsTo(Restaurant, {
   foreignKey: { name: "restaurantId", allowNull: false },
 });
