@@ -92,21 +92,22 @@ class SignalEntityExtractor(EntityExtractorMixin, GraphComponent):
     def _set_entities(self, message: Message, **kwargs: Any) -> None:
         text               = message.get("text") 
         signal         = self.extract_signal(text)
-        extracted_entities = []
+        if True:
+            extracted_entities = []
 
-        extracted_entities.append(
-                    {
-                        ENTITY_ATTRIBUTE_TYPE: self.entity_name,
-                        ENTITY_ATTRIBUTE_START: 0,
-                        ENTITY_ATTRIBUTE_END: 2,
-                        ENTITY_ATTRIBUTE_VALUE: signal,
-                        "confidence": 1.0,
-                    }
-                )
-            
-        message.set(
-            ENTITIES, message.get(ENTITIES, []) + extracted_entities, add_to_output=True
-        )
+            extracted_entities.append(
+                        {
+                            ENTITY_ATTRIBUTE_TYPE: self.entity_name,
+                            ENTITY_ATTRIBUTE_START: 0,
+                            ENTITY_ATTRIBUTE_END: 2,
+                            ENTITY_ATTRIBUTE_VALUE: signal,
+                            "confidence": 1.0,
+                        }
+                    )
+                
+            message.set(
+                ENTITIES, message.get(ENTITIES, []) + extracted_entities, add_to_output=True
+            )
 
     def process_training_data(self, training_data: TrainingData) -> TrainingData:
         self.process(training_data.training_examples)
