@@ -457,7 +457,7 @@ const SetRestaurant = () => {
 					</h2>
 					<h4>are you sure you want to delete your restaurant?</h4>
 					<div className="btn-holder">
-						<button className='btn btn-black'>cancel</button>
+						<button onClick={closeFirstModal} className='btn btn-black'>cancel</button>
 						<button onClick={() => deleteRestaurant()} style={{ marginLeft: '1rem' }} className='btn delete' >delete</button>
 					</div>
 					<button className="close-modal-btn" onClick={closeFirstModal}>
