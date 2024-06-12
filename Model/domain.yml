@@ -1,93 +1,123 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - greet
-  - goodbye
-  - order
+- english
+- feedback
+- goodbye
+- greet
+- menu
+- order
+- utter_type
 entities:
-  - food
-  - phone_number
-  - food_size
-  - send_signal
-  
-
+- send_signal
+- food
+- phone_number
+- food_size
 slots:
-   food:
-     type: text
-     influence_conversation: true
-     mappings:
-     - type: from_entity
-       entity: food
-   phone_number:
-     type: text
-     influence_conversation: true
-     mappings:
-     - type: from_entity
-       entity: phone_number
-   food_size:
-     type: text
-     influence_conversation: true
-     mappings:
-     - type: from_entity
-       entity: food_size
-   signal:
-     type: text
-     influence_conversation: true
-     mappings:
-     - type: from_entity
-       entity: send_signal
-
-
-   
- 
+  food:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: food
+  phone_number:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: phone_number
+  food_size:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      auto_fill: false
+      entity: food_size
+  signal:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: send_signal
+  utter_type:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
 responses:
   utter_greet:
-  - text: "ازيك يا صاحبي?"
-
+  - text: اهلا بحضرتك ممكن تطلب اي حاجة من المطعم
+  utter_mgreet:
+  - text: هو فرح وانت داخل توجب ولا ايه ما تطلب يا عم حاجة
+  - text: ده انت وجع دماغ يا جدع ما تنجز
   utter_goodbye:
-  - text: "مع السلامة"
-  - text : "باي"
-  - text : "مع السلامة يا صاحبي"
-  - text : "باي يا صاحبي"
-  - text : "مع السلامة يا حبيبي"
-  - text : "باي يا حبيبي"
-  - text : "اشوفك بعدين يا صاحبي"
-  - text : "يلا توكل علي الله انت" 
+  - text: مع السلامة
+  - text: باي
+  - text: مع السلامة يا صاحبي
+  - text: باي يا صاحبي
+  - text: مع السلامة يا حبيبي
+  - text: باي يا حبيبي
+  - text: اشوفك بعدين يا صاحبي
+  - text: يلا توكل علي الله انت
+  utter_menu:
+  - text: بص كده دي المنيو و اختار الاكل الي يريحك
+  - text: هنا المنيو و اختار الي انت عايزه
+  - text: خدلك بصة علي المنيو عندنا
+  utter_english:
+  - text: بص حاول تشعبولي الكلام شوية علشان انا فلاح بعيد عنك
+  - text: معلش انا مش فاهم اللغة الانجليزية
+  - text: يعم متتكلم عربي
   utter_signal:
-  - text: "ابعت الاوردر علي كدة ؟"
+  - text: ابعت الاوردر علي كده ؟
   utter_submit:
-  - text: "تمام يا صاحبي حعملك الاوردر"
-  - text: "تمام يا حبيبي حعملك الاوردر"
-  - text: "طلبك وصل يا قلبي"
-  - text: "طلبك وصل يا حبيبي"
-
+  - text: تمام يا صاحبي حعملك الاوردر. يا ريت بس لو حضرتك تقولنا رأيك في التجربة دي
+  - text: تمام يا حبيبي حعملك الاوردر. وأحنا مهتمين جدا نسمع رأيك فينا
+  - text: طلبك وصل يا قلبي. يا ريت بس لو تعرفنا رأيك في اكلنا وخدمة التوصيل
+  - text: طلبك وصل يا حبيبي. حابين بس ناخد فيدباك ونعرف رأي حضرتك
+  utter_feedback:
+  - text: 'شكرا جدا ليك على رأيك يا فندم '
+  - text: مبسوطين بمشاركة حضرتك لرأيك معانا
+  - text: وصلنا رأي حضرتك وبنسعى نقدم لحضرتك أفضل خدمة دايما
   utter_food_slots:
-  - text: "action_custom_utterance"
-
+  - text: action_custom_utterance
   utter_finalise_order:
-  - text: "لو تحب تطلب حاجة تانية ممكن تتفضل لو خلصت الاوردر ممكن تقولي رقم تليفون اتواصل بيه معاك"
-  - text: "تحب تطلب حاجة تانية يا صاحبي؟ ممكن تتفضل لو الاوردر تمام تقولي رقم تليفون اتواصل بيه معاك"
-  - text: "تحب تطلب اكل تاني لو خلاص اكتبلي رقم تليفونك"
-  - text: "لو خلصت الاوردر ممكن تديني رقم تليفونك"
-
+  - text: لو تحب تطلب حاجة تانية ممكن تتفضل لو خلصت الاوردر ممكن تقولي رقم تليفون اتواصل بيه معاك
+  - text: تحب تطلب حاجة تانية يا صاحبي؟ ممكن تتفضل لو الاوردر تمام تقولي رقم تليفون اتواصل بيه معاك
+  - text: تحب تطلب اكل تاني لو خلاص اكتبلي رقم تليفونك
+  - text: لو خلصت الاوردر ممكن تديني رقم تليفونك
+  utter_ask_feedback:
+  - text: نتشرف برأي حضرتك عن تجربتك مع المطعم
+  - text: نتمنى نعرف رأيك فينا
+  - text: نتمنى نعرف رأيك في الخدمة
+  - text: نتمنى نعرف رأيك في الاكل
 actions:
-  - utter_greet
-  - utter_goodbye
-  - utter_submit
-  - utter_food_slots
-  - validate_food_form
-  - utter_finalise_order
-  - utter_signal
-  - foodslots
+- action_mgreet
+- action_greet
+- utter_greet
+- utter_goodbye
+- action_goodbye
+- utter_mgreet
+- utter_menu
+- action_menu
+- utter_english
+- action_english
+- utter_submit
+- utter_feedback
+- utter_food_slots
+- utter_ask_feedback
+- validate_food_form
+- utter_finalise_order
+- utter_signal
+- foodslots
+- send_recommendation
+- send_feedback
 forms:
   food_form:
     required_slots:
-      - food
-      - phone_number
-      - food_size
-      - signal
-    
-
+    - food
+    - phone_number
+    - food_size
+    - signal
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+  store_entities_as_slots: false
