@@ -151,6 +151,7 @@ ul {
 }
 .show-password {
   position: absolute;
+  cursor: pointer;
   background-color: transparent;
   border-color: transparent;
   font-size: 1.1rem;
@@ -226,6 +227,22 @@ ul {
   font-size: 1.3rem;
 }
 .side-link .a {
+  text-transform: capitalize;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.log-out {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+  gap: 1rem;
+  transition: 0.3s;
+  font-weight: 500;
+}
+.log-out .a {
   text-transform: capitalize;
   color: var(--white);
   text-decoration: none;
@@ -774,7 +791,7 @@ textarea {
 }
 /*==============*/
 
-/* || create new Restaurant form */
+/* || Settings */
 .settings-container {
   margin: 0 1.5rem;
   padding: 0.5rem 1rem 1rem;
@@ -812,5 +829,21 @@ textarea {
   justify-content: center;
   height: 35px;
   margin-bottom: 0.5rem;
+}
+.settings-btn {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+  text-transform: capitalize;
+  color: var(--grey-700);
+  background-color: transparent;
+  border-color: transparent;
+  font-weight: bold;
+  margin-top: 0.75rem;
+  font-size: 15px;
+  border-bottom: 1px solid var(--grey-300);
+  cursor: pointer;
+  transition: 0.5s;
 }
 /*==============*/
