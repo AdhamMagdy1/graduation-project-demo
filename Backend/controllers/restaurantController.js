@@ -80,7 +80,7 @@ const login = async (req, res, next) => {
     });
 
     // Send token in response
-    return res.status(200).json({ token });
+    return res.status(200).json({ token, accountType });
   } catch (error) {
     console.error('Error logging in:', error);
     return next(new AppError('Internal server error', 500));
