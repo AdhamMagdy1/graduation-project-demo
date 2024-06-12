@@ -31,76 +31,101 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 import re
 import numpy as np
+import pandas as pd
 from difflib import SequenceMatcher
 from bpemb import BPEmb                                          
 import tensorflow as tf
-from rasa.shared.core.events import SlotSet
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+#from rasa.shared.core.events import SlotSet
+from rasa_sdk.events import SlotSet,AllSlotsReset
+from rasa_sdk import Action
 from rasa_sdk.interfaces import Action
+from sqlalchemy import create_engine, MetaData, Table, text, select
+from sqlalchemy.engine import URL
+
 
 class ValidateRestaurantForm(FormValidationAction):
     def __init__(self) -> None:
         super().__init__()
-        self.bpemb_model = BPEmb(dim = 300,emb_file = r"Loaded Models\arz.wiki.bpe.vs100000.d300.w2v.bin",\
-                           model_file = r"Loaded Models\arz.wiki.bpe.vs100000.model")
         self.container       = dict()
         self.container_sizes = dict()
         self.container_signal= dict()
-    
+        self.container_flags = dict()
+        self.engine,self.Product,self.Extra =  self.create_engine()
     def name(self) -> Text:
         return "validate_food_form"
-
     
-    def get_menu_db(self) -> List[Text]:
+    def create_engine(self):
+        url_object = URL.create(     
+        "postgresql+psycopg2",
+        username="adham",
+        password="clSoMULYj7Y7AJbLy6FU0JSvlHOTqbOA", 
+        host="dpg-coe15col6cac73bs5eag-a.oregon-postgres.render.com",
+        database="gradproject")
+        engine = create_engine(url_object)
+        metadata = MetaData()
+        Product = Table('Product', metadata, autoload=True ,autoload_with=engine)
+        Extra = Table('Extra', metadata, autoload=True ,autoload_with=engine)
+        print("Database connetion has been established")
+        return engine,Product,Extra
+    def get_menu_db(self, tracker) -> List[Text]:
         """Database of supported foods"""
         #["مكرونة بشاميل","فتة شاورما","شاورما فراخ","فراخ مشوية","سمك مشوي","فول","فلافل","فراخ محمرة","لحمة مشوية","سلطة فواكه"]
-        foods  = list(self.get_extra().keys())
-        extras = sum(list(self.get_extra().values()),[])
+        foods  = list(self.get_food_sizes(tracker).keys())
+        extras = list(self.get_extra(tracker).keys())
         return foods + extras
     def get_metadata(self, tracker, code = "420"):
-        restaurant_id = tracker.latest_message['metadata']["restaurant_id"]
-        customer_id =  tracker.latest_message['metadata']["customer_id"]
-        socket_id =  tracker.latest_message['metadata']["socket_id"]
-        return {"socket_id":socket_id,"restaurant_id":restaurant_id,"customer_id":customer_id,"code":code}
-
-    def get_food_sizes(self):
-        return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":[],"شاورما":["صغير","كبير"]}
-    def get_extra(self):
+        restaurant_id =  tracker.latest_message['metadata']["restaurant_id"]
+        customer_id   =  tracker.latest_message['metadata']["customer_id"]
+        socket_id     =  tracker.latest_message['metadata']["socket_id"]
+        address_id    =  tracker.latest_message['metadata']["address_id"]
+        return {"socket_id":socket_id,"restaurant_id":restaurant_id,"customer_id":customer_id,"address_id":address_id,"code":code}
+    def create_signal(self, id):
+        if id not in self.container_flags:
+            self.container_flags[id] = [False,False,False]
+            print("hello from signal ")
+    def get_food_sizes(self, tracker):
+        restaurant_id = self.get_metadata(tracker)["restaurant_id"]
+        query = self.Product.select()\
+                    .where(self.Product.c.restaurantId == restaurant_id)
+        # Execute  query
+        with self.engine.connect() as connection:
+            result = connection.execute(query)
+            products = {}
+            for row in result:
+                product_name = row['name']
+                size         = row['size']
+                products[product_name] = size
+        #products
+        return {"فراخ محمرة":{"وسط":30,"كبير":50},"مكرونة بشاميل":{"صغيىر":15},"ساندوتش شاورما لحمة":{"كبير":65}}
+#return {"فراخ محمرة":["وسط", "كبير"],"مكرونة بشاميل":["عادي"],"ساندوتش شاورما لحمة":["كبير"], "ساندوتش شاورما فراخ":["كبير"]}
+    def get_extra(self, tracker):
         """Database of supported foods with extra"""
-        return {"فراخ محمرة": ["رز مقمر","بصل"], "مكرونة بشاميل": ["مخلل","طحينة"],"شاورما":["تومية"]}
-    def word2vec(self, word):
-        embeds = self.bpemb_model.embed(word)
-        if len(embeds) > 1:
-            embeds = np.sum(embeds, axis = 0).reshape([1,embeds.shape[1]])
-        
-        return embeds.tolist()[0]
+        restaurant_id = self.get_metadata(tracker)["restaurant_id"]
+        query = select([self.Extra.c.name.label('name'),\
+                        self.Extra.c.price.label('price')])\
+                        .where(self.Extra.c.restaurantId == restaurant_id)
+        # Execute the query
+        with self.engine.connect() as connection:
+            result = connection.execute(query)
+            extras = {}
+            for row in result:
+                extras[row[0]] = float(row[1])
+        #extras
+        return {"رز معمر":10,"بصل":20,"مخلل":15,"طحينة":30,"تومية":30}
+#return ["رز معمر","بصل","مخلل","طحينة","تومية"]
+       
     
-
-    def get_embeddings(self, X):
-        """
-        Converts a sentence into a matrix of input embeddings of dim n x d
-        d is embeddings length 
-        n is the list of words length
-        input :
-        X (list) -------------> list of words
-        dic (dictionary)------> dictionary of embeddings
-        output :
-        tokens (Tensor)-------> tensor of size [n , d]
-
-        """
-        tokens = []
-        for word in X:
-             tokens.append(self.word2vec(word))      
-        tokens =  np.array(tokens, dtype = np.float32)
-        return tokens  
 
 
 
     def check_mappings(self, food, extra, mappings, tracker, dispatcher):
-        if extra not in self.get_extra()[food] and extra != "":
-            dispatcher.utter_message(text=f"{extra} مش بيتقدم مع {food} ك اكسترا ",\
-                                     json_message=self.get_metadata(tracker= tracker))
-            mappings[food] = []
-            return mappings
+        #if extra not in self.get_extra()[food] and extra != "":
+        #    dispatcher.utter_message(text=f"{extra} مش بيتقدم مع {food} ك اكسترا ",\
+        #                             json_message=self.get_metadata(tracker= tracker))
+        #    mappings[food] = []
+        #    return mappings
         if food not in mappings:           
             mappings[food] = [extra]
         else:
@@ -110,10 +135,10 @@ class ValidateRestaurantForm(FormValidationAction):
 
     def map_food_to_extra(self, slots, dispatcher,tracker):
         slots         = list(slots)
-        #print("slots values",slots)
+        print("slots values",slots)
         food_indexies = []
-        extras        = sum(list(self.get_extra().values()),[])
-        mappings  = dict()
+        extras        = list(self.get_extra(tracker).keys())
+        mappings      = dict()
         for i in range(len(slots)):
             if slots[i] not in extras:
                 food_indexies.append(i)
@@ -123,18 +148,14 @@ class ValidateRestaurantForm(FormValidationAction):
             dispatcher.utter_message(text="وضح عاوز اكل ايه مع الاكسترا بالضبط؟",\
                                      json_message=self.get_metadata(tracker= tracker))
             return mappings
-        #elif len(food_indexies) == 2:
-        #    food  = slots[food_indexies[0]] 
-        #    slots.pop(food_indexies[0])
-        #    for slot in slots:
-        #        mappings = self.check_mappings(food, slot, mappings, dispatcher)
-        #    return mappings
         else:
             if (len(food_indexies) == 1) and (len(orders) != 0 ):
                 # last food he has ordered
+                food_indexies = []
+                food_indexies.append(0)
                 slots.insert(0,orders[-1])
-                food_indexies.insert(0,0)
-                print(food_indexies,slots)
+                food_indexies.append(len(slots))
+                #print(food_indexies,slots)
             while(len(food_indexies) != 1):
                 i      = food_indexies[0]
                 j      = food_indexies[1]
@@ -150,7 +171,7 @@ class ValidateRestaurantForm(FormValidationAction):
 
 
 
-    def get_best_match(self, tokens, words):
+    def get_best_match(self, tokens, words, extras):
         """
         get the best matched food from the database file 
         inputs:
@@ -159,19 +180,15 @@ class ValidateRestaurantForm(FormValidationAction):
         output:
         None
         """
-        foods = {}
-        extras = sum(list(self.get_extra().values()),[])
-        sep = 1
+        foods  = {}
+        sep    = 1
         
         for token in tokens:
-            u1 = self.get_embeddings([token])
             for word in words:
-                u2 = self.get_embeddings(np.array([word]))
-                r1  = -1*tf.keras.losses.cosine_similarity(u2,u1).numpy()[0]
                 r2 = SequenceMatcher(None, word, token).ratio()
-                r = 0*r1+1*r2
+                r  = r2
                 #print(f"{word},{token}"+"with certainaty = "+str(r))
-                if (r >= 0.65 or re.search(f"{token}",word) is not None):
+                if (r >= 0.6 or re.search(f"{token}",word) is not None):
                     if word not in foods:
                         foods[word] = r
                     elif (word in foods) and (word in extras):
@@ -180,7 +197,6 @@ class ValidateRestaurantForm(FormValidationAction):
                     if foods[word] < r:
                          foods[word] = r 
         food       =  list(foods.keys())
-        
         food       = [re.sub("_+","",f) for f in food]
         confedence =  list(foods.values())  
           
@@ -188,13 +204,14 @@ class ValidateRestaurantForm(FormValidationAction):
     
     def get_food_slots(self, dispatcher: CollectingDispatcher,
         tracker: Tracker,foods:list)-> str:
-        best_match,confedence = self.get_best_match(foods, self.get_menu_db())
+        extras = list(self.get_extra(tracker).keys())
+        best_match,confedence = self.get_best_match(foods, self.get_menu_db(tracker), extras)
         if len(best_match) == 0:
             dispatcher.utter_message(text="اسف و الله يا صاحبي معندناش نوع الاكل ده",\
                                      json_message=self.get_metadata(tracker= tracker))
             return None
-        elif len(best_match[confedence >= 0.65]) != 0:
-            slot_value = best_match[confedence >= 0.65]
+        elif len(best_match[confedence >= 0.85]) != 0:
+            slot_value = best_match[confedence >= 0.85]
             #foods = tracker.get_slot("food")
             #print("foods length ",len(foods))
             slot_value = self.map_food_to_extra(slot_value, dispatcher,tracker)
@@ -218,10 +235,11 @@ class ValidateRestaurantForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate food value."""
         print("hello from food validation")
+        self.create_signal(tracker.sender_id)
         entities = tracker.latest_message['entities']
-        foods = [ent['value'] for ent in entities if ent['entity'] == 'food']
-        result = self.get_food_slots(dispatcher, tracker, foods)
-        result = result if result is not None else dict()
+        foods    = [ent['value'] for ent in entities if ent['entity'] == 'food']
+        result   = self.get_food_slots(dispatcher, tracker, foods)
+        result   = result if result is not None else dict()
         print("result :",result)
         if tracker.sender_id in self.container:
             #print(self.container[tracker.sender_id])
@@ -237,7 +255,9 @@ class ValidateRestaurantForm(FormValidationAction):
             return {"food":None}
         else:
             # you have just send the keys of the dictionary
-            return {"food": str(self.container[tracker.sender_id])}
+            self.container_flags[tracker.sender_id][0] = True
+            prices = ",,,"+str(self.get_extra(tracker))+",,,"+str(self.get_food_sizes(tracker))
+            return {"food": str(self.container[tracker.sender_id])+prices}
         
         
         
@@ -249,6 +269,7 @@ class ValidateRestaurantForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate phone number."""
+        self.create_signal(tracker.sender_id)
         entities = tracker.latest_message['entities']
         phone_numbers = [ent['value'] for ent in entities if ent['entity'] == 'phone_number']
         print("hello from validate phone number")
@@ -265,6 +286,7 @@ class ValidateRestaurantForm(FormValidationAction):
             self.print_order(tracker,dispatcher)
             self.container_sizes[tracker.sender_id] = dict()
             mapping = self.ask_food_size(dispatcher, tracker)
+            self.container_flags[tracker.sender_id][1] = True
             return {"phone_number": slot_value,"food_size":mapping}
         else:
             dispatcher.utter_message(text = f"بص انت باعت {len(phone_numbers)} ارقام تليفون اكدلي علي واحد استخدمه بس",\
@@ -283,7 +305,7 @@ class ValidateRestaurantForm(FormValidationAction):
             return None
         
         food_size  = slot[0]
-        food_sizes = self.get_food_sizes().get(food)
+        food_sizes = list(self.get_food_sizes(tracker).get(food).keys())
         if food_size not in food_sizes:
             dispatcher.utter_message(text =f"{food}  الحجم الي انت باعته مش موجود ل",\
                                      json_message=self.get_metadata(tracker= tracker))
@@ -294,18 +316,21 @@ class ValidateRestaurantForm(FormValidationAction):
  
     def ask_food_size(self, dispatcher, tracker):
         foods = list(self.container[tracker.sender_id].keys())
-        food_sizes = self.get_food_sizes()
+        food_sizes = self.get_food_sizes(tracker)
         #print("foods inside ask_food_size",foods)
         for food in foods:
-            if (food_sizes[food] != []) and (food not in self.container_sizes[tracker.sender_id]):
-                food_size = food_sizes[food]
+            if food not in self.container_sizes[tracker.sender_id]:
+                food_size = list(food_sizes[food].keys())
                 food_size = " و ".join(food_size)
                 #print("metadata : ",tracker.latest_message['metadata']["restaurant_id"])
                 dispatcher.utter_message(text=f"{food}  تحب انهي حجم ل {food_size} دي الاحجام المتوفرة ",\
                                          json_message=self.get_metadata(tracker= tracker))
                 self.container_sizes[tracker.sender_id]["_next_"] = food
                 return None
+        
         mapping = str(self.container_sizes[tracker.sender_id])
+        print("falg finally set to true")
+        self.container_flags[tracker.sender_id][2] = True
         return mapping
             
         
@@ -319,13 +344,16 @@ class ValidateRestaurantForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate food size."""
+        self.create_signal(tracker.sender_id)
         print("hello from food size validation")
         mapping = None
         entities = tracker.latest_message['entities']
         food_sizes = [ent['value'] for ent in entities if ent['entity'] == 'food_size']
         flag1 = tracker.get_slot("phone_number")
         flag2 = tracker.get_slot("food_size")
-        
+        print("flag2 : ",self.container_flags[tracker.sender_id])
+        if self.container_flags[tracker.sender_id][2]:
+            return {"food_size":str(self.container_flags[tracker.sender_id])}
         if flag1 is None:
             #mapping = None
             if flag2 is not None:
@@ -333,7 +361,7 @@ class ValidateRestaurantForm(FormValidationAction):
                                          json_message=self.get_metadata(tracker= tracker))
         else:
             #print(flag1,flag2,self.container_sizes[tracker.sender_id].get("_next_"))
-            if food_sizes != []:
+            if food_sizes != [] :
                 self.food_sizes_mapping(dispatcher, tracker, food_sizes)
             if mapping == None:
                 mapping = self.ask_food_size(dispatcher, tracker)
@@ -343,7 +371,7 @@ class ValidateRestaurantForm(FormValidationAction):
         return {"food_size": mapping}
     
     def print_order(self, tracker, dispatcher):
-        foods = tracker.get_slot("food")
+        foods = tracker.get_slot("food").split(",,,")[0]
         foods = eval(str(foods))
         #food_q = dict()
         message = " طلبك كالتالي : \n"
@@ -361,10 +389,10 @@ class ValidateRestaurantForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """confirm the order"""
+        self.create_signal(tracker.sender_id)
         entities = tracker.latest_message['entities']
-        flag     = tracker.get_slot("food_size")
         signal   = [ent['value'] for ent in entities if ent['entity'] == 'send_signal'][0]
-        if flag is None:
+        if self.container_flags[tracker.sender_id][2] == False:
             return {"signal":None}
         else:
             print("here i am",signal)
@@ -378,11 +406,13 @@ class ValidateRestaurantForm(FormValidationAction):
                 self.container_sizes.pop(tracker.sender_id)
                 self.container.pop(tracker.sender_id)
                 self.container_signal.pop(tracker.sender_id)
+                self.container_flags.pop(tracker.sender_id)
                 return {"signal": None,"food_size":None, "phone_number":None}
             elif signal == "1":
                 self.container_sizes.pop(tracker.sender_id)
                 self.container.pop(tracker.sender_id)
                 self.container_signal.pop(tracker.sender_id)
+                self.container_flags.pop(tracker.sender_id)
                 return {"signal": "1"}
             else:
                 return{"signal":None}
@@ -398,7 +428,19 @@ class ValidateRestaurantForm(FormValidationAction):
 
 
 
-
+class Metadata:
+    def __init__(self):
+        pass
+    @staticmethod
+    def get_metadata(tracker, code = "420"):
+        try:
+            restaurant_id =  tracker.latest_message['metadata']["restaurant_id"]
+            customer_id   =  tracker.latest_message['metadata']["customer_id"]
+            socket_id     =  tracker.latest_message['metadata']["socket_id"]
+            address_id    =  tracker.latest_message['metadata']["address_id"]
+            return {"socket_id":socket_id,"restaurant_id":restaurant_id,"customer_id":customer_id,"address_id":address_id,"code":code}
+        except:
+            return {}
 
 
 
@@ -423,6 +465,7 @@ class FoodSlots(Action):
     def run(self, dispatcher, tracker, domain):
         # Generate your custom message using retrieved information
         foods = tracker.get_slot("food")
+        foods, extras_price, foods_price = foods.split(",,,")
         foods = eval(foods)
         sizes = tracker.get_slot("food_size")
         sizes = eval(sizes)
@@ -434,32 +477,120 @@ class FoodSlots(Action):
             extra     = f"مع {extra}" if extra != "" else ""
             message  += f" {food} {food_size} {extra} "
             message  += "\n"
-        #for food in foods:
-        #    if food in food_q:
-        #        food_q[food] += 1
-        #    else:
-        #        food_q[food]  = 1
-            
-        
-        #print("foods length ",len(foods))
-        #for food in food_q.keys():
-        #    message += f"عدد {food_q[food]} قطعة {food} ," 
-        #message += " happy eating!"
-        # Return an Utterance event with the generated message
-        #print("hello from food slots")
-        restaurant_id = tracker.latest_message['metadata']["restaurant_id"]
-        customer_id   =  tracker.latest_message['metadata']["customer_id"]
-        socket_id     = tracker.latest_message['metadata']["socket_id"]
-        metadata      =  {"socket_id":socket_id,\
-                          "restaurant_id":restaurant_id,\
-                          "customer_id":customer_id,\
-                          "code":"422",\
-                          "food_extra":foods,\
+        metadata      = Metadata.get_metadata(tracker=tracker, code = "422")
+        metadata.update({"food_extra":foods,\
                           "food_size":sizes,\
-                          "phone_number":tracker.get_slot("phone_number")}
+                          "foods_price":foods_price,\
+                        "extras_price":extras_price,\
+                          "phone_number":tracker.get_slot("phone_number")}) 
         dispatcher.utter_message(text=message,json_message=metadata)
         return []
     
+
+
+
+class SendFeedback(Action):
+    def name(self):
+        return 'send_feedback'
+
+    def run(self, dispatcher, tracker, domain):
+        message       = tracker.latest_message['text']
+        metadata      =  Metadata.get_metadata(tracker=tracker, code = "440")
+        metadata.update({"code":"440","feedback": message})
+        dispatcher.utter_message(response="utter_feedback",json_message=metadata)
+        return []
+    
+
+class Recommend(Action):
+    def name(self):
+        return 'send_recommendation'
+    
+    def get_food_ingredients(self):
+        """return  siltan ayob's food and description """
+        df = pd.read_csv(r"E:\Eslam\Semester 8\Project\ayob_menu.csv")
+        return df
+    
+    def get_recommendations(self,ingredients,order, num_recommend = 5):
+        tfidf        = TfidfVectorizer(stop_words='english')
+        tfidf_matrix = tfidf.fit_transform(ingredients['description'])
+        cosine_sim   = linear_kernel(tfidf_matrix, tfidf_matrix)
+        indices      = pd.Series(ingredients.index, index=ingredients['menu_item']).drop_duplicates()
+        try:
+            idx          = indices[order]
+            sim_scores   = list(enumerate(cosine_sim[idx]))
+            sim_scores   = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+            top_similar  = sim_scores[1:num_recommend+1]
+            meal_indices = [i[0] for i in top_similar]
+            return ingredients['menu_item'].iloc[meal_indices].tolist()
+        except:
+            return []
+    def run(self, dispatcher, tracker, domain):
+        foods             = tracker.get_slot("food").split(",,,")[0]
+        df                = self.get_food_ingredients()
+        rd_food           = list(df["menu_item"].sample(1))[0]
+        foods             = eval(foods) if foods is not None else {rd_food:" "}
+        recommendations   = self.get_recommendations(df,list(foods.keys())[0])
+        recommendations   = " بقولك ايه قبل ما تقفل شوف الاكل ده ممكن حاجة تعجبك "+" أو ".join(recommendations) if len(recommendations)!=0 else "وجبة سعيدة" 
+        metadata          = Metadata.get_metadata(tracker=tracker)
+        dispatcher.utter_message(text=recommendations,json_message=metadata)
+        return [AllSlotsReset()]
+
+
+class action_greet(Action):
+    def name(self):
+        return 'action_greet'
+    def run(self, dispatcher, tracker, domain):
+        metadata      = Metadata.get_metadata(tracker=tracker)
+        dispatcher.utter_message(response="utter_greet",json_message=metadata)
+        return []
+    
+class action_goodbye(Action):
+    def name(self):
+        return 'action_goodbye'
+    def run(self, dispatcher, tracker, domain):
+        metadata      = Metadata.get_metadata(tracker=tracker)
+        dispatcher.utter_message(response="utter_goodbye",json_message=metadata)
+        return []
+
+
+class action_mgreet(Action):
+    def name(self):
+        return 'action_mgreet'
+    def run(self, dispatcher, tracker, domain):
+        metadata      = Metadata.get_metadata(tracker=tracker)
+        dispatcher.utter_message(response="utter_mgreet",json_message=metadata)
+        return []
+
+
+#action_english
+
+class action_menu(Action):
+    def name(self):
+        return 'action_menu'
+    def run(self, dispatcher, tracker, domain):
+        metadata      = Metadata.get_metadata(tracker=tracker, code="444")
+        dispatcher.utter_message(response="utter_menu",json_message=metadata)
+        return []
+    
+
+class action_english(Action):
+    def name(self):
+        return 'action_english'
+    def run(self, dispatcher, tracker, domain):
+        metadata      = Metadata.get_metadata(tracker=tracker)
+        dispatcher.utter_message(response="utter_english",json_message=metadata)
+        return []
+
+
+
+class SizeFill(Action):
+    def name(self):
+        return 'action_foodsizefill'
+
+    def run(self, dispatcher, tracker, domain):
+        print("hello from size fill slot")
+        food_size = tracker.get_slot("food_size")
+        return [SlotSet("food_size",food_size)]
 
 
 

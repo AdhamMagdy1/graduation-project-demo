@@ -1,5 +1,117 @@
 version: "3.1"
 
 stories:
+- story: happy_path1
+  steps:
+  - intent: greet
+  - action: action_greet
+  - intent: greet
+  - action: action_mgreet
+  - intent: order
+  - action: food_form
+  - active_loop: food_form
+  - checkpoint: order_form
+
+- story: happy_path2
+  steps:
+  - checkpoint: order_form
+  - intent: feedback
+  - action: send_feedback
+  - intent: feedback
+  - action: send_feedback
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- story: goodbye_path
+  steps:
+  - intent: goodbye
+  - action: action_goodbye
+
+- story: sad_path1
+  steps:
+  - intent: greet
+  - action: action_greet
+  - intent: menu
+  - action: action_menu
+  - intent: goodbye
+  - action: action_goodbye
 
 
+
+
+- story: interactive_story_1
+  steps:
+  - intent: greet
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: action_greet
+  - intent: greet
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: action_mgreet
+  - intent: order
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: food_form
+  - active_loop: food_form
+  - slot_was_set:
+    - signal: null
+  - slot_was_set:
+    - requested_slot: food
+
+- story: interactive_story_2
+  steps:
+  - intent: menu
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: action_menu
+  - intent: goodbye
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: action_goodbye
+
+- story: interactive_story_3
+  steps:
+  - intent: greet
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: action_greet
+  - intent: menu
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: action_menu
+  - intent: menu
+    entities:
+    - send_signal: '0'
+  - slot_was_set:
+    - signal: '0'
+  - action: send_recommendation
+  - intent: order
+    entities:
+    - food: عاوز اكل مكرونة
+    - food: اكل مكرونة
+    - food: اكل مكرونة بشاميل
+    - food: مكرونة
+    - food: مكرونة بشاميل
+    - food: بشاميل
+    - send_signal: '0'
+  - slot_was_set:
+    - food: بشاميل
+  - slot_was_set:
+    - signal: '0'
+  - action: food_form
+  - active_loop: food_form
