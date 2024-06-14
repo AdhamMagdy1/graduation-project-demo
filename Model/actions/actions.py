@@ -145,7 +145,7 @@ class ValidateRestaurantForm(FormValidationAction):
         food_indexies.append(len(slots))
         orders = list(self.container[tracker.sender_id].keys()) if tracker.sender_id in self.container else []
         if (len(food_indexies) == 1) and (len(orders) == 0 ):
-            dispatcher.utter_message(text="وضح عاوز اكل ايه مع الاكسترا بالضبط؟",\
+            dispatcher.utter_message(response = "utter_order_unclear",\
                                      json_message=self.get_metadata(tracker= tracker))
             return mappings
         else:
@@ -207,7 +207,7 @@ class ValidateRestaurantForm(FormValidationAction):
         extras = list(self.get_extra(tracker).keys())
         best_match,confedence = self.get_best_match(foods, self.get_menu_db(tracker), extras)
         if len(best_match) == 0:
-            dispatcher.utter_message(text="اسف و الله يا صاحبي معندناش نوع الاكل ده",\
+            dispatcher.utter_message(response="utter_food_nonexistence",\
                                      json_message=self.get_metadata(tracker= tracker))
             return None
         elif len(best_match[confedence >= 0.85]) != 0:
@@ -219,8 +219,8 @@ class ValidateRestaurantForm(FormValidationAction):
                                      json_message=self.get_metadata(tracker= tracker))
             
             return slot_value
-        else: 
-            dispatcher.utter_message(text="  نوع الاكل الي انت طالبه بالضبط مش موجود عندما بس عندنا انواع منه او حاجات زيه ودي الحاجات الي ممكن حضرتك تختار منها زي \n"+" , \n".join(best_match),\
+        else:
+            dispatcher.utter_message(response = "utter_best_match", matches = "\n, ".join(best_match),\
                                      json_message=self.get_metadata(tracker= tracker))
             return None
 
@@ -289,7 +289,7 @@ class ValidateRestaurantForm(FormValidationAction):
             self.container_flags[tracker.sender_id][1] = True
             return {"phone_number": slot_value,"food_size":mapping}
         else:
-            dispatcher.utter_message(text = f"بص انت باعت {len(phone_numbers)} ارقام تليفون اكدلي علي واحد استخدمه بس",\
+            dispatcher.utter_message(response = "utter_phonenumber_validation", phone = len(phone_numbers),\
                                      json_message=self.get_metadata(tracker= tracker))
             return {"phone_number": None}
         
@@ -300,15 +300,16 @@ class ValidateRestaurantForm(FormValidationAction):
         if food is None:
             return None
         if len(slot) != 1:
-            dispatcher.utter_message(text = f"بص انت باعت {len(slot)} احجام مختلفة اكدلي علي واحد استخدمه بس",\
+            dispatcher.utter_message(response = "utter_size_validation", size = len(slot),\
                                      json_message=self.get_metadata(tracker= tracker))
             return None
         
         food_size  = slot[0]
         food_sizes = list(self.get_food_sizes(tracker).get(food).keys())
         if food_size not in food_sizes:
-            dispatcher.utter_message(text =f"{food}  الحجم الي انت باعته مش موجود ل",\
+            dispatcher.utter_message(response = "utter_size_nonexistence", food = food,\
                                      json_message=self.get_metadata(tracker= tracker))
+
         else:
             self.container_sizes[tracker.sender_id][food] = food_size
             self.container_sizes[tracker.sender_id].pop("_next_")
@@ -323,7 +324,7 @@ class ValidateRestaurantForm(FormValidationAction):
                 food_size = list(food_sizes[food].keys())
                 food_size = " و ".join(food_size)
                 #print("metadata : ",tracker.latest_message['metadata']["restaurant_id"])
-                dispatcher.utter_message(text=f"{food}  تحب انهي حجم ل {food_size} دي الاحجام المتوفرة ",\
+                dispatcher.utter_message(response="utter_choose_size", food = food, size = food_size,\
                                          json_message=self.get_metadata(tracker= tracker))
                 self.container_sizes[tracker.sender_id]["_next_"] = food
                 return None
@@ -357,7 +358,7 @@ class ValidateRestaurantForm(FormValidationAction):
         if flag1 is None:
             #mapping = None
             if flag2 is not None:
-                dispatcher.utter_message(text = f"متشغلش بالك باحجام الاكل دلوقتي  نكتب الاوردر بس الاول بعدين نشوف الحوار ده",\
+                dispatcher.utter_message(response = "utter_validate_size",\
                                          json_message=self.get_metadata(tracker= tracker))
         else:
             #print(flag1,flag2,self.container_sizes[tracker.sender_id].get("_next_"))

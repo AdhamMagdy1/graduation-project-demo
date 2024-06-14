@@ -1,4 +1,5 @@
 version: '3.1'
+
 intents:
 - english
 - feedback
@@ -7,11 +8,13 @@ intents:
 - menu
 - order
 - utter_type
+
 entities:
 - send_signal
 - food
 - phone_number
 - food_size
+
 slots:
   food:
     type: text
@@ -19,12 +22,14 @@ slots:
     mappings:
     - type: from_entity
       entity: food
+      
   phone_number:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: phone_number
+      
   food_size:
     type: text
     influence_conversation: true
@@ -32,23 +37,71 @@ slots:
     - type: from_entity
       auto_fill: false
       entity: food_size
+      
   signal:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: send_signal
+      
   utter_type:
     type: text
     influence_conversation: false
     mappings:
     - type: custom
+    
 responses:
   utter_greet:
   - text: اهلا بحضرتك ممكن تطلب اي حاجة من المطعم
+  
   utter_mgreet:
   - text: هو فرح وانت داخل توجب ولا ايه ما تطلب يا عم حاجة
   - text: ده انت وجع دماغ يا جدع ما تنجز
+
+  utter_order_unclear:
+  - text: ممكن حضرتك توضح عايز أكل أيه مع الاكسترا بالظبط
+  - text: هو بس مش واضح بالظبط حضرتك عايز تطلب أيه مع الاكسترا
+  - text:  ياريت يا فندم توضح أكتر حضرتك حابب الاكسترا تتقدم مع أيه 
+
+  utter_food_nonexistence:
+  - text: أسفين جدا يا فندم احنا مش بنقدم الأكل ده
+  - text: بنعتذر لحضرتك والله بس الأكل ده مش موجود عندنا
+  - text: نوع الأكل ده غير متاح يا فندم
+
+  utter_best_match:
+  - text: أحنا أسفين حقيقي نوع الأكل اللي حضرتك طالبه مش موجود بس في حاجات تانية ممكن تختار منها ذي {matches}
+  - text: والله طلب حضرتك مش موجود بالظبط بس في حاجات قريبة من اللي حضرتك طلبته تقدر تختار منها ذي {matches}
+  - text: بنعتذر يا فندم احنا مش بنقدم الأكل ده بس أحنا بنقترح عليك أكلات مشابهة هتعجبك ذي {matches}
+  - text: كان نفسنا نقدم لحضرتك طلبك بس للأسف غير متاح بس في أطباق تانية ممكن تعجبك ذي مثلا {matches}
+
+  utter_phonenumber_validation:
+  - text: هو بس حضرتك باعتلي {phone} أرقام تليفونات ياريت بس حضرتك تأكدلي على رفم واحد بس استخدمه
+  - text: أنا بس محتاج حضرتك تأكدلي على رقم تليفون واحد 
+  - text: ممكن حضرتك تأكدلي على رقم واحد بس استخدمه لما أجي اتصل بحضرتك لإنك باعتلي {phone} أرقام
+
+  utter_size_validation:
+  - text: حضرتك باعت {size} أحجام مختلفة ممكن تختار حجم واحد بس
+  - text: حضرتك عايز أنهي حجم بالظبط لإن حضرتك باعتلي {size} أحجام
+  - text: أجهز لحضرتك أنهي حجم من ال{size} أحجام اللي حضرتك كاتبها؟
+
+  utter_size_nonexistence:
+  - text: أسفين يا فندم مش بنقدم الحجم ده من ال{food}
+  - text: حضرتك تقدر تطلب حجم تاني من ال{food} لإن الحجم اللي حضرتك طلبته غير متوفر
+  - text: للأسف يا فندم ال{food} مفيش منها الحجم ده عنده
+  - text: الحجم ده من ال{food} مش موجود يا فندم بنعتذر لحضرتك ممكن تطلب حجم تاني
+
+  utter_choose_size:
+  - text: دي الأحجام اللي حضرتك تقدر تختار منها لل{food} {size}
+  - text: أحنا عندنا يا فندم أحجام مختلفة من ال{food} حضرتك تحب تختار أيه {size} ?
+  - text: ياريت حضرتك تقولنا أيه الحجم اللي حضرتك تحب تطلبه من ال{food} أحنا موجود عندنا الأحجام دي {size}
+
+  utter_validate_size:
+  - text: مش مهم الأحجام خالص دلوقتي نكتب الأوردر بس الأول
+  - text: نكتب الاوردر بس يا فندم وبعد كده نختار الحجم اللي حضرتك تحبه ماتقلقش خالص
+  - text: ماتشغلش بالك بالأحجام يا فندم أطلب الأكل بس وهنبقى نأكد بعد كده على الحجم اللي حضرتك تحبه
+  - text: حجم الوجبة ده موضوع بسيط جدا نتأكد من الأورد بس الأول
+
   utter_goodbye:
   - text: مع السلامة
   - text: باي
@@ -58,37 +111,47 @@ responses:
   - text: باي يا حبيبي
   - text: اشوفك بعدين يا صاحبي
   - text: يلا توكل علي الله انت
+  
   utter_menu:
   - text: بص كده دي المنيو و اختار الاكل الي يريحك
   - text: هنا المنيو و اختار الي انت عايزه
   - text: خدلك بصة علي المنيو عندنا
+  
   utter_english:
   - text: بص حاول تشعبولي الكلام شوية علشان انا فلاح بعيد عنك
   - text: معلش انا مش فاهم اللغة الانجليزية
   - text: يعم متتكلم عربي
+  
   utter_signal:
-  - text: ابعت الاوردر علي كده ؟
+  - text: ابعت الاوردر علي كده؟
+  - text: الأوردر تمام كده يا فندم؟
+  
   utter_submit:
   - text: تمام يا صاحبي حعملك الاوردر. يا ريت بس لو حضرتك تقولنا رأيك في التجربة دي
   - text: تمام يا حبيبي حعملك الاوردر. وأحنا مهتمين جدا نسمع رأيك فينا
   - text: طلبك وصل يا قلبي. يا ريت بس لو تعرفنا رأيك في اكلنا وخدمة التوصيل
   - text: طلبك وصل يا حبيبي. حابين بس ناخد فيدباك ونعرف رأي حضرتك
+  
   utter_feedback:
   - text: 'شكرا جدا ليك على رأيك يا فندم '
   - text: مبسوطين بمشاركة حضرتك لرأيك معانا
   - text: وصلنا رأي حضرتك وبنسعى نقدم لحضرتك أفضل خدمة دايما
+  
   utter_food_slots:
   - text: action_custom_utterance
+  
   utter_finalise_order:
   - text: لو تحب تطلب حاجة تانية ممكن تتفضل لو خلصت الاوردر ممكن تقولي رقم تليفون اتواصل بيه معاك
   - text: تحب تطلب حاجة تانية يا صاحبي؟ ممكن تتفضل لو الاوردر تمام تقولي رقم تليفون اتواصل بيه معاك
   - text: تحب تطلب اكل تاني لو خلاص اكتبلي رقم تليفونك
   - text: لو خلصت الاوردر ممكن تديني رقم تليفونك
+  
   utter_ask_feedback:
   - text: نتشرف برأي حضرتك عن تجربتك مع المطعم
   - text: نتمنى نعرف رأيك فينا
   - text: نتمنى نعرف رأيك في الخدمة
   - text: نتمنى نعرف رأيك في الاكل
+  
 actions:
 - action_mgreet
 - action_greet
@@ -103,6 +166,14 @@ actions:
 - utter_submit
 - utter_feedback
 - utter_food_slots
+- utter_order_unclear
+- utter_food_nonexistence
+- utter_best_match
+- utter_phonenumber_validation
+- utter_size_validation
+- utter_size_nonexistence
+- utter_choose_size
+- utter_validate_size
 - utter_ask_feedback
 - validate_food_form
 - utter_finalise_order
@@ -110,6 +181,7 @@ actions:
 - foodslots
 - send_recommendation
 - send_feedback
+
 forms:
   food_form:
     required_slots:
@@ -117,6 +189,7 @@ forms:
     - phone_number
     - food_size
     - signal
+    
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
