@@ -2,7 +2,6 @@ import Register from "../pages/restaurant/auth/Register";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from "../pages/restaurant/auth/Login";
 import Orders from "../pages/restaurant/dashboard/Orders";
-import Chat from '../pages/customer/Chat';
 import Stats from '../pages/restaurant/dashboard/Stats';
 import Menu from "../pages/restaurant/dashboard/adds/Menu";
 import Extras from '../pages/restaurant/dashboard/adds/Extras';
@@ -13,6 +12,8 @@ import Menus from '../pages/restaurant/new/Menus';
 import SetRestaurant from '../pages/restaurant/dashboard/settings/SetRestaurant';
 import SetEmployee from '../pages/restaurant/dashboard/settings/SetEmployee';
 import SetProfile from '../pages/restaurant/dashboard/settings/SetProfile';
+import Chat from '../pages/customer/Chat';
+import Address from '../pages/customer/Address';
 
 function App() {
 
@@ -29,12 +30,13 @@ function App() {
           <Route path="/restaurant/menu" element={<Menu />} />
           <Route path="/restaurant/orders" element={<Orders />} />
           <Route path="/restaurant/products/category/:categoryId" element={<Products />} />
-          <Route path="/restaurant/chat" element={<Chat />} />
           <Route path="/restaurant/create" element={<Restaurant />} />
           <Route path="/restaurant/menus" element={<Menus />} />
           <Route path="/restaurant/edit" element={<SetRestaurant />} />
           <Route path="/restaurant/employee" element={<SetEmployee />} />
           <Route path="/restaurant/profile" element={<SetProfile />} />
+          <Route path="/customer/chat" element={<Chat />} />
+          <Route path="/customer/address" element={<Address />} />
         </Routes>
       </BrowserRouter>
     </>
