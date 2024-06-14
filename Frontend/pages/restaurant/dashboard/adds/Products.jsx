@@ -99,11 +99,12 @@ const Products = (props) => {
 			size,
 			categoryId,
 		};
-		console.log(editedProduct);
+		// console.log(editedProduct);
 		const resp = await editItem(currentProduct, editedProduct);
 		if (resp) {
 			setUpdateTrigger(prev => prev + 1);
 			closeSecondModal();
+			resetProduct();
 		} else {
 			console.log(`sorry, somthing went wrong. cannot edit item`);
 		}
@@ -133,7 +134,7 @@ const Products = (props) => {
 								name='name'
 								id='name'
 								placeholder='product name'
-								className='modal-input input-block'
+								className='modal-input'
 								value={productName}
 								onChange={(e) => setProductName(e.target.value)}
 								required
@@ -147,7 +148,7 @@ const Products = (props) => {
 								name='ingredients'
 								id='ingredients'
 								placeholder='ing1, ing2, ing3,..'
-								className='modal-input input-block'
+								className='modal-input'
 								value={ingredient}
 								onChange={(e) => setIngredients(e.target.value)}
 								required
@@ -271,7 +272,7 @@ const Products = (props) => {
 									name='name'
 									id='name'
 									placeholder='product name'
-									className='modal-input input-block'
+									className='modal-input'
 									value={productName}
 									onChange={(e) => setProductName(e.target.value)}
 									required
@@ -285,7 +286,7 @@ const Products = (props) => {
 									name='ingredients'
 									id='ingredients'
 									placeholder='ing1, ing2, ing3,..'
-									className='modal-input input-block'
+									className='modal-input'
 									value={ingredient}
 									onChange={(e) => setIngredients(e.target.value)}
 									required
@@ -298,7 +299,7 @@ const Products = (props) => {
 									type="number"
 									name="small"
 									id="size"
-									className=' input-num'
+									className='input-num'
 									value={size.small !== null ? size.small : ""}
 									onChange={(e) => setSize({ ...size, small: +e.target.value })}
 									required />
@@ -345,7 +346,7 @@ const Products = (props) => {
 									name='name'
 									id='name'
 									placeholder='product name'
-									className='modal-input input-block'
+									className='modal-input'
 									value={productName}
 									onChange={(e) => setProductName(e.target.value)}
 									required
@@ -359,7 +360,7 @@ const Products = (props) => {
 									name='ingredients'
 									id='ingredients'
 									placeholder='ing1, ing2, ing3,..'
-									className='modal-input input-block'
+									className='modal-input'
 									value={ingredient}
 									onChange={(e) => setIngredients(e.target.value)}
 									required
@@ -372,7 +373,7 @@ const Products = (props) => {
 									type="number"
 									name="small"
 									id="size"
-									className=' input-num'
+									className='input-num'
 									value={size.small !== null ? size.small : ""}
 									onChange={(e) => setSize({ ...size, small: +e.target.value })}
 									required />

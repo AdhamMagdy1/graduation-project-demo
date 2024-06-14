@@ -210,7 +210,7 @@ const Menu = () => {
 						<input
 							type="file"
 							name='menuImage'
-							className='modal-input input-block'
+							className='modal-input'
 							onChange={(e) => setMenuItem(e.target.files)}
 							required
 						/>
@@ -218,7 +218,7 @@ const Menu = () => {
 							type="text"
 							placeholder='description'
 							name='description'
-							className='modal-input input-block'
+							className='modal-input'
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
 							required
@@ -246,7 +246,7 @@ const Menu = () => {
 							type="file"
 							name='menuImage'
 							id='menuImage'
-							className='modal-input input-block'
+							className='modal-input'
 							onChange={(e) => {
 								console.log(e.target.files[0]);
 								setMenuItem(e.target.files[0]);
@@ -257,7 +257,7 @@ const Menu = () => {
 							type="text"
 							placeholder='description'
 							name='descriptoin'
-							className='modal-input input-block'
+							className='modal-input'
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
 							required
