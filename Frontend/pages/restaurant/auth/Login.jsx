@@ -8,7 +8,6 @@ const Login = () => {
 
 	const URL = import.meta.env.VITE_REACT_API_URL;
 
-
 	const {
 		openFirstModal,
 		closeFirstModal,
@@ -100,8 +99,14 @@ const Login = () => {
 				},
 				body: JSON.stringify(body),
 			});
-			if (resp.ok) toast.success(`An email was sent to you`);
-			if (resp.status === 404) toast.error(`Sorry, This email is not registered`);
+			if (resp.ok) {
+				setEmail('');
+				toast.success(`An email was sent to you`);
+			}
+			if (resp.status === 404) {
+				setEmail('');
+				toast.success(`An email was sent to you`);
+			}
 			else console.log(resp.message);
 		} catch (error) {
 			console.log(error);
