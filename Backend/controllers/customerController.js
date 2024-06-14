@@ -74,7 +74,7 @@ const customerController = {
         addressDescription,
         customerId
       })
-      return res.status(201).json({ address, customerId });
+      return res.status(201).json({ address });
     } catch (error) {
       console.error("Error :", error);
       return next(new AppError("Internal Server Error", 500));
