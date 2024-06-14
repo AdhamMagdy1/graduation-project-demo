@@ -303,7 +303,7 @@ const SetRestaurant = () => {
 	return (
 		<div className="page-container">
 			<SideBar />
-			<div className="side-page" style={{ backgroundColor: '#f7f2e7' }}>
+			<div className="side-page">
 				<div className="side-page-nav">
 					<div className="side-page-heading">
 						restaurant information
