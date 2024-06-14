@@ -62,42 +62,60 @@
   margin: -10px;
 }
 .chat-section {
-  width: 100vw;
+  max-width: 100%;
   height: 100vh;
   background-image: url('../images/section-background.jpeg');
   background-size: cover;
-  position: relative;
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
   flex-direction: column;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.chat-section .nav {
+.chat-section::-webkit-scrollbar {
+  display: none;
+}
+.chat-section .chat-nav {
+  width: 100%;
+  padding: 0.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--main-color);
-  height: 50px;
-  padding: 5px 10px;
+  height: 4rem;
+  scrollbar-width: none;
 }
-.chat-section .nav .restaurant {
+.chat-section .chat-nav .restaurant {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.chat-section .nav .restaurant .logo img {
+.chat-section .chat-nav .restaurant .logo img {
   max-width: 35px;
 }
-.chat-section .nav .restaurant .res_name {
+.chat-section .chat-nav .restaurant .res_name {
   margin-left: 10px;
   font-size: 20px;
   color: white;
 }
-.chat-section .nav .offers img {
+.chat-section .chat-nav .offers img {
   max-width: 100%;
   cursor: pointer;
+}
+.chat {
+  width: 85%;
+  height: calc(100% - 5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .chat-section .msgs {
   height: 85vh;
   display: flex;
   flex-direction: column-reverse;
-  margin-bottom: 60px;
+  margin-bottom: 0.25rem;
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -125,7 +143,7 @@
 }
 
 .chat-section .msgs .msg p {
-  font-weight: 400;
+  font-weight: 600;
   line-height: normal;
   max-width: 500px;
 }
@@ -142,10 +160,6 @@
   font-style: normal;
 }
 .chat-section .inputbox {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   width: 100%;
 }
 .chat-section .chat-form {
@@ -156,9 +170,12 @@
   padding: 15px;
   background-color: var(--main-color);
   caret-color: white;
-  margin-bottom: 0;
   color: white;
-  border: none;
+  border-radius: 1rem;
+  border: 1px solid white;
+  border-right: none;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 .chat-section .inputbox input:focus {
   outline: none;
@@ -171,4 +188,10 @@
   font-size: 20px;
   border: none;
   padding: 15px;
+  border-radius: 1rem;
+  border: 1px solid white;
+  border-left: 0;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  cursor: pointer;
 }

@@ -3,12 +3,7 @@ import { nanoid } from 'nanoid';
 import './chat.css';
 import { useState, useEffect, useRef } from 'react';
 import logo from '../images/logo.png';
-import offersImage from '../images/offers.png';
 import exampleImage from '../images/example-1.jpeg';
-import exitImage from '../images/exit.png';
-import offer1Image from '../images/offer-1.png';
-import offer2Image from '../images/offer-2.png';
-import offer3Image from '../images/offer-3.png';
 import io from 'socket.io-client';
 
 
@@ -18,7 +13,6 @@ const socket = io('http://localhost:5000/chat');
 const Chat = () => {
   const chatRef = useRef();
 
-  const [viewOffers, setViewOffers] = useState(false);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
 
@@ -66,7 +60,7 @@ const Chat = () => {
   return (
     <>
       <section className='chat-section'>
-        <div className='nav'>
+        <div className='chat-nav'>
           <div className='restaurant'>
             <div className='logo'>
               <img src={logo} alt='LOGO' />
@@ -75,59 +69,38 @@ const Chat = () => {
               <h2>Food</h2>
             </div>
           </div>
-          <div className='offers'>
-            <img
-              src={offersImage}
-              alt=''
-              onClick={() => setViewOffers(true)}
-            />
-          </div>
         </div>
-        <div className='msgs'>
-          {messages.map(function (message) {
-            return <Message key={nanoid()} {...message}></Message>;
-          })}
-          <div className='msg bot'>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Voluptates quos exercitationem cumque quidem, ipsa est tempore,
-              ratione reprehenderit, nesciunt eaque autem magni unde laudantium
-              voluptatum dolores quisquam. Hic, quaerat neque.
-            </p>
-            <img src={exampleImage} alt='' />
+        <div className="chat">
+          <div className='msgs'>
+            {messages.map(function (message) {
+              return <Message key={nanoid()} {...message}></Message>;
+            })}
+            <div className='msg bot'>
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Voluptates quos exercitationem cumque quidem, ipsa est tempore,
+                ratione reprehenderit, nesciunt eaque autem magni unde laudantium
+                voluptatum dolores quisquam. Hic, quaerat neque.
+              </p>
+              <img src={exampleImage} alt='' />
+            </div>
           </div>
-        </div>
-        <div className='inputbox'>
-          <div className='chat-form'>
-            <input
-              type='text'
-              ref={chatRef}
-              value={text}
-              onKeyDown={handleKeypress}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <button onClick={handleSubmit}>Send</button>
-          </div>
-        </div>
-      </section>
-      <div className={viewOffers ? 'shown' : 'hidden'}>
-        <div className='content'>
-          <img
-            className='exit'
-            src={exitImage}
-            onClick={() => setViewOffers(false)}
-            alt=''
-          />
-          <div className='content-center'>
-            <h2>OFFERS</h2>
-            <div className='imgs'>
-              <img src={offer1Image} alt='' />
-              <img src={offer2Image} alt='' />
-              <img src={offer3Image} alt='' />
+          <div className='inputbox'>
+            <div className='chat-form'>
+              <input
+                type='text'
+                ref={chatRef}
+                value={text}
+                onKeyDown={handleKeypress}
+                onChange={(e) => setText(e.target.value)}
+              />
+              <button onClick={handleSubmit}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="white" d="m476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0 0 27.14 52A24.65 24.65 0 0 0 16 72.59v113.29a24 24 0 0 0 19.52 23.57l232.93 43.07a4 4 0 0 1 0 7.86L35.53 303.45A24 24 0 0 0 16 327v113.31A23.57 23.57 0 0 0 26.59 460a23.94 23.94 0 0 0 13.22 4a24.55 24.55 0 0 0 9.52-1.93L476.4 285.94l.19-.09a32 32 0 0 0 0-58.8" /></svg>
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
