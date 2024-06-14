@@ -419,7 +419,7 @@ Owner.beforeSave(async (owner, option) => {
 
 // // Restaurant Hooks
 Restaurant.afterCreate(async (restaurant, option) => {
-  const link = `http://127.0.0.1:5173/restaurant/chat?restaurantId=${restaurant.restaurantId}`;
+  const link = `http://127.0.0.1:5173/customer/chat?restaurantId=${restaurant.restaurantId}`;
   restaurant.link = link;
   await restaurant.save();
 });
