@@ -7,6 +7,7 @@
   --primary-3: #f8f1e1;
   --primary-4: #f7f2e7;
   --primary-5: #f9f6f0;
+  --primary-6: #fcfaf5;
   --white: #fff;
   --black: #000;
   --border: #c9c9c9;
@@ -34,6 +35,8 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-5: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 * {
   padding: 0;
@@ -136,6 +139,7 @@ ul {
   flex-direction: column;
   align-items: start;
   justify-content: center;
+  gap: 0.25rem;
 }
 .input-num {
   width: 4rem;
@@ -670,8 +674,7 @@ td {
   margin: 0.5rem;
   background-color: var(--primary-3);
   border-radius: 7px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  box-shadow: var(--shadow-5);
   transition: 0.3s;
   position: relative;
 }
@@ -846,4 +849,73 @@ textarea {
   cursor: pointer;
   transition: 0.5s;
 }
+/*==============*/
+
+/* || CUSTOMER */
+
+/* || Address */
+.form-holder {
+  width: 400px;
+  padding: 1rem 2rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 15px;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+  background-color: var(--primary-6);
+  position: relative;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 432px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.overlay::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0px;
+  height: 3px;
+  background-color: #f49191;
+  animation-name: running;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  z-index: 10;
+}
+@keyframes running {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.address-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.address-btn {
+  width: 100%;
+  background-color: transparent;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  border-color: transparent;
+  text-transform: capitalize;
+  font-weight: 600;
+  margin: 0.75rem 0;
+  color: var(--white);
+  background-color: #f49191;
+  transition: 0.3s;
+}
+.address-btn:hover {
+  background-color: #d78a8a;
+}
+
 /*==============*/
