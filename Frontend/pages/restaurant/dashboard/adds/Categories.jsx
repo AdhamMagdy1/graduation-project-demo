@@ -58,18 +58,17 @@ const Categories = () => {
 		}
 	};
 
-	//edti category:
+	//edit category:
 	const handleEdit = (id, name) => {
 		setCurrentCategoryId(id);
 		setCategoryName(name);
 		openSecondModal();
 	};
-
 	const { editItem } = useEditItem(`/restaurant/category/`);
-
 	const editCategory = async (id) => {
 		const resp = await editItem(id, newCategory);
 		if (resp) {
+			resetCategory();
 			setUpdateTrigger(prev => prev + 1);
 		} else {
 			console.log(`sorry, somthing went wrong. cannot edit item`);
@@ -107,7 +106,7 @@ const Categories = () => {
 						<input
 							type="text"
 							placeholder='category name'
-							className='modal-input input-block'
+							className='modal-input'
 							value={categoryName}
 							onChange={(e) => setCategoryName(e.target.value)}
 						/>
@@ -178,7 +177,7 @@ const Categories = () => {
 							<input
 								type="text"
 								placeholder='category name'
-								className='modal-input input-block'
+								className='modal-input'
 								value={categoryName}
 								onChange={(e) => setCategoryName(e.target.value)}
 							/>
@@ -201,7 +200,7 @@ const Categories = () => {
 							<input
 								type="text"
 								placeholder='category name'
-								className='modal-input input-block'
+								className='modal-input'
 								value={categoryName}
 								onChange={(e) => setCategoryName(e.target.value)}
 							/>

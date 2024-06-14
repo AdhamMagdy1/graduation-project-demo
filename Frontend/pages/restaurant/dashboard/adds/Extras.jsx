@@ -113,14 +113,14 @@ const Extras = () => {
 						<input
 							type="text"
 							placeholder='name'
-							className='modal-input input-block'
+							className='modal-input'
 							value={extraName}
 							onChange={(e) => setExtraName(e.target.value)}
 						/>
 						<input
 							type="number"
 							placeholder='price'
-							className='modal-input input-block'
+							className='modal-input'
 							value={extraPrice}
 							onChange={(e) => setExtraPrice(e.target.value)}
 						/>
@@ -180,14 +180,14 @@ const Extras = () => {
 						<input
 							type="text"
 							placeholder='name'
-							className='modal-input input-block'
+							className='modal-input'
 							value={extraName}
 							onChange={(e) => setExtraName(e.target.value)}
 						/>
 						<input
 							type="number"
 							placeholder='price'
-							className='modal-input input-block'
+							className='modal-input'
 							value={extraPrice}
 							onChange={(e) => setExtraPrice(e.target.value)}
 						/>
@@ -213,14 +213,14 @@ const Extras = () => {
 						<input
 							type="text"
 							placeholder='name'
-							className='modal-input input-block'
+							className='modal-input'
 							value={extraName}
 							onChange={(e) => setExtraName(e.target.value)}
 						/>
 						<input
 							type="number"
 							placeholder='price'
-							className='modal-input input-block'
+							className='modal-input'
 							value={extraPrice}
 							onChange={(e) => setExtraPrice(e.target.value)}
 						/>
