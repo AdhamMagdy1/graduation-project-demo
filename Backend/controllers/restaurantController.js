@@ -335,13 +335,14 @@ const createRestaurant = async (req, res, next) => {
 };
 
 // Controller function to get all restaurants
-const getAllRestaurants = async (req, res, next) => {
+const getRestaurantById = async (req, res, next) => {
+  const { restaurantId } = req.params;
   try {
-    const restaurants = await Restaurant.findAll();
-    if (restaurants.length === 0) {
-      return next(new AppError('Restaurants not found', 404));
+    const restaurant = await Restaurant.findByPk(restaurantId);
+    if (!restaurant) {
+      return next(new AppError('Restaurant not found', 404));
     }
-    return res.status(200).json(restaurants);
+    return res.status(200).json({restaurant});
   } catch (error) {
     console.error('Error getting restaurants:', error);
     return next(new AppError('Internal server error', 500));
@@ -943,7 +944,7 @@ module.exports = {
   editOwner,
   deleteOwner,
   createRestaurant,
-  getAllRestaurants,
+  getRestaurantById,
   getRestaurant,
   editRestaurant,
   createProduct,
