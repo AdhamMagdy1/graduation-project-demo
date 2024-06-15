@@ -919,3 +919,24 @@ textarea {
 }
 
 /*==============*/
+.AppChart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
+.AppChart .charts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+
+}
+.AppChart .line {
+  width: 70%;
+}
+.AppChart .pie {
+  width: 50%;
+}
