@@ -12,7 +12,7 @@ const fetchSentimentData = async () => {
   const URL = import.meta.env.VITE_REACT_API_URL;
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${URL}/owner/stats`, {
+    const response = await fetch(`${URL}/restaurant/owner/stats`, {
       method: 'GET',
       headers: {
         Authorization: token,
