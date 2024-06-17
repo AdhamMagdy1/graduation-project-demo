@@ -72,7 +72,6 @@ const SetRestaurant = () => {
 			});
 			if (!response.ok) {
 				setIsLoading(false);
-				console.log(`not ok`);
 				return;
 			} else {
 				const resp = await response.json();
@@ -84,7 +83,6 @@ const SetRestaurant = () => {
 					setLink(restaurant.link);
 					setLogo(restaurant.logo);
 				}
-				console.log(`ok`);
 				setIsLoading(false);
 			}
 		} catch (error) {
