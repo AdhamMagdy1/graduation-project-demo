@@ -131,12 +131,14 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
 
+  const customerId = localStorage.getItem('customerId');
+  const addressId = localStorage.getItem('addressId');
+
   useEffect(() => {
     chatRef.current.focus();
 
     socket.on('message', (message, isImage, menuData) => {
 
-      // console.log(message, "from chat ui");
       // for RASA messages
       if (!isImage) {
         setMessages((messages) => [
@@ -167,9 +169,9 @@ const Chat = () => {
   const handleSubmit = () => {
     if (text) {
       const communicatedMessage = {
-        sender: 10,
+        sender: customerId,
         message: text,
-        metadata: { restaurant_id: 57, customer_id: 1, address_id: 1, socket_id: socket.id }
+        metadata: { restaurant_id: restaurantId, customer_id: customerId, address_id: addressId, socket_id: socket.id }
       };
       socket.emit('message', communicatedMessage);
       // for my own messages
