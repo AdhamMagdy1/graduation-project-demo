@@ -6,16 +6,16 @@ import io from 'socket.io-client';
 import { useGlobalContext } from '../restaurant/dashboard/context';
 import extractedData from '../restaurant/new/extractedData.json';
 import { GoogleLogin } from '@react-oauth/google';
+import { isAuthenticated } from '../../src/hooks/auth';
 
 
 const socket = io('http://localhost:5000/chat');
 
 const Chat = () => {
 
-
   const {
     isFirstModalOpen,
-    // openFirstModal,
+    openFirstModal,
     closeFirstModal,
     isSecondModalOpen,
     openSecondModal,
@@ -49,7 +49,7 @@ const Chat = () => {
         console.log(data);
         if (data) {
           window.localStorage.setItem('user', JSON.stringify(data.customer));
-          window.localStorage.setItem('token', data.token);
+          window.localStorage.setItem('customerToken', data.token);
           localStorage.setItem('isCustomerLogged', true);
           setIsloading(false);
           setSuccess(true);
@@ -75,7 +75,7 @@ const Chat = () => {
 
   //address states:
   const URL = import.meta.env.VITE_REACT_API_URL;
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
   const [isloading, setIsloading] = useState(false);
 
   const cities = extractedData;
@@ -106,7 +106,7 @@ const Chat = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: token,
+          Authorization: localStorage.getItem('customerToken'),
         },
         body: JSON.stringify(body),
       });
@@ -172,9 +172,32 @@ const Chat = () => {
     }
   };
 
-  //accessing the restaurantId:
+  //customization:
+  // const [logo, setLogo] = useState();
+  // const [color, setColor] = useState();
+  // accessing the restaurantId:
   // const restaurantId = (new URLSearchParams(window.location.search)).get("restaurantId");
   // console.log(restaurantId);
+  // const getRestaurant = async () => {
+  //   try {
+  //     const resp = fetch(`${URL}/restaurant/${restaurantId}`, {
+  //       method: 'GET',
+  //     });
+  //     if (resp.ok) {
+  //       const resData = await resp.json();
+  //       setLogo(resData.logo);
+  //       setColor(resData.themeColor);
+  //       console.log(color);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    // getRestaurant();
+    isAuthenticated() ? openSecondModal() : openFirstModal();
+  }, []);
 
 
   return (
@@ -183,7 +206,10 @@ const Chat = () => {
         <div className='chat-nav'>
           <div className='restaurant'>
             <div className='logo'>
-              <img src={logo} alt='LOGO' />
+              <img
+                src={`data:image/png;base64,${logo.replace(/^\\x/, '')}`}
+                alt='LOGO'
+              />
             </div>
             <div className='res_name'>
               <h2>Food</h2>

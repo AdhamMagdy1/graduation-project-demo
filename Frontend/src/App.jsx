@@ -13,8 +13,8 @@ import SetRestaurant from '../pages/restaurant/dashboard/settings/SetRestaurant'
 import SetEmployee from '../pages/restaurant/dashboard/settings/SetEmployee';
 import SetProfile from '../pages/restaurant/dashboard/settings/SetProfile';
 import Chat from '../pages/customer/Chat';
-import UsrLogin from '../pages/customer/auth/UserLogin';
-import { isAuthenticated } from './hooks/auth';
+// import UsrLogin from '../pages/customer/auth/UserLogin';
+// import { isAuthenticated } from './hooks/auth';
 
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route
             path="/customer/chat"
-            element={isAuthenticated() ? <Chat /> : <UsrLogin />}
+            element={<Chat />}
           />
           <Route path="/" element={<Navigate to={'/restaurant/register'} />} />
           <Route path="/restaurant/login" element={<Login />} />
