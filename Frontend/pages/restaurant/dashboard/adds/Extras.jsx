@@ -203,7 +203,7 @@ const Extras = () => {
 			<div className={isSecondModalOpen ? "modal-overlay show-modal" : "modal-overlay"}>
 				<div className="modal-container">
 					<h2 className="modal-heading">
-						edit category
+						edit extra
 					</h2>
 					<form onSubmit={(e) => {
 						e.preventDefault();

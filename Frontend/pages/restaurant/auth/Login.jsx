@@ -32,6 +32,8 @@ const Login = () => {
 			"accountType": accountType
 		};
 
+		console.log(data);
+
 		const login = async () => {
 			try {
 				const response = await fetch('http://localhost:5000/restaurant/login', {
@@ -116,7 +118,7 @@ const Login = () => {
 	return (
 		<main>
 			<div className="form-container">
-				<div className="logo">chef<span className="second-word">bot</span></div>
+				<div className="logo" style={{ color: 'white' }} >chef<span className="second-word">bot</span></div>
 				<p className="text">sign in!</p>
 
 				<form onSubmit={handleSubmit} className="form">

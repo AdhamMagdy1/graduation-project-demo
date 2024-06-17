@@ -22,7 +22,7 @@ const SideBar = () => {
 		<>
 			<section className="side-bar">
 				<div style={{ position: 'relative' }} className="side-container">
-					<div className="logo">chef<span className="second-word">bot</span></div>
+					<div className="logo" >chef<span className="second-word">bot</span></div>
 					<div className="side-links">
 
 						<Link to="/restaurant/orders" className="side-link" >
