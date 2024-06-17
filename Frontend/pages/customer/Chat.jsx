@@ -134,15 +134,30 @@ const Chat = () => {
   useEffect(() => {
     chatRef.current.focus();
 
-    socket.on('message', (message) => {
+    socket.on('message', (message, isImage, menuData) => {
+
+      // console.log(message, "from chat ui");
       // for RASA messages
-      setMessages((messages) => [
-        {
-          body: message,
-          from: 'bot',
-        },
-        ...messages,
-      ]);
+      if (!isImage) {
+        setMessages((messages) => [
+          {
+            body: message,
+            from: 'bot',
+          },
+          ...messages,
+        ]);
+      } else if (isImage, menuData.length > 0) {
+        console.log(menuData);
+        setMessages((messages) => [
+          {
+            body: message,
+            from: 'bot',
+          },
+          ...messages,
+        ]);
+        // handle menu images convertion here
+        // menuData is an array of objects each object has a key of menuImage and value of String
+      }
     });
     return () => {
       socket.off('message');
@@ -151,7 +166,12 @@ const Chat = () => {
 
   const handleSubmit = () => {
     if (text) {
-      socket.emit('message', text);
+      const communicatedMessage = {
+        sender: 10,
+        message: text,
+        metadata: { restaurant_id: 57, customer_id: 1, address_id: 1, socket_id: socket.id }
+      };
+      socket.emit('message', communicatedMessage);
       // for my own messages
       setMessages([
         {

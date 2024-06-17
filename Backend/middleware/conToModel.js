@@ -1,11 +1,10 @@
-const { Order,/* CustomerPhoneNumber,*/ Feedback, Address } = require('../models/allModels'); // Import the customer related models
+const { Order, Feedback, Address, Customer, RestaurantMenu } = require('../models/allModels'); // Import the customer related models
+const concatenateFoodSize = require('../utils/orderFormate'); // Import the orderFormate utility
 
 // const fetch = require('node-fetch');
 
 const getModelRes = async (mainNamespace, communicatedMessage) => {
   try {
-    let result = ''; // Initialize an empty string to store the result
-    
     // Sending the communicated message via fetch POST request
     const response = await fetch(
       'http://127.0.0.1:5005/webhooks/rest/webhook',
@@ -17,22 +16,33 @@ const getModelRes = async (mainNamespace, communicatedMessage) => {
         body: JSON.stringify(communicatedMessage),
       }
     );
-
+    
     // Parsing the response as JSON
     const responseData = await response.json();
+    // console.log(responseData);
+    let result = ''; // Initialize an empty string to store the result
+    let menuData;
+    let isImage;
 
     // Looping through each object in the response array
     for (const data of responseData) {
       if (data.hasOwnProperty('custom')) {
+        
         // If 'custom' property exists, call the customAction function and append its response to the result
         const customResponse = await customAction(mainNamespace, data.custom);
-        result += customResponse;
+        if (data.custom.code == 444) {
+          menuData = customResponse.menusData;
+          isImage = customResponse.isImage
+        }
+
       } else {
         // If 'custom' property doesn't exist, append the message to the result
-        result += data.text;
+        result += data.text + ' ';
       }
     }
-    return result; // Return the concatenated result string
+    // console.log("connect to model file");
+    // console.log(result, menuData, isImage);
+    return { emitMessage: result, menuData, isImage }; // Return the concatenated result string
   } catch (error) {
     console.error('Error:', error);
     return 'Error occurred while processing the request.';
@@ -41,44 +51,52 @@ const getModelRes = async (mainNamespace, communicatedMessage) => {
 
 // Custom action function
 const customAction = async (mainNamespace, customObject) => {
-  if (customObject.code == 420) {
+  /*if (customObject.code == 420) {
     // If code is 420, return nothing
     return '';
-  } else if (customObject.code == 422) {
+  } else */if (customObject.code == 422) {
     // If code is 422, call createOrderMessage function and return food extra and food size
-    const { restaurant_id, customer_id , socket_id, phone_number,address_id } = customObject;
-    const orderDetails = {
-      food: customObject.food_extra,
-      size: customObject.food_size,
-    };
+    const { restaurant_id, customer_id, address_id, phone_number, total_price } = customObject;
+    const orderDetails = concatenateFoodSize({ food: customObject.food_extra, size: customObject.food_size });
+    // console.log(orderDetails);
+    console.log(restaurant_id);
     const newOrder = await Order.create({
-      deliveryCost: 20,
-      orderDetails,
+      totalPrice: total_price,
+      orderDetails: { "food": orderDetails },
       phoneNumber: phone_number,
-      addressId: address_id || 1,
-      restaurantId: restaurant_id || 57,
-      customerId: customer_id || 1
+      addressId: address_id,
+      // status: 'delivered',
+      restaurantId: restaurant_id,
+      customerId: customer_id
     });
-    const order = await Order.findOne({  where: { OrderId: newOrder.OrderId }, include: [ Address ] });
-    mainNamespace.to(restaurant_id).emit('order', order);
-    return '';
-  }else if(customObject.code == 422){
-    const { restaurant_id,feedback } = customObject;
-    const feedbackRecord =await Feedback.create({
-        message:feedback,
-        restaurantId:restaurant_id
+    // console.log(newOrder.orderDetails);
+    const order = await Order.findOne({  where: { orderId: newOrder.orderId }, include: [ Address/*, Customer*/ ] });
+    try {
+      mainNamespace.to(57).emit('order', order);
+      console.log('order emitted');
+    } catch (error) {
+      console.log('Error emitting order:', error);
+    }
+    // return '';
+  } else if (customObject.code == 440) {
+    const { restaurant_id, feedback } = customObject;
+    const feedbackRecord = await Feedback.create({
+        message: feedback,
+        restaurantId: restaurant_id
     });
-    return '';
-    
-
-  } else {
+    // return '';
+  } else if (customObject.code == 444) {
+    const { restaurant_id } = customObject;
+    const menus = await RestaurantMenu.findAll({ where: { restaurantId: restaurant_id }, attributes: ['menuImage'] });
+    return { menusData: menus, isImage: true };
+  }/* else {
     // For other codes, return a default message
     return 'Default custom action performed.';
-  }
+  }*/
 };
 
 const orderState = async (order) => {
-  await Order.update({ status: order.newStatus }, { where: { OrderId: order.orderId } });
+  await Order.update({ status: order.newStatus }, { where: { orderId: order.orderId } });
 };
 
 module.exports = {
