@@ -50,6 +50,7 @@ const SetRestaurant = () => {
 	const [name, setName] = useState();
 	const [desc, setDesc] = useState();
 	const [logo, setLogo] = useState(null);
+	const [newLogo, setNewLogo] = useState(null);
 	const [color, setColor] = useState();
 	const [link, setLink] = useState();
 	const [disabled, setDisabled] = useState(true);
@@ -151,7 +152,7 @@ const SetRestaurant = () => {
 		formData.append('name', name);
 		formData.append('description', desc);
 		formData.append('themeColor', color);
-		formData.append('logo', logo);
+		formData.append('logo', newLogo);
 		//logging data before send:
 		// for (let [key, value] of formData.entries()) {
 		// 	console.log(`${key}: ${value}`);
@@ -340,7 +341,7 @@ const SetRestaurant = () => {
 						<div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }} >
 							<div>
 								{logo && (
-									<img src={typeof logo === 'string' ? `data:image/png;base64,${logo.replace(/^\\x/, '')}` : URL.createObjectURL(logo)} alt="Current logo" style={{ width: '50px', height: '50px', margin: '10px 0px' }} />
+									<img style={{ width: '50px' }} src={`data:image/png;base64,${logo.replace(/^\\x/, '')}`} />
 								)}
 							</div>
 							<div style={{ marginLeft: '0.75rem' }} >
@@ -351,7 +352,7 @@ const SetRestaurant = () => {
 									id='logo'
 									name="logo"
 									onChange={(event) => {
-										setLogo(event.target.files[0]);
+										setNewLogo(event.target.files[0]);
 										console.log(event.target.files);
 									}}
 									disabled={disabled}
