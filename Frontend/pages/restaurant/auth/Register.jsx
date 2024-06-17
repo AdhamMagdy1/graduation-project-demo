@@ -61,6 +61,7 @@ const RestaurantRegister = () => {
 		//if button was enabled with js hack:
 		const v1 = userRgx.test(user);
 		const v2 = pwdRgx.test(pwd);
+		console.log(v1, v2);
 		if (!v1 || !v2) {
 			setErrMsg("Invalid Entry");
 			return;
@@ -108,7 +109,7 @@ const RestaurantRegister = () => {
 			) : (
 				<main>
 					<div className="form-container">
-						<div className="logo">chef<span className="second-word">bot</span></div>
+						<div className="logo" style={{ color: 'white' }}>chef<span className="second-word">bot</span></div>
 						<p className="text">sign up as a shop owner</p>
 
 
