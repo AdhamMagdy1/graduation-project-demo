@@ -9,10 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.2",
     "buffer": "^6.0.3",
+    "chart.js": "^4.4.3",
+    "jwt-decode": "^4.0.0",
     "nanoid": "^5.0.7",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
@@ -21,10 +25,7 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8",
     "toastify": "^2.0.1",
-    "@react-oauth/google": "^0.12.1",
-    "jwt-decode": "^4.0.0",
-    "chart.js": "^4.4.3",
-    "react-chartjs-2": "^5.2.0"
+    "values.js": "^2.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
