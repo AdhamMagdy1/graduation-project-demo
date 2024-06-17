@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { nanoid } from 'nanoid';
 import { useState, useEffect, useRef } from 'react';
-import logo from '../images/logo.png';
+// import logo from '../images/logo.png';
 import io from 'socket.io-client';
+import Values from "values.js";
 import { useGlobalContext } from '../restaurant/dashboard/context';
 import extractedData from '../restaurant/new/extractedData.json';
 import { GoogleLogin } from '@react-oauth/google';
@@ -75,7 +76,6 @@ const Chat = () => {
 
   //address states:
   const URL = import.meta.env.VITE_REACT_API_URL;
-  // const token = localStorage.getItem('token');
   const [isloading, setIsloading] = useState(false);
 
   const cities = extractedData;
@@ -115,8 +115,8 @@ const Chat = () => {
         const customerData = await resp.json();
         localStorage.setItem('addressId', customerData.address.addressId);
         localStorage.setItem('customerId', customerData.address.customerId);
-        // navigate(`/customer/chat`);
         closeSecondModal();
+        chatRef.current.focus();
       } else {
         setIsloading(false);
         console.log(resp.message);
@@ -173,75 +173,92 @@ const Chat = () => {
   };
 
   //customization:
-  // const [logo, setLogo] = useState();
-  // const [color, setColor] = useState();
+  const [logo, setLogo] = useState('');
+  const [color, setColor] = useState('');
+  const [name, setName] = useState('');
   // accessing the restaurantId:
-  // const restaurantId = (new URLSearchParams(window.location.search)).get("restaurantId");
+  const restaurantId = (new URLSearchParams(window.location.search)).get("restaurantId");
   // console.log(restaurantId);
-  // const getRestaurant = async () => {
-  //   try {
-  //     const resp = fetch(`${URL}/restaurant/${restaurantId}`, {
-  //       method: 'GET',
-  //     });
-  //     if (resp.ok) {
-  //       const resData = await resp.json();
-  //       setLogo(resData.logo);
-  //       setColor(resData.themeColor);
-  //       console.log(color);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const getRestaurant = async () => {
+    try {
+      const resp = await fetch(`${URL}/restaurant/customize/${restaurantId}/`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
+
+      if (resp.status === 200) {
+        const resData = await resp.json();
+        console.log('Response Data:', resData);
+
+        if (resData && resData.restaurant) {
+          const restaurant = resData.restaurant;
+          console.log('Restaurant Data:', restaurant);
+
+          setLogo(restaurant.logo);
+          setColor(restaurant.themeColor);
+          setName(restaurant.name);
+
+          console.log('Theme Color:', restaurant.themeColor);
+        } else {
+          console.log('No restaurant data found in response.');
+        } if (resp.status === 304) {
+          console.log('Resource not modified since the last request.');
+          // Handle 304 case if necessary
+        }
+      } else {
+        console.log('Fetch failed with status:', resp.status);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    // getRestaurant();
+    getRestaurant();
     isAuthenticated() ? openSecondModal() : openFirstModal();
   }, []);
 
 
   return (
     <>
-      <section className='chat-section'>
+      <section className='chat-section'
+        style={{
+          backgroundImage: `linear-gradient(120deg,${color}, rgb(241, 247, 248) 70%)`
+        }}
+      >
         <div className='chat-nav'>
           <div className='restaurant'>
-            <div className='logo'>
+            <div style={{ marginTop: '0px' }} className='logo'>
               <img
                 src={`data:image/png;base64,${logo.replace(/^\\x/, '')}`}
                 alt='LOGO'
               />
             </div>
-            <div className='res_name'>
-              <h2>Food</h2>
+            <div className='res-name'>
+              <h4>{name}</h4>
             </div>
           </div>
         </div>
         <div className="chat">
           <div className='msgs'>
             {messages.map(function (message) {
-              return <Message key={nanoid()} {...message}></Message>;
+              return <Message key={nanoid()} {...message} color={color}></Message>;
             })}
-            {/* <div className='msg bot'>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Voluptates quos exercitationem cumque quidem, ipsa est tempore,
-                ratione reprehenderit, nesciunt eaque autem magni unde laudantium
-                voluptatum dolores quisquam. Hic, quaerat neque.
-              </p>
-              <img src={exampleImage} alt='' />
-            </div> */}
           </div>
           <div className='inputbox'>
             <div className='chat-form'>
               <input
                 type='text'
+                style={{ caretColor: `${color}` }}
                 ref={chatRef}
                 value={text}
                 onKeyDown={handleKeypress}
                 onChange={(e) => setText(e.target.value)}
               />
               <button onClick={handleSubmit}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="white" d="m476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0 0 27.14 52A24.65 24.65 0 0 0 16 72.59v113.29a24 24 0 0 0 19.52 23.57l232.93 43.07a4 4 0 0 1 0 7.86L35.53 303.45A24 24 0 0 0 16 327v113.31A23.57 23.57 0 0 0 26.59 460a23.94 23.94 0 0 0 13.22 4a24.55 24.55 0 0 0 9.52-1.93L476.4 285.94l.19-.09a32 32 0 0 0 0-58.8" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill={color} d="m476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0 0 27.14 52A24.65 24.65 0 0 0 16 72.59v113.29a24 24 0 0 0 19.52 23.57l232.93 43.07a4 4 0 0 1 0 7.86L35.53 303.45A24 24 0 0 0 16 327v113.31A23.57 23.57 0 0 0 26.59 460a23.94 23.94 0 0 0 13.22 4a24.55 24.55 0 0 0 9.52-1.93L476.4 285.94l.19-.09a32 32 0 0 0 0-58.8" /></svg>
               </button>
             </div>
           </div>
@@ -338,7 +355,7 @@ const Chat = () => {
               />
             </div>
 
-            <button className='address-btn' type='submit' >done</button>
+            <button className='address-btn' type='submit' style={{ backgroundColor: `${color}` }} >done</button>
           </form>
         </div>
       </div>
@@ -347,9 +364,15 @@ const Chat = () => {
   );
 };
 
-const Message = ({ body, from }) => {
+const Message = ({ body, from, color }) => {
+
+  const colors = new Values(`${color}`).all(10);
+
   return (
-    <div className={'msg ' + from}>
+    <div
+      style={from === 'bot' ? { backgroundColor: 'white' } : { backgroundColor: `rgb(${colors[5].rgb[0]},${colors[5].rgb[1]},${colors[5].rgb[2]})` }}
+      className={'msg ' + from}
+    >
       <p>{body}</p>
     </div>
   );
