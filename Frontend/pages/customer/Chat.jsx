@@ -2,28 +2,80 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect, useRef } from 'react';
 import logo from '../images/logo.png';
-import exampleImage from '../images/example-1.jpeg';
 import io from 'socket.io-client';
 import { useGlobalContext } from '../restaurant/dashboard/context';
 import extractedData from '../restaurant/new/extractedData.json';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 const socket = io('http://localhost:5000/chat');
 
 const Chat = () => {
 
+
   const {
     isFirstModalOpen,
-    openFirstModal,
+    // openFirstModal,
     closeFirstModal,
     isSecondModalOpen,
     openSecondModal,
     closeSecondModal
   } = useGlobalContext();
 
-  //address variables:
+  //auth states:
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [success]);
+
+  const responseMessage = (response) => {
+    setIsloading(true);
+    fetch('http://localhost:5000/customer/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response.credential}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data) {
+          window.localStorage.setItem('user', JSON.stringify(data.customer));
+          window.localStorage.setItem('token', data.token);
+          localStorage.setItem('isCustomerLogged', true);
+          setIsloading(false);
+          setSuccess(true);
+          closeFirstModal();
+          openSecondModal();
+        } else {
+          setErrMsg('Login failed. Please try again.');
+          localStorage.setItem('isCustomerLogged', false);
+        }
+      })
+      .catch((error) => {
+        console.error('Error during login:', error);
+        setErrMsg('Login failed. Please try again.');
+        localStorage.setItem('isCustomerLogged', false);
+
+      });
+  };
+
+  const errorMessage = (error) => {
+    console.error('Google login error:', error);
+    setErrMsg('Login failed. Please try again.');
+  };
+
+  //address states:
   const URL = import.meta.env.VITE_REACT_API_URL;
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4MzY5MTQzLCJleHAiOjE3MTkwMTcxNDN9.7nSK6tG0R2jnBE91aC9aTIVRAkTSR-9pp-G4ISHJK5s';
+  const token = localStorage.getItem('token');
   const [isloading, setIsloading] = useState(false);
 
   const cities = extractedData;
@@ -74,20 +126,18 @@ const Chat = () => {
     }
   };
 
-  const handleSubmitLogin = (e) => {
-    e.preventDefault();
-    setIsloading(true);
-    setTimeout(() => {
-      setIsloading(false);
-      openSecondModal();
-      closeFirstModal();
-    }, 3000);
+  // const handleSubmitLogin = (e) => {
+  //   e.preventDefault();
+  //   setIsloading(true);
+  //   setTimeout(() => {
+  //     setIsloading(false);
+  //     openSecondModal();
+  //     closeFirstModal();
+  //   }, 3000);
 
-  };
+  // };
 
-  useEffect(() => {
-    openFirstModal();
-  }, []);
+
 
   const chatRef = useRef();
 
@@ -158,7 +208,7 @@ const Chat = () => {
             {messages.map(function (message) {
               return <Message key={nanoid()} {...message}></Message>;
             })}
-            <div className='msg bot'>
+            {/* <div className='msg bot'>
               <p>
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Voluptates quos exercitationem cumque quidem, ipsa est tempore,
@@ -166,7 +216,7 @@ const Chat = () => {
                 voluptatum dolores quisquam. Hic, quaerat neque.
               </p>
               <img src={exampleImage} alt='' />
-            </div>
+            </div> */}
           </div>
           <div className='inputbox'>
             <div className='chat-form'>
@@ -191,9 +241,11 @@ const Chat = () => {
             isloading &&
             <div style={{ height: '100%' }} className="overlay"></div>
           }
-          <form style={{ height: 'fit-content' }} onSubmit={handleSubmitLogin} className='address-form'>
-            <button className='address-btn' type='submit' >login with google acount</button>
-          </form>
+          <p className={errMsg ? 'errMsg' : 'offscreen'} aria-live="assertive">
+            {errMsg}
+          </p>
+          <h2 className="modal-heading">login</h2>
+          <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
         </div>
       </div>
 
