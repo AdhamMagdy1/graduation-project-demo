@@ -49,7 +49,6 @@ const Login = () => {
 				} else {
 					setSuccess(true);
 					const token = result.token;
-					// console.log(token);
 					localStorage.setItem("token", token);
 
 					const accountType = result.accountType;
@@ -70,7 +69,7 @@ const Login = () => {
 
 						if (userData.hasRestaurant) {
 							localStorage.setItem("hasRestaurant", userData.hasRestaurant);
-							navigate("/restaurant/stats");
+							navigate("/restaurant/edit");
 						} else {
 							navigate("/restaurant/create");
 						}

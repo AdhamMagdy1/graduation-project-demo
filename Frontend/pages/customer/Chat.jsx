@@ -126,19 +126,6 @@ const Chat = () => {
     }
   };
 
-  // const handleSubmitLogin = (e) => {
-  //   e.preventDefault();
-  //   setIsloading(true);
-  //   setTimeout(() => {
-  //     setIsloading(false);
-  //     openSecondModal();
-  //     closeFirstModal();
-  //   }, 3000);
-
-  // };
-
-
-
   const chatRef = useRef();
 
   const [messages, setMessages] = useState([]);
