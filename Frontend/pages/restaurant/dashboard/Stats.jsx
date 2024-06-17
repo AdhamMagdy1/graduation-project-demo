@@ -5,11 +5,15 @@ const Stats = () => {
   return (
     <div className="page-container">
       <SideBar />
-      <div className="AppChart">
-        <h1>Sentiment Analysis Visualizations</h1>
-        <div className="charts">
-          <LineChartComponent />
-          <PieChartComponent />
+      <div className="side-page">
+        <div className="side-page-nav">
+          <h1 className='side-page-heading' >Sentiment Analysis Visualizations</h1>
+        </div>
+        <div className="AppChart">
+          <div className="charts">
+            <LineChartComponent />
+            <PieChartComponent />
+          </div>
         </div>
       </div>
     </div>
