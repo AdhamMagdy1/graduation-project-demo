@@ -14,7 +14,7 @@ const {
   getOwner,
   deleteOwnerRestaurant,
   createRestaurant,
-  getAllRestaurants,
+  getRestaurantById,
   getRestaurant,
   editRestaurant,
   getAllProducts,
@@ -91,10 +91,10 @@ router.post(
   createRestaurant
 );
 router.get(
-  "/all",
+  "/customize/:restaurantId",
   authenticateUser(Owner),
   autherizeUser("Owner"),
-  getAllRestaurants
+  getRestaurantById
 );
 router.get(
   "/info",
