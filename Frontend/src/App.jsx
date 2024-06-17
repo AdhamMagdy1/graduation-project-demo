@@ -13,9 +13,10 @@ import SetRestaurant from '../pages/restaurant/dashboard/settings/SetRestaurant'
 import SetEmployee from '../pages/restaurant/dashboard/settings/SetEmployee';
 import SetProfile from '../pages/restaurant/dashboard/settings/SetProfile';
 import Chat from '../pages/customer/Chat';
-import Address from '../pages/customer/Address';
 import UsrLogin from '../pages/customer/auth/UserLogin';
 import { isAuthenticated } from './hooks/auth';
+
+
 function App() {
   return (
     <>
@@ -42,7 +43,6 @@ function App() {
           <Route path="/restaurant/edit" element={<SetRestaurant />} />
           <Route path="/restaurant/employee" element={<SetEmployee />} />
           <Route path="/restaurant/profile" element={<SetProfile />} />
-          <Route path="/customer/address" element={<Address />} />
         </Routes>
       </BrowserRouter>
     </>
