@@ -15,13 +15,21 @@ const runSocket = (io, mainNamespace) => {
     });
 
     socket.on('message', async (msg) => {
-      const communicatedMessage = {
-        sender: 2,
-        message: msg,
-        metadata: { restaurant_id: 11, customer_id: 1, socket_id: socket.id },
-      };
-      const emitMessage = await getModelRes(mainNamespace, communicatedMessage);
-      mainNamespace.to(socket.id).emit('message', emitMessage);
+      // const communicatedMessage = {
+      //   sender: 2,
+      //   message: msg,
+      //   metadata: { restaurant_id: 11, customer_id: 1, socket_id: socket.id },
+      // };
+
+      const { emitMessage, menuData, isImage } = await getModelRes(mainNamespace, msg);
+      // console.log("socket.js")
+      // console.log(msg);
+      // console.log(emitMessage, menuData, isImage);
+      mainNamespace.to(socket.id).emit('message', emitMessage, isImage, menuData);
+
+
+      // const emitMessage = await getModelRes(mainNamespace, communicatedMessage);
+      // mainNamespace.to(socket.id).emit('message', emitMessage);
     });
 
     socket.on('changeOrderState', async (order, callback) => {
