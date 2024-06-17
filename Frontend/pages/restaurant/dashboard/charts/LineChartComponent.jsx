@@ -90,7 +90,7 @@ const LineChartComponent = () => {
 
   return (
     <div className="line">
-      <h2>Sentiment Over Time</h2>
+      <h2 className='side-page-heading' style={{ fontSize: '26px' }}>Sentiment Over Time</h2>
       <Line data={chartData} options={options} />
     </div>
   );
