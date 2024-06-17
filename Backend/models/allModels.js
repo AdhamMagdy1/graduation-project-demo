@@ -279,7 +279,7 @@ const Feedback = sequelize.define(
     },
     feedbackTime: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.NOW,
+      defaultValue: Date.now(),
     },
   },
   { timestamps: false, freezeTableName: true }
