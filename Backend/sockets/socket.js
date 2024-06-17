@@ -22,14 +22,7 @@ const runSocket = (io, mainNamespace) => {
       // };
 
       const { emitMessage, menuData, isImage } = await getModelRes(mainNamespace, msg);
-      // console.log("socket.js")
-      // console.log(msg);
-      // console.log(emitMessage, menuData, isImage);
       mainNamespace.to(socket.id).emit('message', emitMessage, isImage, menuData);
-
-
-      // const emitMessage = await getModelRes(mainNamespace, communicatedMessage);
-      // mainNamespace.to(socket.id).emit('message', emitMessage);
     });
 
     socket.on('changeOrderState', async (order, callback) => {
@@ -54,13 +47,5 @@ const runSocket = (io, mainNamespace) => {
     mode: 'development',
   });
 };
-
-// try {
-//   // Emit the changeOrderState event to the server
-//   const response = await restaurantSocket.emitWithAck('changeOrderState', { orderId, newStatus });
-//   console.log(`Order ${orderId} status changed to ${newStatus}`);
-// } catch (error) {
-//   console.log('Error changing order status:', error);
-// }
 
 module.exports = { runSocket };
