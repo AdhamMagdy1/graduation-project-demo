@@ -92,8 +92,6 @@ router.post(
 );
 router.get(
   "/customize/:restaurantId",
-  authenticateUser(Owner),
-  autherizeUser("Owner"),
   getRestaurantById
 );
 router.get(
