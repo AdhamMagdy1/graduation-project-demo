@@ -890,7 +890,7 @@ textarea {
   width: 0px;
   height: 3px;
   margin-left: 80px;
-  background-color: #f49191;
+  background-color: #4b6df6;
   animation-name: running;
   animation-duration: 1s;
   animation-timing-function: linear;
@@ -952,6 +952,13 @@ textarea {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+.res-name {
+  font-weight: 400;
+  font-size: 18px;
+  text-transform: capitalize;
+  color: var(--grey-700);
+  letter-spacing: 0.75px;
+}
 .chat-section::-webkit-scrollbar {
   display: none;
 }
@@ -961,29 +968,29 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--main-color);
+  background-color: var(--white);
+  box-shadow: var(--shadow-3);
   height: 4rem;
   scrollbar-width: none;
 }
 .chat-section .chat-nav .restaurant {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 .chat-section .chat-nav .restaurant .logo img {
-  max-width: 35px;
+  width: 100%;
+  max-width: 50px;
 }
-.chat-section .chat-nav .restaurant .res_name {
-  margin-left: 10px;
-  font-size: 20px;
-  color: white;
+.chat-section .chat-nav .restaurant .res-name {
+  color: var(--grey-700);
 }
 .chat-section .chat-nav .offers img {
   max-width: 100%;
   cursor: pointer;
 }
 .chat {
-  width: 85%;
+  width: 80%;
   height: calc(100% - 5rem);
   display: flex;
   flex-direction: column;
@@ -1018,6 +1025,7 @@ textarea {
   padding: 15px;
   margin: 10px;
   border-radius: 15px;
+  box-shadow: var(--shadow-5);
 }
 
 .chat-section .msgs .msg p {
@@ -1046,12 +1054,12 @@ textarea {
 }
 .chat-section .inputbox input {
   flex: 1;
-  padding: 15px;
-  background-color: var(--main-color);
-  caret-color: white;
-  color: white;
+  padding: 15px 20px;
+  background-color: var(--white);
+  caret-color: var(--black);
+  color: var(--black);
   border-radius: 2rem;
-  border: 1px solid white;
+  border: 1px solid var(--grey-400);
   border-right: none;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -1060,15 +1068,14 @@ textarea {
   outline: none;
 }
 .chat-section .inputbox button {
-  background-color: var(--main-color);
-  color: white;
+  background-color: var(--white);
+  color: var(--black);
   text-align: center;
   font-weight: bold;
   font-size: 20px;
-  border: none;
   padding: 15px 20px;
   border-radius: 2rem;
-  border: 1px solid white;
+  border: 1px solid var(--grey-400);
   border-left: 0;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
