@@ -133,7 +133,7 @@ const Chat = () => {
   const chatRef = useRef();
 
   const [messages, setMessages] = useState([]);
-  const [isImage, setIsImage] = useState(false);
+  // const [isImage, setIsImage] = useState(false);
   const [images, setImages] = useState([]);
   const [text, setText] = useState('');
 
@@ -151,11 +151,13 @@ const Chat = () => {
           {
             body: message,
             from: 'bot',
+            isImage: false,
           },
           ...messages,
         ]);
+        // setIsImage(false);
       } else if (isImage, menuData.length > 0) {
-        setIsImage(true);
+        // setIsImage(true);
         setImages(menuData);
         console.log(menuData);
 
@@ -163,6 +165,7 @@ const Chat = () => {
           {
             body: message,
             from: 'bot',
+            isImage: true,
           },
           ...messages,
         ]);
@@ -279,7 +282,8 @@ const Chat = () => {
                 key={nanoid()}
                 {...message}
                 color={color}
-                isImage={isImage}
+                // isImage={isImage}
+                // setIsImage={setIsImage}
                 images={images}
                 openModal={openThirdModal}
                 isModalOpen={isThirdModalOpen}
@@ -404,9 +408,10 @@ const Chat = () => {
   );
 };
 
-const Message = ({ body, from, color, isImage, images, openModal, closeModal, isModalOpen }) => {
+const Message = ({ body, from, color, isImage/*, setIsImage*/, images, openModal, closeModal, isModalOpen }) => {
 
   const colors = new Values(`${color}`).all(10);
+  // if (typeof(body) === 'string') setIs/*Image(false);/
 
   return (
     <>
@@ -415,7 +420,7 @@ const Message = ({ body, from, color, isImage, images, openModal, closeModal, is
         className={'msg ' + from}
       >
         {
-          isImage && (
+          (isImage && from === 'bot') && (
             <div className='menu-items'>
               {
                 images.map((image) => {
