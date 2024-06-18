@@ -1028,7 +1028,6 @@ textarea {
   border-radius: 15px;
   box-shadow: var(--shadow-5);
 }
-
 .chat-section .msgs .msg p {
   font-weight: 600;
   line-height: normal;
@@ -1038,6 +1037,13 @@ textarea {
   .chat-section .msgs .msg p {
     max-width: 300px;
   }
+}
+.menu-items {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.3rem;
 }
 .chat-section .msgs .msg.bot img {
   margin-top: 10px;

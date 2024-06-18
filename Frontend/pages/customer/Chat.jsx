@@ -285,6 +285,7 @@ const Chat = () => {
                 isModalOpen={isThirdModalOpen}
                 closeModal={closeThirdModal}  ></Message>;
             })}
+
           </div>
           <div className='inputbox'>
             <div className='chat-form'>
@@ -415,21 +416,27 @@ const Message = ({ body, from, color, isImage, images, openModal, closeModal, is
       >
         {
           isImage && (
-            images.map((image) => {
-              return <div key={nanoid()}>
-                <button style={{ cursor: 'pointer' }} onClick={openModal} >
-                  <img
-                    src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`}
-                    alt={`menu image`}
-                    style={{ width: '200px', height: '200px' }}
-                  />
-                </button>
-                <div className={isModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
-                  <img style={{ width: '500px', height: '500px' }} src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`} alt={`menu image`} />
-                  <FaTimes onClick={closeModal} />
-                </div>
-              </div>;
-            })
+            <div className='menu-items'>
+              {
+                images.map((image) => {
+                  return <div key={nanoid()}>
+                    <button style={{ cursor: 'pointer' }} onClick={openModal} >
+                      <img
+                        src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`}
+                        alt={`menu image`}
+                        style={{ width: '200px', height: '200px' }}
+                      />
+                    </button>
+                    <div className={isModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+                      <div style={{ backgroundColor: 'transparent' }} className="modal-container">
+                        <img style={{ width: '500px', height: '500px' }} src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`} alt={`menu image`} />
+                        <FaTimes style={{ color: 'white' }} onClick={closeModal} />
+                      </div>
+                    </div>
+                  </div>;
+                })
+              }
+            </div>
           )
         }
         <p>{body}</p>
