@@ -8,6 +8,7 @@ import { useGlobalContext } from '../restaurant/dashboard/context';
 import extractedData from '../restaurant/new/extractedData.json';
 import { GoogleLogin } from '@react-oauth/google';
 import { isAuthenticated } from '../../src/hooks/auth';
+import { FaTimes } from 'react-icons/fa';
 
 
 const socket = io('http://localhost:5000/chat');
@@ -20,7 +21,10 @@ const Chat = () => {
     closeFirstModal,
     isSecondModalOpen,
     openSecondModal,
-    closeSecondModal
+    closeSecondModal,
+    isThirdModalOpen,
+    openThirdModal,
+    closeThirdModal,
   } = useGlobalContext();
 
   //auth states:
@@ -129,6 +133,8 @@ const Chat = () => {
   const chatRef = useRef();
 
   const [messages, setMessages] = useState([]);
+  const [isImage, setIsImage] = useState(false);
+  const [images, setImages] = useState([]);
   const [text, setText] = useState('');
 
   const customerId = localStorage.getItem('customerId');
@@ -149,7 +155,10 @@ const Chat = () => {
           ...messages,
         ]);
       } else if (isImage, menuData.length > 0) {
+        setIsImage(true);
+        setImages(menuData);
         console.log(menuData);
+
         setMessages((messages) => [
           {
             body: message,
@@ -266,7 +275,15 @@ const Chat = () => {
         <div className="chat">
           <div className='msgs'>
             {messages.map(function (message) {
-              return <Message key={nanoid()} {...message} color={color}></Message>;
+              return <Message
+                key={nanoid()}
+                {...message}
+                color={color}
+                isImage={isImage}
+                images={images}
+                openModal={openThirdModal}
+                isModalOpen={isThirdModalOpen}
+                closeModal={closeThirdModal}  ></Message>;
             })}
           </div>
           <div className='inputbox'>
@@ -386,17 +403,40 @@ const Chat = () => {
   );
 };
 
-const Message = ({ body, from, color }) => {
+const Message = ({ body, from, color, isImage, images, openModal, closeModal, isModalOpen }) => {
 
   const colors = new Values(`${color}`).all(10);
 
   return (
-    <div
-      style={from === 'bot' ? { backgroundColor: 'white' } : { backgroundColor: `rgb(${colors[5].rgb[0]},${colors[5].rgb[1]},${colors[5].rgb[2]})` }}
-      className={'msg ' + from}
-    >
-      <p>{body}</p>
-    </div>
+    <>
+      <div
+        style={from === 'bot' ? { backgroundColor: 'white' } : { backgroundColor: `rgb(${colors[5].rgb[0]},${colors[5].rgb[1]},${colors[5].rgb[2]})` }}
+        className={'msg ' + from}
+      >
+        {
+          isImage && (
+            images.map((image) => {
+              return <div key={nanoid()}>
+                <button style={{ cursor: 'pointer' }} onClick={openModal} >
+                  <img
+                    src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`}
+                    alt={`menu image`}
+                    style={{ width: '200px', height: '200px' }}
+                  />
+                </button>
+                <div className={isModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+                  <img style={{ width: '500px', height: '500px' }} src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`} alt={`menu image`} />
+                  <FaTimes onClick={closeModal} />
+                </div>
+              </div>;
+            })
+          )
+        }
+        <p>{body}</p>
+      </div>
+
+
+    </>
   );
 };
 
