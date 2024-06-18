@@ -977,6 +977,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 0.5rem;
 }
 .chat-section .chat-nav .restaurant .logo img {
   width: 100%;
