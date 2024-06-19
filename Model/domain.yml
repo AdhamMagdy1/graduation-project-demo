@@ -7,7 +7,6 @@ intents:
 - greet
 - menu
 - order
-- utter_type
 
 entities:
 - send_signal
@@ -79,7 +78,8 @@ responses:
   - text: هو بس حضرتك باعتلي {phone} أرقام تليفونات ياريت بس حضرتك تأكدلي على رفم واحد بس استخدمه
   - text: أنا بس محتاج حضرتك تأكدلي على رقم تليفون واحد 
   - text: ممكن حضرتك تأكدلي على رقم واحد بس استخدمه لما أجي اتصل بحضرتك لإنك باعتلي {phone} أرقام
-
+  utter_phone_number_length:
+  - text: هو انا علشان بوت غلبان حتبعتلي {length} رقم وتضحك عليا ولا ايه
   utter_size_validation:
   - text: حضرتك باعت {size} أحجام مختلفة ممكن تختار حجم واحد بس
   - text: حضرتك عايز أنهي حجم بالظبط لإن حضرتك باعتلي {size} أحجام
@@ -170,6 +170,7 @@ actions:
 - utter_food_nonexistence
 - utter_best_match
 - utter_phonenumber_validation
+- utter_phone_number_length
 - utter_size_validation
 - utter_size_nonexistence
 - utter_choose_size

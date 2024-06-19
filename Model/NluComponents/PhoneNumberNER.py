@@ -84,13 +84,9 @@ class PhoneNumberEntityExtractor(EntityExtractorMixin, GraphComponent):
         phone_numbers      = self.phone_number(text)
         extracted_entities = []
         for number in phone_numbers:
-            if len(number) > 11:
-                continue
-            else:
-                result = re.search(f"{number}", text)
-                s = result.start()
-                e = result.end()
-
+            result = re.search(f"{number}", text)
+            s = result.start()
+            e = result.end()
             extracted_entities.append(
                     {
                         ENTITY_ATTRIBUTE_TYPE: self.entity_name,
