@@ -1,6 +1,5 @@
 .vscode
 node_modules/
-/RestaurantTest/
 Model/.rasa/
 Model/Loaded Models/arz.wiki.bpe.vs100000.d300.w2v.bin
 Model/Loaded Models/arz.wiki.bpe.vs100000.model
