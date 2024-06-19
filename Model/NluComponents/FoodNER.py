@@ -59,7 +59,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
     ) -> None:
         self.entity_name = config.get("entity_name")
         self.bpemb_model = BPEmb(dim = 300,emb_file = r"Loaded Models\arz.wiki.bpe.vs100000.d300.w2v.bin",\
-                           model_file = r"Loaded Models\arz.wiki.bpe.vs100000.model")
+                                model_file = r"Loaded Models\arz.wiki.bpe.vs100000.model")
         with open(r'Loaded Models\BPEmb_SVM.pkl', 'rb') as file: 
             # Call load method to deserialze 
             self.model = pickle.load(file) 
@@ -139,6 +139,7 @@ class FoodEntityExtractor(EntityExtractorMixin, GraphComponent):
         text = re.sub(r"(؟+|\.+|,+|،+|\d+|!+)","",text)
         text = re.sub(r"\s?[a-zA-Z]+\s?", " ", text)
         text = re.sub(r'\b(small|medium|large|single|double|trible|extra large|jumbo|combo|family|صغير|كبير|وسط|سنجل|دوبل|تربل|جامبو|كومبو|عائلي|عادي|اكسترا لارج)\b',"",text)
+        text = re.sub(r'\b(فل|جو|ابعتي|موافق|ايوه|ايوة|تمام|توكل|زي الفل|زي القشطه|زي القشطة|ابعت|موافقة|اه|أه|اة|أة)\b',"",text)
         text = re.sub(r"\s+"," ",text)
         tokens = text.split(" ")
         cleaned_tokens = []

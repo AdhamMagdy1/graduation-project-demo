@@ -264,7 +264,22 @@ class ValidateRestaurantForm(FormValidationAction):
             prices = ",,,"+str(extra)+",,,"+str(menu)
             return {"food": str(self.container[tracker.sender_id])+prices}
         
-        
+    def phone_number_handler(self, phone_numbers, dispatcher, tracker):
+        if not phone_numbers:
+            return None
+        elif len(phone_numbers) == 1:
+            phone_number = phone_numbers[0]
+            if len(phone_numbers[0]) != 11:
+                dispatcher.utter_message(response="utter_phone_number_length",\
+                                     json_message=self.get_metadata(tracker= tracker))
+                phone_number = None
+            return phone_number
+        else:
+            dispatcher.utter_message(response = "utter_phonenumber_validation", phone = len(phone_numbers),\
+                                     json_message=self.get_metadata(tracker= tracker))
+            return None
+
+
         
     
     def validate_phone_number(self,
@@ -278,13 +293,14 @@ class ValidateRestaurantForm(FormValidationAction):
         entities = tracker.latest_message['entities']
         phone_numbers = [ent['value'] for ent in entities if ent['entity'] == 'phone_number']
         print("hello from validate phone number")
-        #flag = tracker.get_slot("food_size")
-        #print(len(phone_numbers))
-        if len(phone_numbers) == 0:
-            #dispatcher.utter_message(response="utter_ask_phone_number")
+        if not phone_numbers:
+            return {"phone_number":None}
+        elif len(phone_numbers) == 1 and len(phone_numbers[0]) != 11:
+            dispatcher.utter_message(response="utter_phone_number_length",\
+                                     length = len(phone_numbers[0]),\
+                                     json_message=self.get_metadata(tracker= tracker))
             return {"phone_number": None}
-        elif len(phone_numbers) == 1:
-            slot_value = phone_numbers[0]
+        elif len(phone_numbers) == 1 and len(phone_numbers[0]) == 11:
             mapping = None
             #mapping = None
             print("food size phone number")
@@ -296,10 +312,8 @@ class ValidateRestaurantForm(FormValidationAction):
         else:
             dispatcher.utter_message(response = "utter_phonenumber_validation", phone = len(phone_numbers),\
                                      json_message=self.get_metadata(tracker= tracker))
-            return {"phone_number": None}
+            return None
         
-
-    
     def food_sizes_mapping(self, dispatcher, tracker, slot):
         food = self.container_sizes[tracker.sender_id].get("_next_")
         if food is None:
