@@ -181,7 +181,7 @@ const Chat = () => {
   const handleSubmit = () => {
     if (text) {
       const communicatedMessage = {
-        sender: customerId,
+        sender: addressId,
         message: text,
         metadata: { restaurant_id: restaurantId, customer_id: customerId, address_id: addressId, socket_id: socket.id }
       };
