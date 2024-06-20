@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 import { nanoid } from 'nanoid';
 import { useState, useEffect, useRef } from 'react';
-// import logo from '../images/logo.png';
+import example from '../images/example-1.jpeg';
+import offer1 from '../images/offer-1.png';
+import offer2 from '../images/offer-2.png';
+import offer3 from '../images/offer-3.png';
 import io from 'socket.io-client';
 import Values from "values.js";
 import { useGlobalContext } from '../restaurant/dashboard/context';
@@ -11,9 +14,13 @@ import { isAuthenticated } from '../../src/hooks/auth';
 import { FaTimes } from 'react-icons/fa';
 
 
+const testImages = [example, offer1, offer2, offer3];
+
 const socket = io('http://localhost:5000/chat');
 
 const Chat = () => {
+
+  const [chatLoading, setChatLoading] = useState();
 
   const {
     isFirstModalOpen,
@@ -26,6 +33,8 @@ const Chat = () => {
     openThirdModal,
     closeThirdModal,
   } = useGlobalContext();
+
+  const [selectedImage, setSelectedImage] = useState('');
 
   //auth states:
   const [errMsg, setErrMsg] = useState('');
@@ -133,7 +142,6 @@ const Chat = () => {
   const chatRef = useRef();
 
   const [messages, setMessages] = useState([]);
-  // const [isImage, setIsImage] = useState(false);
   const [images, setImages] = useState([]);
   const [text, setText] = useState('');
 
@@ -214,6 +222,7 @@ const Chat = () => {
   const restaurantId = (new URLSearchParams(window.location.search)).get("restaurantId");
   // console.log(restaurantId);
   const getRestaurant = async () => {
+    setChatLoading(true);
     try {
       const resp = await fetch(`${URL}/restaurant/customize/${restaurantId}/`, {
         method: 'GET',
@@ -233,18 +242,23 @@ const Chat = () => {
           setLogo(restaurant.logo);
           setColor(restaurant.themeColor);
           setName(restaurant.name);
+          setChatLoading(false);
 
           console.log('Theme Color:', restaurant.themeColor);
         } else {
           console.log('No restaurant data found in response.');
+          setChatLoading(false);
         } if (resp.status === 304) {
           console.log('Resource not modified since the last request.');
+          setChatLoading(false);
           // Handle 304 case if necessary
         }
       } else {
+        setChatLoading(false);
         console.log('Fetch failed with status:', resp.status);
       }
     } catch (error) {
+      setChatLoading(false);
       console.log(error);
     }
   };
@@ -253,6 +267,10 @@ const Chat = () => {
     getRestaurant();
     isAuthenticated() ? openSecondModal() : openFirstModal();
   }, []);
+
+  if (chatLoading) {
+    return <div style={{ borderTopColor: '#4b6df6' }} className="loading"></div>;
+  }
 
 
   return (
@@ -277,20 +295,46 @@ const Chat = () => {
         </div>
         <div className="chat">
           <div className='msgs'>
-            {messages.map(function (message) {
-              return <Message
-                key={nanoid()}
-                {...message}
-                color={color}
-                // isImage={isImage}
-                // setIsImage={setIsImage}
-                images={images}
-                openModal={openThirdModal}
-                isModalOpen={isThirdModalOpen}
-                closeModal={closeThirdModal}  ></Message>;
-            })}
+            {
+              messages.map(function (message) {
+                return <Message
+                  key={nanoid()}
+                  {...message}
+                  color={color}
+                  images={images}
+                  openModal={openThirdModal}
+                  isModalOpen={isThirdModalOpen}
+                  closeModal={closeThirdModal}
+                  setSelectedImage={setSelectedImage}
+                ></Message>;
+              })
+            }
+
+            <div className="msg bot">
+              <div className="menu-items">
+                {
+                  testImages.map((image) => {
+                    return <div key={nanoid()}>
+                      <button className='btn-img' onClick={() => {
+                        setSelectedImage(image);
+                        openThirdModal();
+                      }}>
+                        <img src={image} alt="" />
+                      </button>
+                    </div>;
+                  })
+                }
+                <Swiper
+                  isModalOpen={isThirdModalOpen}
+                  closeModal={closeThirdModal}
+                  image={selectedImage}
+                />
+              </div>
+
+            </div>
 
           </div>
+
           <div className='inputbox'>
             <div className='chat-form'>
               <input
@@ -408,10 +452,9 @@ const Chat = () => {
   );
 };
 
-const Message = ({ body, from, color, isImage/*, setIsImage*/, images, openModal, closeModal, isModalOpen }) => {
+const Message = ({ body, from, color, isImage, images, openModal, closeModal, isModalOpen, setSelectedImage }) => {
 
   const colors = new Values(`${color}`).all(10);
-  // if (typeof(body) === 'string') setIs/*Image(false);/
 
   return (
     <>
@@ -425,19 +468,19 @@ const Message = ({ body, from, color, isImage/*, setIsImage*/, images, openModal
               {
                 images.map((image) => {
                   return <div key={nanoid()}>
-                    <button style={{ cursor: 'pointer' }} onClick={openModal} >
+                    <button className='btn-img' style={{ cursor: 'pointer' }} onClick={() => {
+                      setSelectedImage(`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`);
+                      openModal();
+                    }} >
                       <img
                         src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`}
                         alt={`menu image`}
-                        style={{ width: '200px', height: '200px' }}
                       />
                     </button>
-                    <div className={isModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
-                      <div style={{ backgroundColor: 'transparent' }} className="modal-container">
-                        <img style={{ width: '500px', height: '500px' }} src={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`} alt={`menu image`} />
-                        <FaTimes style={{ color: 'white' }} onClick={closeModal} />
-                      </div>
-                    </div>
+                    <Swiper
+                      isModalOpen={isModalOpen}
+                      closeModal={closeModal}
+                      image={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`} />
                   </div>;
                 })
               }
@@ -450,6 +493,23 @@ const Message = ({ body, from, color, isImage/*, setIsImage*/, images, openModal
 
     </>
   );
+};
+
+const Swiper = ({ isModalOpen, closeModal, image }) => {
+  return <div className={isModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
+
+    <div style={{ backgroundColor: 'transparent', width: '100vw', height: '100vh' }} className="modal-container">
+
+      <img
+        src={image}
+        alt={`menu image`}
+      />
+      <FaTimes
+        className='close-modal-btn'
+        style={{ color: 'white', cursor: 'pointer' }}
+        onClick={closeModal} />
+    </div>
+  </div>;
 };
 
 export default Chat;
