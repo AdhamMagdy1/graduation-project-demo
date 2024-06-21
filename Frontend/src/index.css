@@ -1052,7 +1052,7 @@ textarea {
   border-radius: 0.25rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
   position: relative;
-  z-index: -1;
+  z-index: 2;
   background-color: var(--white);
   max-width: 85%;
   transition: 0.3s;
