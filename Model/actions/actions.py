@@ -87,7 +87,7 @@ class ValidateRestaurantForm(FormValidationAction):
             print("hello from signal ")
     def get_food_sizes(self, tracker):
         restaurant_id = self.get_metadata(tracker)["restaurant_id"]
-        size_mapping = {'small': 'صغير', 'medium': 'متوسط', 'large': 'كبير'}
+        size_mapping = {'small': 'صغير', 'medium': 'وسط', 'large': 'كبير'}
         query = self.Product.select()\
                     .where(self.Product.c.restaurantId == restaurant_id)
         # Execute  query
