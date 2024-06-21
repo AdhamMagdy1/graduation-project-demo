@@ -93,7 +93,7 @@ const Categories = () => {
 		);
 	}
 
-	if (!resp.categories) {
+	if (!resp || !resp.categories || resp.categories.length === 0) {
 		return <div className="page-container">
 			<Empty pageName={'categories'} openFirstModal={openFirstModal} />
 			<div className={isFirstModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >

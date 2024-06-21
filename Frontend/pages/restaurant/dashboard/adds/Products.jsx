@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import SideBar from '../SideBar';
 import Loading from '../../../../src/Loading';
 import { useGlobalContext } from '../context';
@@ -13,6 +13,9 @@ import useEditItem from '../../../../src/hooks/useEditItem';
 
 
 const Products = (props) => {
+
+	const navigate = useNavigate();
+
 	const { categoryId } = useParams();
 	const url = `/restaurant/products/category/${categoryId}`;
 	const [updateTrigger, setUpdateTrigger] = useState(0);
@@ -201,7 +204,20 @@ const Products = (props) => {
 			<SideBar />
 			<div className="side-page">
 				<div className="side-page-nav">
-					<div className="side-page-heading">products</div>
+					<div className="side-page-heading">
+						<button
+							onClick={() => navigate('/restaurant/categories')}
+							type='button'
+							style={{
+								backgroundColor: 'transparent',
+								borderColor: 'transparent',
+								cursor: 'pointer'
+							}}
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="#363638" d="m4 10l-.707.707L2.586 10l.707-.707zm17 8a1 1 0 1 1-2 0zM8.293 15.707l-5-5l1.414-1.414l5 5zm-5-6.414l5-5l1.414 1.414l-5 5zM4 9h10v2H4zm17 7v2h-2v-2zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5z" /></svg>
+						</button>
+						products
+					</div>
 					<div className="add-item">
 						<button onClick={openFirstModal} type='button' className='btn'
 						>add new product</button>
