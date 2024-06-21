@@ -121,6 +121,122 @@ ul {
   border-color: transparent;
   cursor: pointer;
 }
+/* @keyframes dance {
+  10% {
+    transform: rotateX(10deg);
+  }
+  50% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-10deg);
+  }
+}
+.dancing {
+  display: block;
+  border-color: transparent;
+  border-radius: 0.2rem;
+  text-transform: capitalize;
+  padding: 0.25rem 0.75rem;
+  font-weight: 500;
+  color: var(--white);
+  background-color: var(--primary-1);
+  cursor: pointer;
+  animation: dance 5s ease-in-out infinite forwards;
+  animation-play-state: running;
+} */
+
+.wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  min-width: 250px;
+  min-height: 60px;
+  display: inline-flex;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #313133;
+  background: var(--primary-1);
+  background: linear-gradient(
+    90deg,
+    var(--primary-0) 0%,
+    var(--primary-1) 100%
+  );
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px var(--primary-2);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  z-index: 2;
+  padding: 10px;
+}
+.button::before {
+  content: '';
+  border-radius: 1000px;
+  min-width: calc(250px + 10px);
+  min-height: calc(60px + 10px);
+  border: 6px solid var(--primary-1);
+  box-shadow: 0 0 60px var(--primary-1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.button:hover,
+.button:focus {
+  color: #313133;
+  transform: translateY(-6px);
+}
+.button:hover::before,
+.button:focus::before {
+  opacity: 1;
+}
+.button::after {
+  content: '';
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid var(--primary-1);
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+.button:hover::after,
+.button:focus::after {
+  animation: none;
+  display: none;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
 
 /*================================*/
 
@@ -135,6 +251,11 @@ ul {
   align-items: start;
   justify-content: center;
   gap: 0.5rem;
+}
+@media (max-width: 767px) {
+  .sizes-container {
+    flex-direction: column;
+  }
 }
 .input-holder {
   width: 100%;
@@ -192,6 +313,10 @@ ul {
   font-size: 2rem;
   text-transform: capitalize;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 /*===============*/
 
@@ -218,8 +343,8 @@ ul {
 }
 .side-link {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   margin-top: 0.5rem;
   gap: 1rem;
   transition: 0.3s;
@@ -228,7 +353,6 @@ ul {
 .side-link:hover {
   padding-left: 0.5rem;
   background-color: var(--primary-light);
-  /* border-left: 2px solid var(--primary-1); */
 }
 .link-icon {
   display: inline;
@@ -268,8 +392,8 @@ ul {
   background-color: transparent;
   border-color: transparent;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 .dropdown-btn:hover {
   background-color: var(--primary-light);
@@ -282,7 +406,129 @@ ul {
 .flipped {
   transform: rotateX(180deg);
 }
-
+.dropdown-list {
+  margin-left: 2rem;
+}
+@media (max-width: 992px) {
+  .page-container {
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+  }
+  .side-page {
+    width: 100%;
+    height: 100%;
+  }
+  .side-bar {
+    display: none;
+  }
+}
+nav {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-2);
+}
+.nav-center {
+  width: 100%;
+  max-width: 100%;
+  padding: 0rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.toggle-btn {
+  width: 2rem;
+  height: 2rem;
+  background: var(--primary-1);
+  color: var(--white);
+  border-radius: 6px;
+  border-color: transparent;
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.toggle-btn:hover {
+  transform: scale(1.05);
+}
+@media (min-width: 992px) {
+  nav {
+    display: none;
+  }
+  .sidemenu {
+    display: none;
+  }
+  .show-sidemenu {
+    display: none;
+  }
+  .sidemenu-container {
+    display: none;
+  }
+}
+.sidemenu {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--white);
+  /* toggle */
+  opacity: 0;
+  visibility: hidden;
+}
+.show-sidemenu {
+  opacity: 1;
+  visibility: visible;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+}
+.sidemenu-container {
+  padding: 4rem 2rem;
+  position: relative;
+}
+.sidemenu-links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.close-btn {
+  font-size: 2rem;
+  background: transparent;
+  border-color: transparent;
+  color: var(--primary-1);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+.submenu-link {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  transition: 0.3s;
+  font-weight: 500;
+  font-size: 20px;
+}
+.submenu-link .a {
+  text-transform: capitalize;
+  color: black;
+  text-decoration: none;
+}
+.submenu-link:hover {
+  padding-left: 0.5rem;
+  background-color: var(--primary-light);
+}
 /*===============*/
 
 /* || AUTH_FORMS */
@@ -806,6 +1052,7 @@ textarea {
   border-radius: 0.25rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
   position: relative;
+  z-index: -1;
   background-color: var(--white);
   max-width: 85%;
   transition: 0.3s;

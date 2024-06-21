@@ -34,6 +34,15 @@ export const AppProvider = ({ children }) => {
 		setIsThirdModalOpen(false);
 	};
 
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [pageId, setPageId] = useState(null);
+	const openSidebar = () => {
+		setIsSidebarOpen(true);
+	};
+	const closeSidebar = () => {
+		setIsSidebarOpen(false);
+	};
+
 	return <AppContext.Provider value={{
 		isFirstModalOpen,
 		openFirstModal,
@@ -44,6 +53,7 @@ export const AppProvider = ({ children }) => {
 		isThirdModalOpen,
 		openThirdModal,
 		closeThirdModal,
+		isSidebarOpen, openSidebar, closeSidebar, pageId, setPageId
 	}}
 	>
 		{children}
