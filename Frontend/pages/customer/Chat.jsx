@@ -1,10 +1,6 @@
 /* eslint-disable react/prop-types */
 import { nanoid } from 'nanoid';
 import { useState, useEffect, useRef } from 'react';
-import example from '../images/example-1.jpeg';
-import offer1 from '../images/offer-1.png';
-import offer2 from '../images/offer-2.png';
-import offer3 from '../images/offer-3.png';
 import io from 'socket.io-client';
 import Values from "values.js";
 import { useGlobalContext } from '../restaurant/dashboard/context';
@@ -14,7 +10,6 @@ import { isAuthenticated } from '../../src/hooks/auth';
 import { FaTimes } from 'react-icons/fa';
 
 
-const testImages = [example, offer1, offer2, offer3];
 
 const socket = io('http://localhost:5000/chat');
 
@@ -306,33 +301,10 @@ const Chat = () => {
                   isModalOpen={isThirdModalOpen}
                   closeModal={closeThirdModal}
                   setSelectedImage={setSelectedImage}
+                  selectedImage={selectedImage}
                 ></Message>;
               })
             }
-
-            <div className="msg bot">
-              <div className="menu-items">
-                {
-                  testImages.map((image) => {
-                    return <div key={nanoid()}>
-                      <button className='btn-img' onClick={() => {
-                        setSelectedImage(image);
-                        openThirdModal();
-                      }}>
-                        <img src={image} alt="" />
-                      </button>
-                    </div>;
-                  })
-                }
-                <Swiper
-                  isModalOpen={isThirdModalOpen}
-                  closeModal={closeThirdModal}
-                  image={selectedImage}
-                />
-              </div>
-
-            </div>
-
           </div>
 
           <div className='inputbox'>
@@ -452,10 +424,8 @@ const Chat = () => {
   );
 };
 
-const Message = ({ body, from, color, isImage, images, openModal, closeModal, isModalOpen, setSelectedImage }) => {
-
+const Message = ({ body, from, color, isImage, images, openModal, closeModal, isModalOpen, setSelectedImage, selectedImage }) => {
   const colors = new Values(`${color}`).all(10);
-
   return (
     <>
       <div
@@ -480,7 +450,8 @@ const Message = ({ body, from, color, isImage, images, openModal, closeModal, is
                     <Swiper
                       isModalOpen={isModalOpen}
                       closeModal={closeModal}
-                      image={`data:image /png;base64,${image.menuImage.replace(/^\\x/, '')}`} />
+                      image={selectedImage}
+                    />
                   </div>;
                 })
               }
@@ -489,8 +460,6 @@ const Message = ({ body, from, color, isImage, images, openModal, closeModal, is
         }
         <p>{body}</p>
       </div>
-
-
     </>
   );
 };
@@ -499,7 +468,6 @@ const Swiper = ({ isModalOpen, closeModal, image }) => {
   return <div className={isModalOpen ? "modal-overlay show-modal" : "modal-overlay"} >
 
     <div style={{ backgroundColor: 'transparent', width: '100vw', height: '100vh' }} className="modal-container">
-
       <img
         src={image}
         alt={`menu image`}
