@@ -10,13 +10,11 @@ const Empty = ({ pageName, openFirstModal }) => {
 			<div className="side-page">
 				<div className="side-page-nav">
 					<div className="side-page-heading">{pageName}</div>
-					<div className="add-item">
-						<button type='button' className='btn' onClick={openFirstModal}  >add new {pageName}</button>
-					</div>
 				</div>
-				<h3 style={{ marginLeft: '1rem' }}>your {pageName} is empty, start adding!</h3>
+				<div className=" wrap add-item" style={{ marginTop: '3rem', width: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+					<button type='button' className='button' onClick={openFirstModal}  >start adding {pageName}</button>
+				</div>
 			</div>
-
 		</div>
 	);
 };
