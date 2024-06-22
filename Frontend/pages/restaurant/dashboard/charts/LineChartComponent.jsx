@@ -73,7 +73,7 @@ const LineChartComponent = () => {
         dates.forEach((date) => {
           positiveData.push((data[date].pos * 100).toFixed(2));
           negativeData.push((data[date].neg * 100).toFixed(2));
-          neutralData.push((data[date].nat * 100).toFixed(2));
+          neutralData.push((data[date].neu * 100).toFixed(2));
         });
 
         setChartData({
