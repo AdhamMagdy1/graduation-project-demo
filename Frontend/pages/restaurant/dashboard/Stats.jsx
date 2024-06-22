@@ -7,7 +7,7 @@ const Stats = () => {
       <SideBar />
       <div className="side-page">
         <div className="side-page-nav">
-          <h1 className='side-page-heading' >Sentiment Analysis Visualizations</h1>
+          <h1 className='side-page-heading' >reviews analysis overview</h1>
         </div>
         <div className="AppChart">
           <div className="charts">
