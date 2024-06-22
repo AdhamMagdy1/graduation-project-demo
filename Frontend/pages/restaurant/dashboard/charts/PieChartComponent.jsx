@@ -50,7 +50,7 @@ const PieChartComponent = () => {
 
   return (
     <div className='pie'>
-      <h2 className='side-page-heading' style={{ fontSize: '26px' }} >Overall Sentiment</h2>
+      <h2 className='side-page-heading' style={{ fontSize: '26px' }} >Overall opinion</h2>
       <Doughnut data={data} />
     </div>
   );
