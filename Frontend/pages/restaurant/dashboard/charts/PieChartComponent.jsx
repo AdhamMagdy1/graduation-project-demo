@@ -27,7 +27,7 @@ const PieChartComponent = () => {
       Object.values(data).forEach((entry) => {
         sentiments.positive += entry.pos;
         sentiments.negative += entry.neg;
-        sentiments.neutral += entry.nat;
+        sentiments.neutral += entry.neu;
       });
 
       const formattedData = [
