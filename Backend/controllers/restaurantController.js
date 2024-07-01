@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const multer = require('multer');
 const { Op } = require('sequelize');
 const path = require('path');
+const { sequelize } = require('../config/database');
 const {
   Owner,
   Restaurant,
@@ -236,10 +237,12 @@ const deleteOwner = async (req, res, next) => {
     if (!owner) {
       return next(new AppError('Owner not found', 404));
     }
-    await owner.destroy();
-    if (restaurantId) {
-      await Restaurant.destroy({ where: { restaurantId } });
-    }
+    await sequelize.transaction(async () => {
+      await owner.destroy();
+      if (restaurantId) {
+        await Restaurant.destroy({ where: { restaurantId } });
+      }
+    });
     return res.status(200).json({
       message: 'Owner deleted successfully along with all his restaurant data',
     });
@@ -252,7 +255,6 @@ const deleteOwner = async (req, res, next) => {
 // Controller function to create restaurant information
 const createRestaurant = async (req, res, next) => {
   const { name, description, themeColor } = req.body;
-  const logo = req.file ? req.file.buffer.toString('base64') : req.body.logo;
   const restaurantDeliveryAreas = JSON.parse(req.body.deliveryAreas);
   const ownerId = req.user.ownerId; // Extract owner ID from token
   const restaurantId = req.user.hasRestaurant;
@@ -261,72 +263,82 @@ const createRestaurant = async (req, res, next) => {
     if (restaurantId) {
       return next(new AppError('Restaurant already exists', 400));
     }
+    let logo;
+    if (req.file) {
+      logo = req.file.buffer.toString('base64');
+    }
     // Create new restaurant
-    const newRestaurant = await Restaurant.create({
-      name,
-      description,
-      themeColor,
-      logo,
-      ownerId,
+    const result = await sequelize.transaction(async () => {
+      const newRestaurant = await Restaurant.create({
+        name,
+        description,
+        themeColor,
+        logo,
+        ownerId,
+      });
+
+      // Update owner's hasRestaurant field
+      await Owner.update(
+        { hasRestaurant: newRestaurant.restaurantId },
+        { where: { ownerId } }
+      );
+      
+
+      const deliveryAreasData = [];
+
+      restaurantDeliveryAreas.forEach(({ city, areas }) => {
+        areas.forEach((area) => {
+          deliveryAreasData.push({
+            city,
+            area,
+            restaurantId: newRestaurant.restaurantId,
+          });
+        });
+      });
+
+      const deliveryAreas = await RestaurantDeliveryAreas.bulkCreate(deliveryAreasData, { validate: true });
+
+      // Initialize an empty object to hold the organized data
+      const organizedData = {};
+
+      // Loop through the array to organize data by city
+      deliveryAreas.flat().forEach(({ city, area }) => {
+        if (!organizedData[city]) {
+          organizedData[city] = [];
+        }
+        organizedData[city].push(area);
+      });
+
+      // Convert the object to an array if needed
+      const organizedArray = Object.keys(organizedData).map((city) => ({
+        city,
+        areas: organizedData[city],
+      }));
+
+      // Generate worker data based on restaurant information
+      const workerName = `${name}_${newRestaurant.restaurantId}`;
+      const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}_${
+        newRestaurant.restaurantId
+      }@email.com`;
+      const workerPassword = `${name}_${newRestaurant.restaurantId}`;
+
+      // Create restaurant worker
+      const newWorker = await RestaurantWorker.create({
+        name: workerName,
+        email: workerEmail,
+        password: workerPassword,
+        restaurantId: newRestaurant.restaurantId,
+      });
+
+      return { restaurant: newRestaurant, worker: newWorker, deliveryAreas: organizedArray };
     });
 
-    // Update owner's hasRestaurant field
-    await Owner.update(
-      { hasRestaurant: newRestaurant.restaurantId },
-      { where: { ownerId } }
-    );
-    // Create delivery areas for the restaurant
-    const deliveryAreas = await Promise.all(
-      restaurantDeliveryAreas.map(async (deliveryArea) => {
-        const { city, areas } = deliveryArea;
-        const area = await Promise.all(
-          areas.map(async (value) => {
-            const createdDeliveryArea = await RestaurantDeliveryAreas.create({
-              city,
-              area: value,
-              restaurantId: newRestaurant.restaurantId,
-            });
-            return createdDeliveryArea;
-          })
-        );
-        return area;
-      })
-    );
-    // Initialize an empty object to hold the organized data
-    const organizedData = {};
+    const { restaurant, worker, deliveryAreas } = result;
 
-    // Loop through the array to organize data by city
-    deliveryAreas.flat().forEach(({ city, area }) => {
-      if (!organizedData[city]) {
-        organizedData[city] = [];
-      }
-      organizedData[city].push(area);
-    });
-
-    // Convert the object to an array if needed
-    const organizedArray = Object.keys(organizedData).map((city) => ({
-      city,
-      areas: organizedData[city],
-    }));
-
-    // Generate worker data based on restaurant information
-    const workerName = `${name}_${newRestaurant.restaurantId}`;
-    const workerEmail = `${name.toLowerCase().replace(/\s/g, '')}_${
-      newRestaurant.restaurantId
-    }@email.com`;
-    const workerPassword = `${name}_${newRestaurant.restaurantId}`;
-
-    // Create restaurant worker
-    const newWorker = await RestaurantWorker.create({
-      name: workerName,
-      email: workerEmail,
-      password: workerPassword,
-      restaurantId: newRestaurant.restaurantId,
-    });
     return res.status(201).json({
-      restaurant: newRestaurant,
-      worker: newWorker,
-      deliveryAreas: organizedArray,
+      restaurant,
+      worker,
+      deliveryAreas
     });
   } catch (error) {
     console.error('Error creating restaurant:', error);
@@ -395,19 +407,25 @@ const editRestaurantDeliveryAreas = async (req, res, next) => {
     if (!restaurantId) {
       return next(new AppError('Restaurant not found', 404));
     }
-    await RestaurantDeliveryAreas.destroy({ where: { restaurantId } });
-    const deliveryAreas = await Promise.all(restaurantDeliveryAreas.map(async (deliveryArea) => {
-      const { city, areas } = deliveryArea;
-      const area = await Promise.all(areas.map(async (value) => {
-        const createdDeliveryArea = await RestaurantDeliveryAreas.create({
+
+    const deliveryAreasData = [];
+
+    restaurantDeliveryAreas.forEach(({ city, areas }) => {
+      areas.forEach((area) => {
+        deliveryAreasData.push({
           city,
-          area: value,
-          restaurantId,
+          area,
+          restaurantId
         });
-        return createdDeliveryArea;
-      }));
-      return area;
-    }));
+      });
+    });
+    const result = await sequelize.transaction(async () => {
+      await RestaurantDeliveryAreas.destroy({ where: { restaurantId } });
+      const deliveryAreas = await RestaurantDeliveryAreas.bulkCreate(deliveryAreasData, { validate: true });
+      return { deliveryAreas };
+    });
+
+    const { deliveryAreas } = result;
 
     // Initialize an empty object to hold the organized data
     const organizedData = {};
@@ -550,17 +568,13 @@ const deleteOwnerRestaurant = async (req, res, next) => {
   const ownerId = req.user.ownerId; // Extract owner ID from token
   const restaurantId = req.user.hasRestaurant;
   try {
-    // const restaurant = await Restaurant.findOne({ where: { ownerId } });
-    // const restaurant = await Restaurant.findByPk(restaurantId);
-    // if (!restaurant) {
-    //   return next(new AppError('Restaurant not found', 404));
-    // }
-    // const restaurantId = restaurant.restaurantId;
     if (!restaurantId) {
       return next(new AppError('No restaurant found for the owner', 404));
     }
-    await Restaurant.destroy({ where: { restaurantId } });
-    await Owner.update({ hasRestaurant: null }, { where: { ownerId } });
+    await sequelize.transaction(async () => {
+      await Restaurant.destroy({ where: { restaurantId } });
+      await Owner.update({ hasRestaurant: null }, { where: { ownerId } });
+    });
     return res
       .status(200)
       .json({ message: 'Restaurant deleted successfully with its data' });
@@ -790,16 +804,14 @@ const uploadMenu = async (req, res, next) => {
     }
 
     // Save each menu image to the database
-    const menuEntries = await Promise.all(
-      menuImages.map(async (menuImage) => {
-        const menu = await RestaurantMenu.create({
-          description,
-          menuImage,
-          restaurantId,
-        });
-        return menu;
-      })
-    );
+    const menuEntriesData = menuImages.map((menuImage) => ({
+      description,
+      menuImage,
+      restaurantId
+    }));
+
+    const menuEntries = await RestaurantMenu.bulkCreate(menuEntriesData, { validate: true });
+
     // Send response
     res.status(201).json({ success: true, menu: menuEntries });
   } catch (error) {

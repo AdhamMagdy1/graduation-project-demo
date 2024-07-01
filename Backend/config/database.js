@@ -1,5 +1,11 @@
-const { Sequelize } = require('sequelize');
 require('dotenv').config();
+const { Sequelize } = require('sequelize');
+
+const cls = require('cls-hooked');
+const namespace = cls.createNamespace('restaurantNamespace');
+
+Sequelize.useCLS(namespace);
+
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
   process.env.DATABASE_USERNAME,
@@ -13,13 +19,6 @@ const sequelize = new Sequelize(
       },
     },
   }
-  // process.env.LOCAL_DATABASE_NAME,
-  // process.env.LOCAL_DATABASE_USERNAME,
-  // process.env.LOCAL_DATABASE_PASSWORD,
-  // {
-  //   host: process.env.LOCAL_DATABASE_HOST,
-  //   dialect: 'postgres',
-  // }
 );
 
 const testDbConnection = async () => {
