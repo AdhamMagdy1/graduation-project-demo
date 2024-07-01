@@ -44,7 +44,7 @@ const customerController = {
       });
       // Generate JWT for user
       const token = jwt.sign({id: customer.customerId }, process.env.JWT_SECRET, {
-        expiresIn: '180h',
+        expiresIn: '90d',
       });
       res.json({ customer, token });
     } catch (error) {
