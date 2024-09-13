@@ -1,6 +1,6 @@
 const {
   getModelRes,
-  orderState,
+  orderStatus,
 } = require('../middleware/conToModel');
 const { instrument } = require('@socket.io/admin-ui');
 
@@ -15,18 +15,13 @@ const runSocket = (io, mainNamespace) => {
     });
 
     socket.on('message', async (msg) => {
-      // const communicatedMessage = {
-      //   sender: 2,
-      //   message: msg,
-      //   metadata: { restaurant_id: 11, customer_id: 1, socket_id: socket.id },
-      // };
 
       const { emitMessage, menuData, isImage } = await getModelRes(mainNamespace, msg);
       mainNamespace.to(socket.id).emit('message', emitMessage, isImage, menuData);
     });
 
-    socket.on('changeOrderState', async (order, callback) => {
-      const newOrder = await orderState(order);
+    socket.on('changeOrderStatus', async (order, callback) => {
+      const newOrder = await orderStatus(order);
       callback({
         status: 'success'
       });
