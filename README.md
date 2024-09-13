@@ -63,6 +63,7 @@ ChefBot is a comprehensive food ordering platform that connects customers with v
 
 - Node
 - NPM
+- PostgreSQL
 - Docker
 
 
