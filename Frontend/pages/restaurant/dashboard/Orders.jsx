@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import SideBar from "./SideBar";
 import io from 'socket.io-client';
 
-const restaurantSocket = io('http://localhost:5000/chat'); // Move socket initialization here
+const restaurantSocket = io('http://localhost:5000/chat', {
+  autoConnect: false
+});
 
 const Orders = () => {
 	const [orders, setOrders] = useState([]);
@@ -13,8 +15,12 @@ const Orders = () => {
 
   useEffect(() => {
     console.log('restaurantId:', restaurantId);
-    // Connect to the socket and join the room when the component mounts
-    restaurantSocket.emit('joinRestaurantRoom', restaurantId);
+
+    // Connect the socket
+    restaurantSocket.connect();
+    
+    // Join the room when the component mounts
+    restaurantSocket.emit('joinRestaurantRoom', parseInt(restaurantId));
 			
 		// Listen for 'order' events
 		const handleNewOrder = (newOrder) => {
@@ -27,6 +33,7 @@ const Orders = () => {
     // Cleanup function to disconnect from the socket when the component unmounts
     return () => {
       restaurantSocket.off('order');
+      restaurantSocket.disconnect();
     };
   }, [restaurantId]);
 
@@ -38,8 +45,7 @@ const Orders = () => {
     });
     
     try {
-      // Emit the changeOrderState event to the server
-      const response = await restaurantSocket.emitWithAck('changeOrderState', { orderId, newStatus });
+      const response = await restaurantSocket.emitWithAck('changeOrderStatus', { orderId, newStatus });
       if (response.status === 'success') {
         console.log(`Order ${orderId} status changed to ${newStatus}`);
         setOrders(updatedOrders);
