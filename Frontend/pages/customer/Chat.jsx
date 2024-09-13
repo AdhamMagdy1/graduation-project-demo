@@ -11,7 +11,9 @@ import { FaTimes } from 'react-icons/fa';
 
 
 
-const socket = io('http://localhost:5000/chat');
+const socket = io('http://localhost:5000/chat', {
+  autoConnect: false
+});
 
 const Chat = () => {
 
@@ -146,6 +148,9 @@ const Chat = () => {
   useEffect(() => {
     chatRef.current.focus();
 
+    // Connect the socket
+    socket.connect();
+
     socket.on('message', (message, isImage, menuData) => {
 
       // for RASA messages
@@ -160,6 +165,7 @@ const Chat = () => {
         ]);
         // setIsImage(false);
       } else if (isImage, menuData.length > 0) {
+        // menuData is an array of objects each object has a key of menuImage and value of String
         // setIsImage(true);
         setImages(menuData);
         console.log(menuData);
@@ -172,8 +178,6 @@ const Chat = () => {
           },
           ...messages,
         ]);
-        // handle menu images convertion here
-        // menuData is an array of objects each object has a key of menuImage and value of String
       }
     });
     return () => {
