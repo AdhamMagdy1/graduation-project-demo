@@ -18,7 +18,7 @@
 ![Static Badge](https://img.shields.io/badge/Docker-grey?logo=Docker)
 
 
-[![Watch the video](https://raw.githubusercontent.com/AdhamMagdy1/graduation-project-demo/refactor-style/Images/ChefBot.jpg)](https://raw.githubusercontent.com/AdhamMagdy1/graduation-project-demo/refactor-style/Images/Chat.mp4)
+![Watch the video](https://raw.githubusercontent.com/AdhamMagdy1/graduation-project-demo/refactor-style/Images/Chat.mp4)
 
 
 
