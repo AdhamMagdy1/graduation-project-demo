@@ -61,7 +61,7 @@ const customAction = async (mainNamespace, customObject) => {
       customerId: customer_id
     });
     const order = await Order.findOne({  where: { orderId: newOrder.orderId }, include: [ Address ] });
-    mainNamespace.to(restaurant_id).emit('order', order);
+    mainNamespace.to(parseInt(restaurant_id)).emit('order', order);
 
   } else if (customObject.code == 440) {
     const { restaurant_id, feedback } = customObject;
@@ -77,11 +77,11 @@ const customAction = async (mainNamespace, customObject) => {
   }
 };
 
-const orderState = async (order) => {
+const orderStatus = async (order) => {
   await Order.update({ status: order.newStatus }, { where: { orderId: order.orderId } });
 };
 
 module.exports = {
   getModelRes,
-  orderState,
+  orderStatus,
 };
