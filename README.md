@@ -58,7 +58,7 @@ ChefBot is a comprehensive food ordering platform that connects customers with v
 
 
 <div>
-  <h4>Pre-requests</h4>
+  <h4>Prerequisites</h4>
 </div>
 
 - Node
