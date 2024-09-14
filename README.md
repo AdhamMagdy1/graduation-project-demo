@@ -18,7 +18,8 @@
 ![Static Badge](https://img.shields.io/badge/Docker-grey?logo=Docker)
 
 
-![Watch the video](https://raw.githubusercontent.com/AdhamMagdy1/graduation-project-demo/refactor-style/Images/Chat.mp4)
+
+
 
 
 
@@ -27,6 +28,7 @@
 
 - [About](#about)
 - [Key Features](#key-features)
+- [Demo](#demo)
 - [Installation](#installation)
 
 ## About
@@ -56,6 +58,16 @@ ChefBot is a comprehensive food ordering platform that connects customers with v
 - The chatbot utilizes NLP with Rasa to understand customer preferences and provide recommendations based on the restaurant's offerings by accessing restaurant foods stored in databse.
 - The chatbot communicates in Egyptian Arabic dialect, making it more accessible and user-friendly for local customers.
 - Once a customer confirms an order with the AI bot, the system sends the order details to the respective restaurant order dashboard
+
+
+
+
+## Demo
+
+https://github.com/user-attachments/assets/59efb777-0241-4134-a424-edef5aac2196
+
+
+
 
 
 ## Installation
